@@ -16,7 +16,7 @@ def autodetect_all_cameras():
     port_info_list = gp.PortInfoList()
     port_info_list.load()
 
-    cameras_wrappers = []
+    camera_wrappers = []
     for name, port in cameras_name_and_addr:
         print('Detected camera {0} on port: {1}'.format(name, port))
 
@@ -28,9 +28,10 @@ def autodetect_all_cameras():
         cam_name = '{0}_{1}'.format(name, idx)
         cam_wrapper = CameraWrapper(camera, storage_dir=c_storage_dir, camera_name=cam_name)
 
-        cameras_wrappers.append(cam_wrapper)
+        camera_wrappers.append(cam_wrapper)
 
-    return cameras_wrappers
+    print('Detected a total of {0} camera(s)\n'.format(len(camera_wrappers)))
+    return camera_wrappers
 
 
 def capture_img_from_all_cameras(cameras, capture_index=0):
@@ -54,7 +55,6 @@ def main():
     if len(cam_wrappers) == 0:
         print('No cameras detected')
         return 0
-    print('Detected a total of {0} camera(s)\n'.format(len(cam_wrappers)))
 
     capture_img_from_all_cameras(cam_wrappers, 42)
 
