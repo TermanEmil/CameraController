@@ -1,4 +1,3 @@
-import argparse
 import logging
 from threading import Thread
 
@@ -8,15 +7,6 @@ from CameraWrapper import CameraWrapper
 
 # Constants
 c_storage_dir = '/Volumes/aps/timelapse/software/captured_images'
-
-
-def build_argparser():
-    parser = argparse.ArgumentParser('Timelapse')
-
-    parser.add_argument('--nb-of-photos', dest='nb_of_photos', type=int, required=False)
-    parser.add_argument('--interval', dest='interval', type=int, default=1)
-
-    return parser
 
 
 def autodetect_all_cameras():

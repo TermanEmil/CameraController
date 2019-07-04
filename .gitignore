@@ -2,6 +2,7 @@
 *.mjpg
 *.mjpeg
 *.nef
+*.jpg
 
 # -- venv
 .venv/
