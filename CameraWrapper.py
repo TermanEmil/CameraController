@@ -1,11 +1,23 @@
 import os
 import gphoto2 as gp
 
-from async_print import async_print
+from Utils.async_print import async_print
+
+
+class _CameraConnection:
+    def __init__(self, camera):
+        assert isinstance(camera, gp.Camera)
+        self.camera = camera
+
+    def __enter__(self):
+        self.camera.init()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.camera.exit()
 
 
 class CameraWrapper:
-    def __init__(self, gp_camera, storage_dir, camera_name):
+    def __init__(self, gp_camera, storage_dir=None, camera_name=None):
         assert isinstance(gp_camera, gp.Camera)
 
         self.gp_camera = gp_camera
@@ -14,26 +26,27 @@ class CameraWrapper:
 
         self.verbose = True
 
-    def __del__(self):
-        if self.gp_camera is not None:
-            self.gp_camera.exit()
-
     def capture_img(self, img_index=0):
-        self._log('Capturing image')
-        file_device_path = gp.check_result(gp.gp_camera_capture(self.gp_camera, gp.GP_CAPTURE_IMAGE))
+        assert self.storage_dir is not None
 
-        photo_name = self._create_img_name(file_device_path.name, img_index)
-        local_file_path = os.path.join(self.storage_dir, photo_name)
+        if not os.path.isdir(self.storage_dir):
+            raise Exception('Path: "{0}" does not exist'.format(self.storage_dir))
 
-        camera_file = gp.check_result(
-            gp.gp_camera_file_get(
-                self.gp_camera,
-                file_device_path.folder,
-                file_device_path.name,
-                gp.GP_FILE_TYPE_NORMAL))
+        with _CameraConnection(self.gp_camera):
+            self._log('Capturing image')
+            file_device_path = gp.check_result(gp.gp_camera_capture(self.gp_camera, gp.GP_CAPTURE_IMAGE))
 
-        gp.check_result(gp.gp_file_save(camera_file, local_file_path))
-        self._log('Image saved to {0}'.format(local_file_path))
+            photo_name = self._create_img_name(file_device_path.name, img_index)
+            local_file_path = os.path.join(self.storage_dir, photo_name)
+
+            camera_file = gp.check_result(
+                gp.gp_camera_file_get(
+                    self.gp_camera,
+                    file_device_path.folder,
+                    file_device_path.name,
+                    gp.GP_FILE_TYPE_NORMAL))
+            gp.check_result(gp.gp_file_save(camera_file, local_file_path))
+            self._log('Image saved to {0}'.format(local_file_path))
 
     def _log(self, text):
         if self.verbose:

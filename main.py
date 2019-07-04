@@ -1,62 +1,30 @@
 import logging
-from threading import Thread
-
-import gphoto2 as gp
-
-from CameraWrapper import CameraWrapper
+import time
+from CameraManager import CameraManager
 
 # Constants
 c_storage_dir = '/Volumes/aps/timelapse/software/captured_images'
 
 
-def autodetect_all_cameras():
-    cameras_name_and_addr = gp.check_result(gp.gp_camera_autodetect())
-
-    # Search ports for camera port name
-    port_info_list = gp.PortInfoList()
-    port_info_list.load()
-
-    camera_wrappers = []
-    for name, port in cameras_name_and_addr:
-        print('Detected camera {0} on port: {1}'.format(name, port))
-
-        camera = gp.Camera()
-        idx = port_info_list.lookup_path(port)
-        camera.set_port_info(port_info_list[idx])
-        camera.init()
-
-        cam_name = '{0}_{1}'.format(name, idx)
-        cam_wrapper = CameraWrapper(camera, storage_dir=c_storage_dir, camera_name=cam_name)
-
-        camera_wrappers.append(cam_wrapper)
-
-    print('Detected a total of {0} camera(s)\n'.format(len(camera_wrappers)))
-    return camera_wrappers
-
-
-def capture_img_from_all_cameras(cameras, capture_index=0):
-    img_capture_tasks = []
-    for camera in cameras:
-        task = Thread(target=camera.capture_img, args=(capture_index,))
-        img_capture_tasks.append(task)
-
-    for task in img_capture_tasks:
-        task.start()
-
-    for task in img_capture_tasks:
-        task.join()
+def init_logger():
+    logging.basicConfig(format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
 
 
 def main():
-    logging.basicConfig(format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
-    gp.check_result(gp.use_python_logging())
+    init_logger()
 
-    cam_wrappers = autodetect_all_cameras()
-    if len(cam_wrappers) == 0:
+    camera_manager = CameraManager()
+    camera_manager.autodetect_cameras()
+
+    if len(camera_manager.cameras) == 0:
         print('No cameras detected')
         return 0
 
-    capture_img_from_all_cameras(cam_wrappers, 42)
+    n = 5
+    for i in range(n):
+        camera_manager.capture_img_from_all(storage_dir=c_storage_dir, capture_index=42)
+        if i != n - 1:
+            time.sleep(5)
 
 
 if __name__ == '__main__':
