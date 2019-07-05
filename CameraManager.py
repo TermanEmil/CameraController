@@ -8,7 +8,7 @@ class CameraManager:
         self.cameras = []
         gp.check_result(gp.use_python_logging())
 
-    def autodetect_cameras(self):
+    def autodetect_all_cameras(self):
         cameras_name_and_port = gp.check_result(gp.gp_camera_autodetect())
 
         # Search ports for camera port name
@@ -31,7 +31,7 @@ class CameraManager:
         print('Detected a total of {0} camera(s)\n'.format(len(camera_wrappers)))
         self.cameras = camera_wrappers
 
-    def capture_img_from_all(self, storage_dir, capture_index):
+    def capture_img(self, storage_dir, capture_index):
         for camera in self.cameras:
             assert isinstance(camera, CameraWrapper)
             camera.storage_dir = storage_dir

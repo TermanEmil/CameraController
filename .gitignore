@@ -1,8 +1,15 @@
+.DS_store
+
+# -- current_state
+*.json
+
 # -- media
 *.mjpg
 *.mjpeg
 *.nef
 *.jpg
+*.jpeg
+*.gif
 
 # -- venv
 .venv/
