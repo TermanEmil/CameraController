@@ -2,7 +2,7 @@ import logging
 import time
 import schedules
 
-from Utils.time_utils import now
+from utils.time_utils import now
 from CameraManager import CameraManager
 from ScheduleManager import ScheduleManager
 

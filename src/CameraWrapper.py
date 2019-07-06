@@ -1,7 +1,7 @@
 import os
 import gphoto2 as gp
 
-from Utils.async_print import async_print
+from utils.async_print import async_print
 
 
 class _CameraConnection:
@@ -22,7 +22,7 @@ class CameraWrapper:
 
         self.gp_camera = gp_camera
         self.storage_dir = storage_dir
-        self.camera_name = camera_name
+        self.name = camera_name
 
         self.verbose = True
 
@@ -50,11 +50,11 @@ class CameraWrapper:
 
     def _log(self, text):
         if self.verbose:
-            async_print('{0}: {1}'.format(self.camera_name, text))
+            async_print('{0}: {1}'.format(self.name, text))
 
     def _create_img_name(self, device_img_name, img_index):
         file_name, file_extension = os.path.splitext(device_img_name)
 
         # Without the dot
         file_extension = file_extension[1:]
-        return '{0}-{1}.{2}'.format(self.camera_name, img_index, file_extension)
+        return '{0}-{1}.{2}'.format(self.name, img_index, file_extension)

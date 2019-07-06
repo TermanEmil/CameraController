@@ -1,5 +1,5 @@
 import json
-from Utils.time_utils import now
+from utils.time_utils import now
 
 
 class Schedule:
