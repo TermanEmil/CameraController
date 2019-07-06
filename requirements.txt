@@ -1,1 +1,3 @@
 gphoto2
+Django==2.2.3
+django-crispy-forms==1.7.2

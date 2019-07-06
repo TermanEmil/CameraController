@@ -1,0 +1,15 @@
+{% extends "./base.html" %}
+
+{% block content %}
+    {% if cameras|length == 0 %}
+        <p>No cameras detected</p>
+    {% else %}
+        {% for camera in cameras %}
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <p class="text-primary">{{ camera.name }}</p>
+                <p class="text-secondary">{{ camera.summary }}</p>
+                <span class="badge badge-secondary badge-pill">{{ camera.port }}</span>
+            </a>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

@@ -4,9 +4,18 @@ from CameraWrapper import CameraWrapper
 
 
 class CameraManager:
+    _instance = None
+
     def __init__(self):
         self.cameras = []
         gp.check_result(gp.use_python_logging())
+
+    @staticmethod
+    def instance():
+        if CameraManager._instance is None:
+            CameraManager._instance = CameraManager()
+
+        return CameraManager._instance
 
     def autodetect_all_cameras(self):
         cameras_name_and_port = gp.check_result(gp.gp_camera_autodetect())
@@ -24,7 +33,7 @@ class CameraManager:
             camera.set_port_info(port_info_list[idx])
 
             cam_name = '{0}_{1}'.format(name, idx)
-            cam_wrapper = CameraWrapper(camera, camera_name=cam_name)
+            cam_wrapper = CameraWrapper(camera, camera_name=cam_name, port=port)
 
             camera_wrappers.append(cam_wrapper)
 

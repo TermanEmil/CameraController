@@ -17,12 +17,13 @@ class _CameraConnection:
 
 
 class CameraWrapper:
-    def __init__(self, gp_camera, storage_dir=None, camera_name=None):
+    def __init__(self, gp_camera, storage_dir=None, camera_name=None, port=None):
         assert isinstance(gp_camera, gp.Camera)
 
         self.gp_camera = gp_camera
         self.storage_dir = storage_dir
         self.name = camera_name
+        self.port = port
 
         self.verbose = True
 
