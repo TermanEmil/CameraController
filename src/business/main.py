@@ -1,11 +1,10 @@
 import logging
 import time
-import schedules
 
-from utils.time_utils import now
+import schedules
 from CameraManager import CameraManager
 from ScheduleManager import ScheduleManager
-
+from utils.time_utils import now
 
 # Constants
 c_storage_dir = '/Users/unicornslayer/Projects/Timelapse/Photos'
