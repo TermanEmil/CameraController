@@ -7,10 +7,7 @@ from ..ids import *
 
 
 def live_preview(request, camera_port):
-    if request.method == 'POST':
-        form = PreviewForm(request.POST)
-        if form.is_valid():
-            request.session[c_preview_quality_id] = form.get_preview_quality()
+    _parse_preview_form_post(request)
 
     camera = CameraManager.instance().get_camera_on_port(camera_port)
     if camera is None:
@@ -22,6 +19,28 @@ def live_preview(request, camera_port):
     }
 
     return render(request, 'remote_camera/live_preview.html', context)
+
+
+def multi_live_preview(request):
+    _parse_preview_form_post(request)
+
+    context = {
+        'camera_ports': [camera.port for camera in CameraManager.instance().cameras],
+        'form': _load_preview_form(request)
+    }
+
+    return render(request, 'remote_camera/multi_live_preview.html', context)
+
+
+def _parse_preview_form_post(request):
+    if request.method != 'POST':
+        return
+
+    form = PreviewForm(request.POST)
+    if not form.is_valid():
+        return
+
+    request.session[c_preview_quality_id] = form.get_preview_quality()
 
 
 def _load_preview_form(request):

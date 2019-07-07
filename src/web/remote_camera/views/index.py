@@ -4,12 +4,8 @@ from .view_models import CameraViewModel
 
 
 def index(request):
-    camera_manager = CameraManager.instance()
-    camera_manager.disconnect_all_cameras()
-    camera_manager.autodetect_all_cameras()
-
     context = {
-        'cameras': [CameraViewModel(camera) for camera in camera_manager.cameras]
+        'cameras': [CameraViewModel(camera) for camera in CameraManager.instance().cameras]
     }
 
     return render(request, 'remote_camera/index.html', context)

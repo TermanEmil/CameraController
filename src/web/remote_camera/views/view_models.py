@@ -7,5 +7,5 @@ class CameraViewModel:
 
         self.name = camera.name
         self.port = camera.port
-        self.summary = 'This is a nice camera'
+        self.summary = camera.serial_nb
 

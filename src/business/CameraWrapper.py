@@ -1,8 +1,17 @@
 import os
 import gphoto2 as gp
 import threading
+import re
 
 from .utils.async_print import async_print
+
+
+def _extract_serial_number(cam_summary):
+    m = re.search(r'serial\s*number\s*[:=]?\s*(\d+)', cam_summary, flags=re.IGNORECASE)
+    if m:
+        return int(m.group(1))
+
+    return None
 
 
 class CameraWrapper:
@@ -15,6 +24,9 @@ class CameraWrapper:
         self.port = port
 
         self.verbose = True
+
+        summary = gp.check_result(gp.gp_camera_get_summary(self.gp_camera))
+        self.serial_nb = _extract_serial_number(summary.text)
 
         # The gphoto2 operations must synchronized.
         # Weird shit happens if multiple gphoto2 operations on the same camera happen at once.
