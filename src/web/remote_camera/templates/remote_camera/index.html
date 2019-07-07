@@ -1,0 +1,27 @@
+{% extends "./base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    {% if cameras|length == 0 %}
+        <div class="text-primary">No cameras detected</div>
+    {% else %}
+        {% for camera in cameras %}
+            <a href="{% url 'live_preview' camera.port %}"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div class="text-primary">{{ camera.name }}</div>
+                <div class="text-secondary">Serial nb: {{ camera.summary }}</div>
+                <span class="badge badge-secondary badge-pill">{{ camera.port }}</span>
+            </a>
+        {% endfor %}
+    {% endif %}
+
+    <br />
+    <form action="{% url 'search_for_cameras' %}" method="post">
+        {% csrf_token %}
+
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <center>
+            <button type="submit" class="btn btn-primary">Search for cameras</button>
+        </center>
+    </form>
+{% endblock content %}

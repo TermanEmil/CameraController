@@ -12,6 +12,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="PyQt5.QtWidgets.clicked.connect" />
+          <option value="gphoto2.*" />
         </list>
       </option>
     </inspection_tool>

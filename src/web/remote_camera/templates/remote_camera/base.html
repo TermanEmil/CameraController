@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+{% load django_simple_cookie_consent_tags %}
+{% load static %}
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% if title %}
+        <title> {{ title }} </title>
+    {% else %}
+        <title> Remote Camera </title>
+    {% endif %}
+
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    {% display_cookie_consent %}
+
+    {% block styles %}
+    {% endblock styles %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Cameras</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'multi_live_preview' %}">Preview all</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    {% block scripts %}
+    {% endblock scripts %}
+</body>
+</html>

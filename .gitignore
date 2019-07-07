@@ -1,4 +1,5 @@
 .DS_store
+tmpf*
 
 # -- current_state
 *.json
@@ -13,6 +14,9 @@
 
 # -- venv
 .venv/
+
+# -- Pip install editable mode
+*.egg_info
 
 # -- Pycharm
 
