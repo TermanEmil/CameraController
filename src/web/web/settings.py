@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_simple_cookie_consent.apps.DjangoSimpleCookieConsentConfig',
+    'widget_tweaks',
 
     'remote_camera',
 ]

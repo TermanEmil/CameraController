@@ -2,6 +2,8 @@
 <html>
 
 {% load django_simple_cookie_consent_tags %}
+{% load static %}
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,10 +21,8 @@
 
     {% display_cookie_consent %}
 
-    <style>
-        {% block styles %}
-        {% endblock styles %}
-    </style>
+    {% block styles %}
+    {% endblock styles %}
 </head>
 
 <body>

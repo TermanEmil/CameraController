@@ -1,38 +1,19 @@
 {% extends "./base.html" %}
 
+{%load static from staticfiles %}
+
 {% block styles %}
-    .img_preview {
-        border: 1px solid #000;
-
-        width: 100%;
-        height: auto;
-    }
-
-    .center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-
-    .preview_container {
-        width: 512px;
-        height: 512px;
-        background-color: #000;
-        position: relative;
-    }
+    <link rel="stylesheet" href="{% static 'remote_camera/css/camera_preview.css' %}" />
 {% endblock styles %}
 
 {% block content %}
-    <div class="preview_container">
-        <img class="img_preview center" src="{% url 'live_preview_source' camera_port %}">
-    </div>
+    <center>
+        <div class="preview_container">
+            <img class="img_preview center" src="{% url 'live_preview_source' camera_port %}">
+        </div>
+    </center>
 
-    <form action="{% url 'live_preview' camera_port %}" method="post">
-        <label for="preview_quality">Preview quality: </label>
-        <input id="preview_quality" type="range" min="1" max="100">
-        <input type="submit" value="Change">
-    </form>
+    <br/>
+
+    {% include "./preview_form.html" %}
 {% endblock content %}
