@@ -1,7 +1,7 @@
 import gphoto2 as gp
 import atexit
 from threading import Thread
-from CameraWrapper import CameraWrapper
+from .CameraWrapper import CameraWrapper
 
 
 class CameraManager:
@@ -65,5 +65,13 @@ class CameraManager:
         for task in img_capture_tasks:
             task.join()
 
+    def get_camera_on_port(self, port):
+        for camera in self.cameras:
+            assert isinstance(camera, CameraWrapper)
+
+            if camera.port == port:
+                return camera
+
+        return None
 
 

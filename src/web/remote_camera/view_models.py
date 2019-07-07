@@ -1,4 +1,4 @@
-from CameraWrapper import CameraWrapper
+from business.CameraWrapper import CameraWrapper
 
 
 class CameraViewModel:

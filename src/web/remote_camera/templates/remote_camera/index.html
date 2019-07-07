@@ -5,7 +5,8 @@
         <p>No cameras detected</p>
     {% else %}
         {% for camera in cameras %}
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <a href="{% url 'live_preview' camera.port %}"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <div class="text-primary">{{ camera.name }}</div>
                 <div class="text-secondary">{{ camera.summary }}</div>
                 <span class="badge badge-secondary badge-pill">{{ camera.port }}</span>

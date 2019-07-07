@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('live_preview', views.live_preview, name='live_preview'),
-    path('give_me_da_preview', views.give_me_da_preview, name='give_me_da_preview'),
+    path('live_preview_source/<str:camera_port>', views.live_preview_source, name='live_preview_source'),
+    path('live_preview/<str:camera_port>', views.live_preview, name='live_preview'),
 ]

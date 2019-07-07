@@ -2,7 +2,7 @@ import os
 import gphoto2 as gp
 import threading
 
-from utils.async_print import async_print
+from .utils.async_print import async_print
 
 
 class CameraWrapper:
