@@ -7,4 +7,5 @@ def search_for_cameras(request):
     camera_manager.disconnect_all_cameras()
     camera_manager.autodetect_all_cameras()
 
+    # Redirect to previous page or smth.
     return HttpResponseRedirect(request.POST.get('next', '/'))

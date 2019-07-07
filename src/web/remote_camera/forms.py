@@ -6,7 +6,6 @@ from .ids import *
 class PreviewForm(forms.Form):
     preview_quality = forms.IntegerField(
         label='Preview quality',
-
         validators=[MinValueValidator(1), MaxValueValidator(100)])
 
     def get_preview_quality(self):

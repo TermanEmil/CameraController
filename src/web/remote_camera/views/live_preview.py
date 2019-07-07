@@ -4,35 +4,33 @@ from django.shortcuts import render
 from .camera_not_found import camera_not_found
 from ..forms import PreviewForm
 from ..ids import *
+from ..utils.settings_manager import SettingsManager
 
 
 def live_preview(request, camera_port):
-    _parse_preview_form_post(request)
+    _parse_preview_form_post(request, camera_port)
 
     camera = CameraManager.instance().get_camera_on_port(camera_port)
     if camera is None:
-        return camera_not_found(camera_port)
+        return camera_not_found(request, camera_port)
 
     context = {
-        'camera_port': camera_port,
-        'form': _load_preview_form(request)
+        'camera_port': camera.port,
+        'form': _load_preview_form(request, camera)
     }
 
     return render(request, 'remote_camera/live_preview.html', context)
 
 
 def multi_live_preview(request):
-    _parse_preview_form_post(request)
-
     context = {
         'camera_ports': [camera.port for camera in CameraManager.instance().cameras],
-        'form': _load_preview_form(request)
     }
 
     return render(request, 'remote_camera/multi_live_preview.html', context)
 
 
-def _parse_preview_form_post(request):
+def _parse_preview_form_post(request, camera_port):
     if request.method != 'POST':
         return
 
@@ -40,8 +38,18 @@ def _parse_preview_form_post(request):
     if not form.is_valid():
         return
 
-    request.session[c_preview_quality_id] = form.get_preview_quality()
+    camera = CameraManager.instance().get_camera_on_port(camera_port)
+    if camera is None:
+        return
+
+    settings_manager = SettingsManager(request.session)
+    camera_settings = settings_manager.get_settings(camera)
+
+    camera_settings.quality = form.get_preview_quality()
+    settings_manager.set_settings(camera, camera_settings)
 
 
-def _load_preview_form(request):
-    return PreviewForm(initial={c_preview_quality_id: request.session.get(c_preview_quality_id, 1)})
+def _load_preview_form(request, camera):
+    settings_manager = SettingsManager(request.session)
+    camera_settings = settings_manager.get_settings(camera)
+    return PreviewForm(initial={c_preview_quality_id: camera_settings.quality})

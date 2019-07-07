@@ -73,5 +73,3 @@ class CameraManager:
                 return camera
 
         return None
-
-

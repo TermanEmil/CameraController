@@ -8,17 +8,20 @@ from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 
 from .camera_not_found import camera_not_found
-from ..ids import c_preview_quality_id
+from ..utils.settings_manager import SettingsManager
 
 
 @gzip.gzip_page
 def live_preview_source(request, camera_port):
     camera = CameraManager.instance().get_camera_on_port(camera_port)
     if camera is None:
-        return camera_not_found(camera_port)
+        return camera_not_found(request, camera_port)
+
+    camera_settings = SettingsManager(request.session).get_settings(camera)
+    quality = camera_settings.quality
 
     return StreamingHttpResponse(
-        _live_preview_frame_generator(camera, request.session[c_preview_quality_id]),
+        _live_preview_frame_generator(camera, quality),
         content_type="multipart/x-mixed-replace;boundary=frame")
 
 
