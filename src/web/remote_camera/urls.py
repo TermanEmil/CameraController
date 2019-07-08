@@ -9,5 +9,7 @@ urlpatterns = [
     path('live_preview/<str:camera_port>', live_preview.live_preview, name='live_preview'),
     path('multi_live_preview/', live_preview.multi_live_preview, name='multi_live_preview'),
     path('search_for_cameras/', search_for_cameras.search_for_cameras, name='search_for_cameras'),
+
     path('camera_config/<str:camera_port>', camera_config.camera_config, name='camera_config'),
+    path('camera_config/<str:camera_port>/<str:config_path>', camera_config.camera_config, name='camera_config'),
 ]

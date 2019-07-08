@@ -65,14 +65,15 @@ class CameraWrapper:
         return data
 
     def get_config(self):
-        camera_configs = gp.check_result(gp.gp_camera_get_config(self.gp_camera))
-        child_count = gp.check_result(gp.gp_widget_count_children(camera_configs))
+        with self._gp_sync:
+            camera_configs = self.gp_camera.get_config()
 
-        if child_count < 1:
-            raise Exception('Failed to extract the configs')
+            if camera_configs.count_children() < 1:
+                raise Exception('Failed to extract the configs')
 
-        children = gp.check_result(gp.gp_widget_get_children(camera_configs))
-        return [CameraConfig(child) for child in children]
+            children = camera_configs.get_children()
+
+        return [CameraConfig(child, self._gp_sync) for child in children]
 
     def disconnect(self):
         with self._gp_sync:
@@ -96,32 +97,32 @@ class CameraConfig:
         self._config = config
         self._gp_sync = gp_sync
 
-        assert gp.check_result(gp.gp_widget_count_children(config)) == 0
-
-        label = gp.check_result(gp.gp_widget_get_label(config))
-        name = gp.check_result(gp.gp_widget_get_name(config))
-
-        config_type = gp.check_result(gp.gp_widget_get_type(config))
-        config_type = CameraConfigType(config_type)
-
-        is_readonly = gp.check_result(gp.gp_widget_get_readonly(config))
-
-        self.name = name
-        self.label = label
-        self.config_type = config_type
-        self.is_readonly = is_readonly
-
-    def get_choices(self):
         with self._gp_sync:
-            return gp.check_result(gp.gp_widget_get_choices(self._config))
+            self.label = config.get_label()
+            self.name = config.get_name()
+            self.config_type = CameraConfigType(config.get_type())
+            self.is_readonly = (config.get_readonly() != 0)
+            self.value = self._get_value()
 
-    def get_value(self):
+        self.child_configs = self._get_child_configs()
+
+    def _get_value(self):
+        if self.config_type != CameraConfigType.SECTION:
+            return self._config.get_value()
+        else:
+            return None
+
+    def _get_child_configs(self):
+        if self.config_type != CameraConfigType.SECTION:
+            return None
+
         with self._gp_sync:
-            value = gp.check_result(gp.gp_widget_get_value(self._config))
-            return value.decode('utf-8')
+            if self._config.count_children() < 1:
+                return None
 
-    def set_value(self, value):
-        pass
+            children = self._config.get_children()
+
+        return [CameraConfig(child, self._gp_sync) for child in children]
 
 
 class CameraConfigType(Enum):

@@ -1,0 +1,36 @@
+{% extends "./base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    {% if config_sections|length == 0 %}
+        <div class="text-primary">No settings detected</div>
+    {% else %}
+        <div id="accordion">
+        {% for section in config_sections %}
+            {% with i=forloop.counter|stringformat:'s' %}
+            {% with "collapse_"|add:i as card_id  %}
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#{{ card_id }}">
+                        <div class="text-primary">
+                            {{ section.label }} <div class="text-secondary d-inline">({{ section.name }})</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div id="{{ card_id }}" class="collapse">
+                    <div class="card-body">
+                        {% with section.elements as elements %}
+                            {% include "./camera_config_element.html" %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+
+            {% endwith %}
+            {% endwith %}
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock content %}
