@@ -2,6 +2,7 @@ import os
 import gphoto2 as gp
 import threading
 import re
+from enum import Enum
 
 from .utils.async_print import async_print
 
@@ -63,6 +64,16 @@ class CameraWrapper:
 
         return data
 
+    def get_config(self):
+        camera_configs = gp.check_result(gp.gp_camera_get_config(self.gp_camera))
+        child_count = gp.check_result(gp.gp_widget_count_children(camera_configs))
+
+        if child_count < 1:
+            raise Exception('Failed to extract the configs')
+
+        children = gp.check_result(gp.gp_widget_get_children(camera_configs))
+        return [CameraConfig(child) for child in children]
+
     def disconnect(self):
         with self._gp_sync:
             self.gp_camera.exit()
@@ -78,3 +89,46 @@ class CameraWrapper:
         # Without the dot
         file_extension = file_extension[1:]
         return '{0}-{1}.{2}'.format(self.name, img_index, file_extension)
+
+
+class CameraConfig:
+    def __init__(self, config, gp_sync):
+        self._config = config
+        self._gp_sync = gp_sync
+
+        assert gp.check_result(gp.gp_widget_count_children(config)) == 0
+
+        label = gp.check_result(gp.gp_widget_get_label(config))
+        name = gp.check_result(gp.gp_widget_get_name(config))
+
+        config_type = gp.check_result(gp.gp_widget_get_type(config))
+        config_type = CameraConfigType(config_type)
+
+        is_readonly = gp.check_result(gp.gp_widget_get_readonly(config))
+
+        self.name = name
+        self.label = label
+        self.config_type = config_type
+        self.is_readonly = is_readonly
+
+    def get_choices(self):
+        with self._gp_sync:
+            return gp.check_result(gp.gp_widget_get_choices(self._config))
+
+    def get_value(self):
+        with self._gp_sync:
+            value = gp.check_result(gp.gp_widget_get_value(self._config))
+            return value.decode('utf-8')
+
+    def set_value(self, value):
+        pass
+
+
+class CameraConfigType(Enum):
+    SECTION = gp.GP_WIDGET_SECTION
+    TEXT = gp.GP_WIDGET_TEXT
+    RANGE = gp.GP_WIDGET_RANGE
+    TOGGLE = gp.GP_WIDGET_TOGGLE
+    RADIO = gp.GP_WIDGET_RADIO
+    MENU = gp.GP_WIDGET_MENU
+    DATE = gp.GP_WIDGET_DATE
