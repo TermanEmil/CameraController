@@ -1,4 +1,5 @@
 from business.CameraWrapper import CameraWrapper, CameraConfig
+from ..forms import CameraConfigSectionForm
 
 
 class CameraViewModel:
@@ -10,7 +11,7 @@ class CameraViewModel:
         self.summary = camera.serial_nb
 
 
-class CameraConfigSection:
+class CameraConfigSectionViewModel:
     def __init__(self, config):
         assert isinstance(config, CameraConfig)
 
@@ -18,7 +19,7 @@ class CameraConfigSection:
         self.label = config.label
         self.is_readonly = config.is_readonly
 
-        self.elements = [CameraConfigElement(element) for element in config.child_configs]
+        self.form = CameraConfigSectionForm(config)
 
 
 class CameraConfigElement:

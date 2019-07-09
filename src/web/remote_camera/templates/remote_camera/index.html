@@ -6,7 +6,7 @@
         <div class="text-primary">No cameras detected</div>
     {% else %}
         {% for camera in cameras %}
-            <a href="{% url 'live_preview' camera.port %}"
+            <a href="{% url 'camera_config' camera.port %}"
                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <div class="text-primary">{{ camera.name }}</div>
                 <div class="text-secondary">Serial nb: {{ camera.summary }}</div>

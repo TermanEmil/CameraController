@@ -21,12 +21,8 @@
 
                 <div id="{{ card_id }}" class="collapse">
                     <div class="card-body">
-                        {% with section.elements as elements %}
-                        {% with i as parent_id %}
-
-                            {% include "./camera_config_element.html" %}
-
-                        {% endwith %}
+                        {% with section.form as form %}
+                            {% include './camera_config_section_form.html' %}
                         {% endwith %}
                     </div>
                 </div>
