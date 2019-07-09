@@ -5,8 +5,8 @@
   {% with field=fields_dict|get_dict_item:key %}
 
     <div class="form-group row">
-      <label class="col-sm-4 col-form-label" for="{{ field.auto_id }}">
-        <div class="text-info"> {{ field.label_tag }}
+      <label class="col-sm-4 col-form-label text-right" for="{{ field.auto_id }}">
+        <div class="text-info">{{ field.label_tag }}
           <div class="text-secondary small">{{ field.help_text }}</div>
         </div>
       </label>

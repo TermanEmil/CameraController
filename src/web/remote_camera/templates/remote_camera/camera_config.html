@@ -2,57 +2,80 @@
 {% load widget_tweaks %}
 
 {% block content %}
+  {% if config.sections|length == 0 %}
+    <div class="text-primary">No settings detected</div>
+  {% else %}
 
-{% if config.sections|length == 0 %}
-  <div class="text-primary">No settings detected</div>
-{% else %}
-<form action="#" method="post" xmlns="http://www.w3.org/1999/html">
-  {% csrf_token %}
+  <hr />
+  <button class="btn btn-light openall">Open all</button>
+  <button class="btn btn-light closeall">Close all</button>
+	<hr />
 
-  {% for hidden_field in form.hidden_fields %}
-  {{ hidden_field }}
-  {% endfor %}
+  <form action="{% url 'camera_config' camera_port %}" method="post">
+    {% csrf_token %}
 
-  {% if form.non_field_errors %}
-  <div class="alert alert-danger" role="alert">
-    {% for error in form.non_field_errors %}
-    {{ error }}
+    {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
     {% endfor %}
-  </div>
-  {% endif %}
 
-  <div id="sections-accordion">
-    {% for section in config.sections %}
-      {% with i=forloop.counter|stringformat:'s' %}
-      {% with "collapse_"|add:i as card_id %}
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+      {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
 
-      <div class="card">
-        <div class="card-header">
-          <a class="card-link" data-toggle="collapse" href="#{{ card_id }}">
-            <div class="text-primary">
-              {{ section.label }}
-              <div class="text-secondary d-inline">({{ section.name }})</div>
+    <div id="sections-accordion">
+      {% for section in config.sections %}
+        {% with i=forloop.counter|stringformat:'s' %}
+        {% with "collapse_"|add:i as card_id %}
+
+        <div class="card">
+          <div class="card-header">
+            <a class="card-link" data-toggle="collapse" href="#{{ card_id }}">
+              <div class="text-primary">
+                {{ section.label }}
+                <div class="text-secondary d-inline">({{ section.name }})</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="collapse panel-collapse" id="{{ card_id }}">
+            <div class="card-body">
+              {% with section.form_fields as form_fields %}
+                {% include "./camera_config_section_form_fields.html" %}
+              {% endwith %}
             </div>
-          </a>
-        </div>
-
-        <div class="collapse" id="{{ card_id }}">
-          <div class="card-body">
-            {% with section.form_fields as form_fields %}
-              {% include "./camera_config_section_form_fields.html" %}
-            {% endwith %}
           </div>
         </div>
-      </div>
 
-      {% endwith %}
-      {% endwith %}
-    {% endfor %}
-  </div>
+        {% endwith %}
+        {% endwith %}
+      {% endfor %}
+    </div>
 
-  <br />
-  <button class="btn btn-primary" type="submit">Submit</button>
-</form>
-{% endif %}
+    <br />
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+  {% endif %}
 
+  <footer class="footer sticky-bottom">
+    <hr />
+    <div class="text-secondary small">To search: Open all -> Ctrl-F</div>
+  </footer>
 {% endblock content %}
+
+{% block scripts %}
+  <script>
+    $('.closeall').click(function() {
+      $('.panel-collapse.show')
+        .collapse('hide');
+    });
+
+    $('.openall').click(function(){
+      $('.panel-collapse:not(".in")')
+        .collapse('show');
+    });
+  </script>
+{% endblock scripts %}

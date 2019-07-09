@@ -61,7 +61,7 @@ class CameraConfigForm(forms.Form):
                 )
 
             elif config.config_type == CameraConfigType.RANGE:
-                fields[field_name] = forms.IntegerField(
+                fields[field_name] = forms.FloatField(
                     label=config.label,
                     initial=config.value,
                     disabled=config.is_readonly,

@@ -22,6 +22,7 @@ def camera_config(request, camera_port):
         fields_dict[field.name] = field
 
     context = {
+        'camera_port': camera_port,
         'config': config_view_model,
         'form': config_form,
         'fields_dict': fields_dict
