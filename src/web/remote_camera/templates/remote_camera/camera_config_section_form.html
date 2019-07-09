@@ -3,20 +3,20 @@
   {% csrf_token %}
 
   {% for hidden_field in form.hidden_fields %}
-    {{ hidden_field }}
+  {{ hidden_field }}
   {% endfor %}
 
   {% if form.non_field_errors %}
-    <div class="alert alert-danger" role="alert">
-      {% for error in form.non_field_errors %}
-        {{ error }}
-      {% endfor %}
-    </div>
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+    {{ error }}
+    {% endfor %}
+  </div>
   {% endif %}
 
   {% for field in form.visible_fields %}
     <div class="form-group row">
-      <label for="{{ field.auto_id }}" class="col-sm-4 col-form-label">
+      <label class="col-sm-4 col-form-label" for="{{ field.auto_id }}">
         <div class="text-info"> {{ field.label_tag }}
           <div class="text-secondary small">{{ field.help_text }}</div>
         </div>
@@ -24,17 +24,17 @@
 
       <!-- error/validation rendering -->
       {% if field.errors %}
-        {% render_field field class="form-control is-invalid" %}
-        {% for error in field.errors %}
-          <div class="invalid-feedback">{{ error }}</div>
-        {% endfor %}
+      {% render_field field class="form-control is-invalid" %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
       {% endif %}
 
       <div class="col-sm-8">
         {% render_field field class="form-control" %}
       </div>
     </div>
-    <br />
+    <br/>
   {% endfor %}
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button class="btn btn-primary" type="submit">Submit</button>
 </form>

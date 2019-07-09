@@ -104,6 +104,9 @@ class CameraConfig:
             self.is_readonly = (config.get_readonly() != 0)
             self.value = self._get_value()
 
+            self.choices = self._get_choices()
+            a = 1
+
         self.child_configs = self._get_child_configs()
 
     def _get_value(self):
@@ -116,13 +119,22 @@ class CameraConfig:
         if self.config_type != CameraConfigType.SECTION:
             return None
 
-        with self._gp_sync:
-            if self._config.count_children() < 1:
-                return None
+        if self._config.count_children() < 1:
+            return None
 
-            children = self._config.get_children()
+        return [CameraConfig(child, self._gp_sync) for child in self._config.get_children()]
 
-        return [CameraConfig(child, self._gp_sync) for child in children]
+    def _get_choices(self):
+        if not self.config_type == CameraConfigType.RADIO and not self.config_type == CameraConfigType.MENU:
+            return None
+
+        choices = []
+        for choice in self._config.get_choices():
+            if not choice:
+                continue
+
+            choices.append(str(choice))
+        return choices
 
 
 class CameraConfigType(Enum):

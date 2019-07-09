@@ -13,25 +13,39 @@ class PreviewForm(forms.Form):
         return self.cleaned_data[c_preview_quality_id]
 
 
-class CameraConfigSectionForm(forms.Form):
-    def __init__(self, section_config):
+class CameraConfigForm(forms.Form):
+    def __init__(self, fields):
         super().__init__()
+        for key, field in fields.items():
+            self.fields[key] = field
+
+    @staticmethod
+    def extract_fields_for_camera_config_section(section_config):
         assert isinstance(section_config, CameraConfig)
 
-        self.prefix = section_config.name
-
         if section_config.child_configs is None:
-            return
+            return []
 
+        fields = {}
         for config in section_config.child_configs:
             assert isinstance(config, CameraConfig)
+            field_name = '{0}/{1}'.format(section_config.name, config.name)
 
             if config.config_type == CameraConfigType.TEXT:
-                self.fields[config.name] = forms.CharField(
+                fields[field_name] = forms.CharField(
                     label=config.label,
                     initial=config.value,
                     disabled=config.is_readonly,
+                    help_text=field_name,
                     max_length=256,
-                    help_text=config.name
+                )
+            elif config.config_type == CameraConfigType.MENU or config.config_type == CameraConfigType.RADIO:
+                fields[field_name] = forms.ChoiceField(
+                    label=config.label,
+                    initial=config.value,
+                    disabled=config.is_readonly,
+                    help_text=field_name,
+                    choices=((choice, choice) for choice in config.choices)
                 )
 
+        return fields

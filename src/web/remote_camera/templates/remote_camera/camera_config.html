@@ -2,35 +2,57 @@
 {% load widget_tweaks %}
 
 {% block content %}
-    {% if config_sections|length == 0 %}
-        <div class="text-primary">No settings detected</div>
-    {% else %}
-        <div id="sections-accordion">
-        {% for section in config_sections %}
-            {% with i=forloop.counter|stringformat:'s' %}
-            {% with "collapse_"|add:i as card_id  %}
 
-            <div class="card">
-                <div class="card-header">
-                    <a class="card-link" data-toggle="collapse" href="#{{ card_id }}">
-                        <div class="text-primary">
-                            {{ section.label }} <div class="text-secondary d-inline">({{ section.name }})</div>
-                        </div>
-                    </a>
-                </div>
+{% if config.sections|length == 0 %}
+  <div class="text-primary">No settings detected</div>
+{% else %}
+<form action="#" method="post" xmlns="http://www.w3.org/1999/html">
+  {% csrf_token %}
 
-                <div id="{{ card_id }}" class="collapse">
-                    <div class="card-body">
-                        {% with section.form as form %}
-                            {% include './camera_config_section_form.html' %}
-                        {% endwith %}
-                    </div>
-                </div>
+  {% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+    {{ error }}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div id="sections-accordion">
+    {% for section in config.sections %}
+      {% with i=forloop.counter|stringformat:'s' %}
+      {% with "collapse_"|add:i as card_id %}
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" href="#{{ card_id }}">
+            <div class="text-primary">
+              {{ section.label }}
+              <div class="text-secondary d-inline">({{ section.name }})</div>
             </div>
-
-            {% endwith %}
-            {% endwith %}
-        {% endfor %}
+          </a>
         </div>
-    {% endif %}
+
+        <div class="collapse" id="{{ card_id }}">
+          <div class="card-body">
+            {% with section.form_fields as form_fields %}
+              {% include "./camera_config_section_form_fields.html" %}
+            {% endwith %}
+          </div>
+        </div>
+      </div>
+
+      {% endwith %}
+      {% endwith %}
+    {% endfor %}
+  </div>
+
+  <br />
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+{% endif %}
+
 {% endblock content %}
