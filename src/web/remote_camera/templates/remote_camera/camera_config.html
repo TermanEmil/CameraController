@@ -5,7 +5,7 @@
     {% if config_sections|length == 0 %}
         <div class="text-primary">No settings detected</div>
     {% else %}
-        <div id="accordion">
+        <div id="sections-accordion">
         {% for section in config_sections %}
             {% with i=forloop.counter|stringformat:'s' %}
             {% with "collapse_"|add:i as card_id  %}
@@ -22,7 +22,11 @@
                 <div id="{{ card_id }}" class="collapse">
                     <div class="card-body">
                         {% with section.elements as elements %}
+                        {% with i as parent_id %}
+
                             {% include "./camera_config_element.html" %}
+
+                        {% endwith %}
                         {% endwith %}
                     </div>
                 </div>

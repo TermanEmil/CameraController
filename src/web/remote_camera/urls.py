@@ -11,5 +11,4 @@ urlpatterns = [
     path('search_for_cameras/', search_for_cameras.search_for_cameras, name='search_for_cameras'),
 
     path('camera_config/<str:camera_port>', camera_config.camera_config, name='camera_config'),
-    path('camera_config/<str:camera_port>/<str:config_path>', camera_config.camera_config, name='camera_config'),
 ]

@@ -7,7 +7,7 @@ from .view_models import CameraViewModel, CameraConfigSection
 from .camera_not_found import camera_not_found
 
 
-def camera_config(request, camera_port, config_path=None):
+def camera_config(request, camera_port):
     camera = CameraManager.instance().get_camera_on_port(camera_port)
     if camera is None:
         return camera_not_found(request, camera_port)
