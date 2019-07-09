@@ -37,15 +37,47 @@ class CameraConfigForm(forms.Form):
                     initial=config.value,
                     disabled=config.is_readonly,
                     help_text=field_name,
+                    required=False,
                     max_length=256,
                 )
+
             elif config.config_type == CameraConfigType.MENU or config.config_type == CameraConfigType.RADIO:
                 fields[field_name] = forms.ChoiceField(
                     label=config.label,
                     initial=config.value,
                     disabled=config.is_readonly,
                     help_text=field_name,
+                    required=False,
                     choices=((choice, choice) for choice in config.choices)
+                )
+
+            elif config.config_type == CameraConfigType.TOGGLE:
+                fields[field_name] = forms.BooleanField(
+                    label=config.label,
+                    initial=(config.value != 0),
+                    disabled=config.is_readonly,
+                    help_text=field_name,
+                    required=False,
+                )
+
+            elif config.config_type == CameraConfigType.RANGE:
+                fields[field_name] = forms.IntegerField(
+                    label=config.label,
+                    initial=config.value,
+                    disabled=config.is_readonly,
+                    help_text='{0}: [{1}, {2}]'.format(field_name, config.range_min, config.range_max),
+                    required=False,
+                    min_value=config.range_min,
+                    max_value=config.range_max,
+                )
+
+            elif config.config_type == CameraConfigType.DATE:
+                fields[field_name] = forms.IntegerField(
+                    label=config.label,
+                    initial=config.value,
+                    disabled=config.is_readonly,
+                    help_text=field_name,
+                    required=False,
                 )
 
         return fields
