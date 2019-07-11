@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-  {% if config.sections|length == 0 %}
+  {% if form.sections|length == 0 %}
     <div class="text-primary">No settings detected</div>
   {% else %}
 
@@ -27,31 +27,25 @@
     {% endif %}
 
     <div id="sections-accordion">
-      {% for section in config.sections %}
-        {% with i=forloop.counter|stringformat:'s' %}
-        {% with "collapse_"|add:i as card_id %}
+      {% for section in form.sections %}
 
         <div class="card">
           <div class="card-header">
-            <a class="card-link" data-toggle="collapse" href="#{{ card_id }}">
-              <div class="text-primary">
-                {{ section.label }}
-                <div class="text-secondary d-inline">({{ section.name }})</div>
-              </div>
+            <a class="card-link d-flex justify-content-between" data-toggle="collapse" href="#{{ section.name }}">
+              <div class="text-primary">{{ section.label }}</div>
+              <div class="text-secondary d-inline small">{{ section.name }}</div>
             </a>
           </div>
 
-          <div class="collapse panel-collapse" id="{{ card_id }}">
+          <div class="collapse panel-collapse" id="{{ section.name }}">
             <div class="card-body">
-              {% with section.form_fields as form_fields %}
+              {% with section.visible_fields as fields %}
                 {% include "./camera_config_section_form_fields.html" %}
               {% endwith %}
             </div>
           </div>
         </div>
 
-        {% endwith %}
-        {% endwith %}
       {% endfor %}
     </div>
 

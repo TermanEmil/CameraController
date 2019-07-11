@@ -1,8 +1,7 @@
 {% load widget_tweaks %}
 {% load dict_utils %}
 
-{% for key, _ in form_fields.items %}
-  {% with field=fields_dict|get_dict_item:key %}
+{% for field in fields %}
 
     <div class="form-group row">
       <label class="col-sm-4 col-form-label text-right" for="{{ field.auto_id }}">
@@ -24,5 +23,5 @@
         {% render_field field class="form-control" %}
       </div>
     </div>
-  {% endwith %}
+
 {% endfor %}

@@ -1,10 +1,9 @@
 from business.CameraManager import CameraManager
-from business.CameraWrapper import CameraWrapper
+from business.CameraWrapper import CameraWrapper, CameraConfig
 from django.shortcuts import render
-from ..forms import CameraConfigForm
 
 from .camera_not_found import camera_not_found
-from .view_models import CameraConfigViewModel
+from ..forms import CameraConfigForm
 
 
 def camera_config(request, camera_port):
@@ -14,18 +13,38 @@ def camera_config(request, camera_port):
 
     assert isinstance(camera, CameraWrapper)
 
-    config_view_model = CameraConfigViewModel(camera.get_config())
-    config_form = CameraConfigForm(config_view_model.form_fields)
-
-    fields_dict = {}
-    for field in config_form.visible_fields():
-        fields_dict[field.name] = field
-
+    config = camera.get_config()
+    config_form = CameraConfigForm(config)
     context = {
         'camera_port': camera_port,
-        'config': config_view_model,
         'form': config_form,
-        'fields_dict': fields_dict
     }
 
     return render(request, 'remote_camera/camera_config.html', context)
+
+
+def apply_config_changes(camera, camera_configs, values):
+    assert isinstance(camera, CameraWrapper)
+
+    config_changed = False
+    for section in camera_configs:
+        assert isinstance(section, CameraConfig)
+
+        for config in section.child_configs:
+            assert isinstance(section, CameraConfig)
+
+            field_name = '{0}/{1}'.format(section.name, config.name)
+            if field_name not in values:
+                continue
+
+            value = values[field_name]
+
+            if config.value != value:
+                config.set_value(value)
+                config_changed = True
+
+    if not config_changed:
+        return
+
+
+

@@ -1,7 +1,9 @@
+import logging
+from business.camera_config import CameraConfig, CameraConfigField, CameraConfigType, CameraConfigSection
 from django import forms
-from django.core.validators import MaxValueValidator, MinValueValidator, MaxLengthValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 from .ids import *
-from business.CameraWrapper import CameraConfig, CameraConfigType
 
 
 class PreviewForm(forms.Form):
@@ -14,70 +16,113 @@ class PreviewForm(forms.Form):
 
 
 class CameraConfigForm(forms.Form):
-    def __init__(self, fields):
-        super().__init__()
-        for key, field in fields.items():
-            self.fields[key] = field
+    def __init__(self, camera_config, *args, **kwargs):
+        super(CameraConfigForm, self).__init__(*args, **kwargs)
+        assert isinstance(camera_config, CameraConfig)
 
-    @staticmethod
-    def extract_fields_for_camera_config_section(section_config):
-        assert isinstance(section_config, CameraConfig)
+        self.sections = []
+        for section in camera_config.sections:
+            section_form = CameraConfigSectionForm(section)
+            self.fields.update(section_form.fields)
+            self.sections.append(section_form)
 
-        if section_config.child_configs is None:
-            return []
+        # Apparently, I can only render fields from visible_fields.
+        visible_fields_dict = dict((field.name, field) for field in self.visible_fields())
+        for section in self.sections:
+            assert isinstance(section, CameraConfigSectionForm)
+            section.set_visible_fields(visible_fields_dict)
 
-        fields = {}
-        for config in section_config.child_configs:
-            assert isinstance(config, CameraConfig)
-            field_name = '{0}/{1}'.format(section_config.name, config.name)
 
-            if config.config_type == CameraConfigType.TEXT:
-                fields[field_name] = forms.CharField(
-                    label=config.label,
-                    initial=config.value,
-                    disabled=config.is_readonly,
-                    help_text=field_name,
-                    required=False,
-                    max_length=256,
-                )
+class CameraConfigSectionForm:
+    def __init__(self, section):
+        assert isinstance(section, CameraConfigSection)
 
-            elif config.config_type == CameraConfigType.MENU or config.config_type == CameraConfigType.RADIO:
-                fields[field_name] = forms.ChoiceField(
-                    label=config.label,
-                    initial=config.value,
-                    disabled=config.is_readonly,
-                    help_text=field_name,
-                    required=False,
-                    choices=((choice, choice) for choice in config.choices)
-                )
+        self.fields = dict(_config_section_to_django_form(section))
+        self.label = section.label
+        self.name = section.name
+        self.is_readonly = section.is_readonly
+        self.visible_fields = []
 
-            elif config.config_type == CameraConfigType.TOGGLE:
-                fields[field_name] = forms.BooleanField(
-                    label=config.label,
-                    initial=(config.value != 0),
-                    disabled=config.is_readonly,
-                    help_text=field_name,
-                    required=False,
-                )
+    def set_visible_fields(self, visible_fields):
+        for key, _ in self.fields.items():
+            self.visible_fields.append(visible_fields[key])
 
-            elif config.config_type == CameraConfigType.RANGE:
-                fields[field_name] = forms.FloatField(
-                    label=config.label,
-                    initial=config.value,
-                    disabled=config.is_readonly,
-                    help_text='{0}: [{1}, {2}]'.format(field_name, config.range_min, config.range_max),
-                    required=False,
-                    min_value=config.range_min,
-                    max_value=config.range_max,
-                )
+        self.visible_fields.sort(key=lambda x: x.name)
 
-            elif config.config_type == CameraConfigType.DATE:
-                fields[field_name] = forms.IntegerField(
-                    label=config.label,
-                    initial=config.value,
-                    disabled=config.is_readonly,
-                    help_text=field_name,
-                    required=False,
-                )
 
-        return fields
+def _config_section_to_django_form(section):
+    assert isinstance(section, CameraConfigSection)
+
+    for field in section.fields:
+        assert isinstance(field, CameraConfigField)
+
+        form_field = _field_config_to_django_form_field(field)
+        if form_field is None:
+            logging.warning('Failed to create form field for: {0}'.format(field.get_key()))
+            continue
+
+        yield (field.get_key(), form_field)
+
+
+def _field_config_to_django_form_field(field_config):
+    assert isinstance(field_config, CameraConfigField)
+
+    config = field_config
+    default_help_text = '{0}/{1}'.format(config.parent_widget.name, config.name)
+
+    if config.config_type == CameraConfigType.TEXT:
+        return forms.CharField(
+            label=config.label,
+            initial=config.value,
+            disabled=config.is_readonly,
+            help_text=default_help_text,
+            required=False,
+            max_length=256,
+        )
+
+    if config.config_type == CameraConfigType.MENU or config.config_type == CameraConfigType.RADIO:
+        return forms.ChoiceField(
+            label=config.label,
+            initial=config.value,
+            disabled=config.is_readonly,
+            help_text=default_help_text,
+            required=False,
+            choices=((choice, choice) for choice in config.choices)
+        )
+
+    if config.config_type == CameraConfigType.TOGGLE:
+        return forms.BooleanField(
+            label=config.label,
+            initial=(config.value != 0),
+            disabled=config.is_readonly,
+            help_text=default_help_text,
+            required=False,
+        )
+
+    if config.config_type == CameraConfigType.DATE:
+        return forms.IntegerField(
+            label=config.label,
+            initial=config.value,
+            disabled=config.is_readonly,
+            help_text=default_help_text,
+            required=False,
+        )
+
+    if config.config_type == CameraConfigType.RANGE:
+        help_text = '{0}/{1}: [{2}, {3}]'.format(
+            config.parent_widget.name,
+            config.name,
+            config.range_min,
+            config.range_max)
+
+        return forms.FloatField(
+            label=config.label,
+            initial=config.value,
+            disabled=config.is_readonly,
+            help_text=help_text,
+            required=False,
+            min_value=config.range_min,
+            max_value=config.range_max,
+        )
+
+    return None
