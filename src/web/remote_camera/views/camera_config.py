@@ -14,7 +14,13 @@ def camera_config(request, camera_port):
     assert isinstance(camera, CameraWrapper)
 
     config = camera.get_config()
-    config_form = CameraConfigForm(config)
+    config_form = CameraConfigForm(config, request.POST or None)
+
+    if request.method == 'POST':
+        if config_form.is_valid():
+            print('qeqweqeq-------------------------------')
+            a = 1
+
     context = {
         'camera_port': camera_port,
         'form': config_form,

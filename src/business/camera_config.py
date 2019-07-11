@@ -55,12 +55,22 @@ class CameraConfigField(CameraConfigWidget):
         self._config = element_widget
 
         self.config_type = CameraConfigType(self._config.get_type())
-        self.value = self._config.get_value()
-        self.choices = self._get_choices()
         self.range_min, self.range_max, inc = self._get_range()
+        self.choices = self._get_choices()
+        self.value = self._config.get_value()
+
+        self._fix_choices()
 
     def get_key(self):
         return 'config/{0}/{1}'.format(self.parent_widget.name, self.name)
+
+    def _fix_choices(self):
+        if self.choices is None:
+            return
+
+        if self.value is None or self.value not in self.choices:
+            self.choices.append(str(self.value))
+            return
 
     def _get_choices(self):
         if self.config_type != CameraConfigType.RADIO and self.config_type != CameraConfigType.MENU:
