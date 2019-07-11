@@ -1,1 +1,4 @@
-python3 ./src/web/manage.py runserver 0.0.0.0:5000
+# Apply django migrations
+python ./src/web/manage.py migrate
+
+python ./src/web/manage.py runserver 0.0.0.0:5000

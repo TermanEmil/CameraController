@@ -1,4 +1,4 @@
-gphoto2
+gphoto2==2.0.0
 Django==2.2.3
 django-simple-cookie-consent==0.1.1
 django-bootstrap4==0.0.8

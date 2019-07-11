@@ -1,6 +1,3 @@
 # I'm install src to easily include the business
-pip3 install -r ./requirements.txt
-pip3 install -e ./src/
-
-# Apply django migrations
-python3 ./src/web/manage.py migrate
+pip install -r ./requirements.txt
+pip install -e ./src/

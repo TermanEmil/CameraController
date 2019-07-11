@@ -1,13 +1,14 @@
-version: '3.3'
+version: '3'
 services:
   web:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
+    command: sh run_server.sh
     ports:
       - "5000:5000"
     privileged: true
     volumes:
+      - ..:/app
       - /dev/bus/usb:/dev/bus/usb
       - /run/udev:/run/udev:ro
-      - ..:/app
