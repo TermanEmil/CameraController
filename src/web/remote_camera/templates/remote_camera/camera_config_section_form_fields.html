@@ -10,17 +10,17 @@
         </div>
       </label>
 
-      <!-- error/validation rendering -->
-      {% if field.errors %}
-        {% render_field field class="form-control is-invalid" %}
-
-        {% for error in field.errors %}
-          <div class="invalid-feedback">{{ error }}</div>
-        {% endfor %}
-      {% endif %}
-      
       <div class="col-sm-8">
-        {% render_field field class="form-control" %}
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+
+          {% for error in field.errors %}
+            <div class="invalid-feedback d-block">yo this is stupid</div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control" %}
+        {% endif %}
+
       </div>
     </div>
 
