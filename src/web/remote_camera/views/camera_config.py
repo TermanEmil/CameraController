@@ -1,9 +1,9 @@
-import time
+import logging
 
 from business.CameraManager import CameraManager
-from business.CameraWrapper import CameraWrapper, CameraConfig
+from business.CameraWrapper import CameraWrapper
 from django.shortcuts import render
-import logging
+
 from .camera_not_found import camera_not_found
 from ..forms import CameraConfigForm
 
@@ -23,15 +23,17 @@ def camera_config(request, camera_port):
         if not config_form.is_valid():
             logging.warning('Form contains errors')
         else:
-            # try:
-            config.set_values(config_form.cleaned_data)
-            camera.set_config(config)
-            # except Exception as e:
-            #     config_form.add_error(None, str(e))
+            changed_data_dict = ((key, config_form.cleaned_data[key])for key in config_form.changed_data)
+            camera.set_config(config, dict(changed_data_dict))
+
+            # Reload the config, because not all the fields can change.
+            config = camera.get_config()
+            config_form = CameraConfigForm(config)
 
     context = {
         'camera_port': camera_port,
-        'form': config_form,
+        'form': config_form
     }
 
     return render(request, 'remote_camera/camera_config.html', context)
+

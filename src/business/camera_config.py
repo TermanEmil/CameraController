@@ -1,7 +1,9 @@
 from enum import Enum
-import gphoto2 as gp
-from .utils.math_utils import clamp
 from textwrap import shorten
+
+import gphoto2 as gp
+
+from .utils.math_utils import clamp
 
 
 # Everything must be loaded from the start, because the widgets magically disappear from the memory.
@@ -30,28 +32,14 @@ class CameraConfig:
                 self.all_fields_dict.update(section.fields_dict)
 
     def set_values(self, values_dict):
-        i = 0
-        with self._gp_sync:
-            for key, value in values_dict.items():
-                if value is None:
-                    continue
+        for key, value in values_dict.items():
+            field = self.all_fields_dict.get(key)
+            if field is None:
+                continue
 
-                field = self.all_fields_dict.get(key)
-                if field is None:
-                    continue
-
-                assert isinstance(field, CameraConfigField)
-
-                value = field.parse_value(value)
-                if field.is_readonly or field.value == value:
-                    continue
-
-                if key == 'config/other/5011':
-                    continue
-
-                print("'{0}' -> '{1}' {2}".format(field.value, value, field.get_key()))
-                field.set_value(value)
-                self._camera.set_single_config(field.name, field._config)
+            assert isinstance(field, CameraConfigField)
+            with self._gp_sync:
+                field.set_value(self._camera, value)
 
 
 class CameraConfigWidget:
@@ -84,9 +72,9 @@ class CameraConfigField(CameraConfigWidget):
         super().__init__(element_widget)
 
         self.parent_widget = parent_widget
-        self._config = element_widget
+        self._field_config = element_widget
 
-        self.config_type = CameraConfigType(self._config.get_type())
+        self.config_type = CameraConfigType(self._field_config.get_type())
         self.range_min, self.range_max, inc = self._get_range()
         self.choices = self._get_choices()
         self.value = self._get_value()
@@ -100,18 +88,29 @@ class CameraConfigField(CameraConfigWidget):
     def get_key(self):
         return 'config/{0}/{1}'.format(self.parent_widget.name, self.name)
 
-    def set_value(self, value):
+    def set_value(self, camera, value):
+        if self.is_readonly:
+            return
+
+        value = self.parse_value(value)
+
+        if self.value == value:
+            return
+
         if self.is_multichoice() and value not in self.choices:
             raise Exception('Value is not in the choice list')
 
         if self.config_type == CameraConfigType.RANGE:
-            value = str(clamp(float(value), self.range_min, self.range_max))
+            value = clamp(value, self.range_min, self.range_max)
 
         if self.config_type == CameraConfigType.TEXT:
             value = shorten(value, 256)
 
+        print("{0}: '{1}' -> '{2}'".format(self.get_key(), self.value, value))
+
         self.value = value
-        self._config.set_value(value)
+        self._field_config.set_value(value)
+        camera.set_single_config(self.name, self._field_config)
 
     def is_multichoice(self):
         return self.config_type == CameraConfigType.RADIO or self.config_type == CameraConfigType.MENU
@@ -136,7 +135,7 @@ class CameraConfigField(CameraConfigWidget):
         return value
 
     def _get_value(self):
-        value = self._config.get_value()
+        value = self._field_config.get_value()
 
         if self.config_type == CameraConfigType.TEXT:
             if value is None:
@@ -158,7 +157,7 @@ class CameraConfigField(CameraConfigWidget):
             return None
 
         choices = []
-        for choice in self._config.get_choices():
+        for choice in self._field_config.get_choices():
             if not choice:
                 continue
 
@@ -169,7 +168,7 @@ class CameraConfigField(CameraConfigWidget):
         if self.config_type != CameraConfigType.RANGE:
             return None, None, None
 
-        return self._config.get_range()
+        return self._field_config.get_range()
 
 
 class CameraConfigType(Enum):

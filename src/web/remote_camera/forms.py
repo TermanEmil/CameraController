@@ -27,10 +27,10 @@ class CameraConfigForm(forms.Form):
             self.sections.append(section_form)
 
         # Apparently, I can only render fields from visible_fields.
-        visible_fields_dict = dict((field.name, field) for field in self.visible_fields())
+        self.visible_fields_dict = dict((field.name, field) for field in self.visible_fields())
         for section in self.sections:
             assert isinstance(section, CameraConfigSectionForm)
-            section.set_visible_fields(visible_fields_dict)
+            section.set_visible_fields(self.visible_fields_dict)
 
 
 class CameraConfigSectionForm:
@@ -78,6 +78,7 @@ def _field_config_to_django_form_field(field_config):
             help_text=default_help_text,
             required=False,
             max_length=256,
+            strip=False,
         )
 
     if config.config_type == CameraConfigType.MENU or config.config_type == CameraConfigType.RADIO:
