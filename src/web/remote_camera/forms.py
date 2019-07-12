@@ -53,15 +53,15 @@ class CameraConfigSectionForm:
 def _config_section_to_django_form(section):
     assert isinstance(section, CameraConfigSection)
 
-    for field in section.fields:
+    for key, field in section.fields_dict.items():
         assert isinstance(field, CameraConfigField)
 
         form_field = _field_config_to_django_form_field(field)
         if form_field is None:
-            logging.warning('Failed to create form field for: {0}'.format(field.get_key()))
+            logging.warning('Failed to create form field for: {0}'.format(key))
             continue
 
-        yield (field.get_key(), form_field)
+        yield (key, form_field)
 
 
 def _field_config_to_django_form_field(field_config):

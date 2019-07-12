@@ -1,7 +1,9 @@
+import time
+
 from business.CameraManager import CameraManager
 from business.CameraWrapper import CameraWrapper, CameraConfig
 from django.shortcuts import render
-
+import logging
 from .camera_not_found import camera_not_found
 from ..forms import CameraConfigForm
 
@@ -17,9 +19,15 @@ def camera_config(request, camera_port):
     config_form = CameraConfigForm(config, request.POST or None)
 
     if request.method == 'POST':
-        if config_form.is_valid():
-            print('qeqweqeq-------------------------------')
-            a = 1
+        config_form = CameraConfigForm(config, request.POST)
+        if not config_form.is_valid():
+            logging.warning('Form contains errors')
+        else:
+            # try:
+            config.set_values(config_form.cleaned_data)
+            camera.set_config(config)
+            # except Exception as e:
+            #     config_form.add_error(None, str(e))
 
     context = {
         'camera_port': camera_port,
@@ -27,30 +35,3 @@ def camera_config(request, camera_port):
     }
 
     return render(request, 'remote_camera/camera_config.html', context)
-
-
-def apply_config_changes(camera, camera_configs, values):
-    assert isinstance(camera, CameraWrapper)
-
-    config_changed = False
-    for section in camera_configs:
-        assert isinstance(section, CameraConfig)
-
-        for config in section.child_configs:
-            assert isinstance(section, CameraConfig)
-
-            field_name = '{0}/{1}'.format(section.name, config.name)
-            if field_name not in values:
-                continue
-
-            value = values[field_name]
-
-            if config.value != value:
-                config.set_value(value)
-                config_changed = True
-
-    if not config_changed:
-        return
-
-
-

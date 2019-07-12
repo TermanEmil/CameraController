@@ -59,12 +59,24 @@ class CameraWrapper:
     def get_config(self):
         return CameraConfig(self.gp_camera, self._gp_sync)
 
+    def set_config(self, config):
+        assert isinstance(config, CameraConfig)
+        # with self._gp_sync:
+        #     self.gp_camera.set_config(config.gp_config)
+
     def disconnect(self):
         # No need to connect (.init() or smth)
 
         with self._gp_sync:
             self.gp_camera.exit()
         self._log('Disconnected')
+
+    def clean(self):
+        with self._gp_sync:
+            typ, data = self.gp_camera.wait_for_event(200)
+            while typ != gp.GP_EVENT_TIMEOUT:
+                print('-------------------------------------------- {0}'.format(typ))
+                typ, data = self.gp_camera.wait_for_event(1)
 
     def _get_serial_number(self):
         with self._gp_sync:
