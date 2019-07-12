@@ -35,8 +35,7 @@ class CameraManager:
             idx = port_info_list.lookup_path(port)
             camera.set_port_info(port_info_list[idx])
 
-            cam_name = '{0}_{1}'.format(name, idx)
-            cam_wrapper = CameraWrapper(camera, camera_name=cam_name, port=port)
+            cam_wrapper = CameraWrapper(camera, camera_name=name, port=port)
 
             camera_wrappers.append(cam_wrapper)
 
