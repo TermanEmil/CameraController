@@ -1,15 +1,15 @@
 import logging
 
-from business.CameraManager import CameraManager
-from business.CameraWrapper import CameraWrapper
+from business.camera_wrapper import CameraWrapper
 from django.shortcuts import render
 
 from .camera_not_found import camera_not_found
 from ..forms import CameraConfigForm
+from ..factories import CameraManagerFactory
 
 
 def camera_config(request, camera_port):
-    camera = CameraManager.instance().get_camera_on_port(camera_port)
+    camera = CameraManagerFactory.get().get_camera_on_port(camera_port)
     if camera is None:
         return camera_not_found(request, camera_port)
 

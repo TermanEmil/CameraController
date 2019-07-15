@@ -2,7 +2,7 @@ import logging
 import time
 
 import schedules
-from CameraManager import CameraManager
+from camera_manager import CameraManager
 from ScheduleManager import ScheduleManager
 from utils.time_utils import now
 
@@ -18,7 +18,7 @@ def main():
     init_logger()
 
     camera_manager = CameraManager()
-    camera_manager.autodetect_all_cameras()
+    camera_manager.find_all_cameras()
 
     if len(camera_manager.cameras) == 0:
         print('No cameras detected')

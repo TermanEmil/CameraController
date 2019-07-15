@@ -1,26 +1,25 @@
 import gphoto2 as gp
 import atexit
 from threading import Thread
-from .CameraWrapper import CameraWrapper
+from .camera_wrapper import Gphoto2CameraWrapper, CameraWrapper
 
 
 class CameraManager:
-    _instance = None
+    def find_all_cameras(self):
+        raise NotImplementedError()
 
+    def get_camera(self, camera_id):
+        raise NotImplementedError()
+
+
+class Gphoto2CameraManager(CameraManager):
     def __init__(self):
         self.cameras = []
         gp.check_result(gp.use_python_logging())
 
         atexit.register(self.disconnect_all_cameras)
 
-    @staticmethod
-    def instance():
-        if CameraManager._instance is None:
-            CameraManager._instance = CameraManager()
-
-        return CameraManager._instance
-
-    def autodetect_all_cameras(self):
+    def find_all_cameras(self):
         cameras_name_and_port = gp.check_result(gp.gp_camera_autodetect())
 
         # Search ports for camera port name
@@ -35,12 +34,14 @@ class CameraManager:
             idx = port_info_list.lookup_path(port)
             camera.set_port_info(port_info_list[idx])
 
-            cam_wrapper = CameraWrapper(camera, camera_name=name, port=port)
-
+            cam_wrapper = Gphoto2CameraWrapper(camera, camera_name=name, port=port)
             camera_wrappers.append(cam_wrapper)
 
         print('Detected a total of {0} camera(s)\n'.format(len(camera_wrappers)))
         self.cameras = camera_wrappers
+
+    def get_camera(self, camera_id):
+        pass
 
     def disconnect_all_cameras(self):
         for camera in self.cameras:

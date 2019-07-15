@@ -8,6 +8,23 @@ from .utils.async_print import async_print
 
 
 class CameraWrapper:
+    def disconnect(self):
+        raise NotImplementedError()
+
+    def capture_img(self, img_index=0):
+        raise NotImplementedError()
+
+    def capture_preview(self):
+        raise NotImplementedError()
+
+    def get_config(self):
+        raise NotImplementedError()
+
+    def set_config(self, values_dict):
+        raise NotImplementedError()
+
+
+class Gphoto2CameraWrapper(CameraWrapper):
     # The gphoto2 operations must be synchronized.
     # Weird shit happens if multiple gphoto2 operations on the same camera happen at once.
     # That's why I'm using a Lock
@@ -59,14 +76,13 @@ class CameraWrapper:
     def get_config(self):
         return CameraConfig(self.gp_camera, self._gp_sync)
 
-    @staticmethod
-    def set_config(config, values_dict):
-        assert isinstance(config, CameraConfig)
-        config.set_values(values_dict)
+    def set_config(self, values_dict):
+        pass
+        # assert isinstance(config, CameraConfig)
+        # config.set_values(values_dict)
 
     def disconnect(self):
-        # No need to connect (.init() or smth)
-
+        # No need to connect
         with self._gp_sync:
             self.gp_camera.exit()
         self._log('Disconnected')

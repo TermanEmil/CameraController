@@ -1,5 +1,5 @@
 import json
-from business.CameraWrapper import CameraWrapper
+from business.camera_wrapper import CameraWrapper
 
 
 class SettingsManager:

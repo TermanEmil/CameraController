@@ -1,7 +1,7 @@
-from business.CameraManager import CameraManager
 from django.shortcuts import render
 
 from .camera_not_found import camera_not_found
+from ..factories import CameraManagerFactory
 from ..forms import PreviewForm
 from ..ids import *
 from ..utils.settings_manager import SettingsManager
@@ -10,7 +10,7 @@ from ..utils.settings_manager import SettingsManager
 def live_preview(request, camera_port):
     _parse_preview_form_post(request, camera_port)
 
-    camera = CameraManager.instance().get_camera_on_port(camera_port)
+    camera = CameraManagerFactory.get().get_camera_on_port(camera_port)
     if camera is None:
         return camera_not_found(request, camera_port)
 
@@ -24,7 +24,7 @@ def live_preview(request, camera_port):
 
 def multi_live_preview(request):
     context = {
-        'camera_ports': [camera.port for camera in CameraManager.instance().cameras],
+        'camera_ports': [camera.port for camera in CameraManagerFactory.get().cameras],
     }
 
     return render(request, 'remote_camera/multi_live_preview.html', context)
@@ -38,7 +38,7 @@ def _parse_preview_form_post(request, camera_port):
     if not form.is_valid():
         return
 
-    camera = CameraManager.instance().get_camera_on_port(camera_port)
+    camera = CameraManagerFactory.get().get_camera_on_port(camera_port)
     if camera is None:
         return
 

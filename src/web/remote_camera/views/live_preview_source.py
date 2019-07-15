@@ -2,8 +2,8 @@ import io
 import logging
 
 from PIL import Image
-from business.CameraManager import CameraManager
-from business.CameraWrapper import CameraWrapper
+from business.camera_manager import CameraManager
+from business.camera_wrapper import CameraWrapper
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 
