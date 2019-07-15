@@ -1,0 +1,83 @@
+{% extends "./base.html" %}
+{% load widget_tweaks %}
+
+{% block styles %}
+  <style>
+    INPUT[type=checkbox] {
+      margin-top: 1.8%
+    }
+  </style>
+{% endblock styles %}
+
+{% block content %}
+  {% if form.sections|length == 0 %}
+    <div class="text-primary">No settings detected</div>
+  {% else %}
+
+  <hr />
+  <button class="btn btn-light openall">Open all</button>
+  <button class="btn btn-light closeall">Close all</button>
+	<hr />
+
+  <form action="{% url 'all_configs' camera_id %}" method="post">
+    {% csrf_token %}
+
+    {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div id="accordion">
+      {% for section in form.sections %}
+
+        <div class="card">
+          <div class="card-header">
+            <a class="card-link d-flex justify-content-between" data-toggle="collapse" href="#{{ section.name }}">
+              <div class="text-primary">{{ section.label }}</div>
+              <div class="text-secondary d-inline small">{{ section.name }}</div>
+            </a>
+          </div>
+
+          <div class="collapse panel-collapse" id="{{ section.name }}">
+            <div class="card-body">
+              {% for field in section.visible_fields %}
+                {% include "./_camera_config_field.html" %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+    </div>
+
+    <br />
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+  {% endif %}
+
+  <footer class="footer sticky-bottom">
+    <hr />
+    <div class="text-secondary small">To search: Open all -> Ctrl-F</div>
+  </footer>
+{% endblock content %}
+
+{% block scripts %}
+  <script>
+    $('.closeall').click(function() {
+      $('.panel-collapse.show')
+        .collapse('hide');
+    });
+
+    $('.openall').click(function(){
+      $('.panel-collapse:not(".in")')
+        .collapse('show');
+    });
+  </script>
+{% endblock scripts %}

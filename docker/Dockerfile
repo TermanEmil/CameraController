@@ -13,4 +13,4 @@ ENV PYTHONUNBUFFERED 1
 COPY . /app
 WORKDIR /app
 
-RUN ./configure
+RUN pip install -r requirements.txt

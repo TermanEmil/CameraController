@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l*vlr6%t_!j-&w+7i*tr5p!46iecfo@81@$0*a7f6giq+3ch5('
+SECRET_KEY = '0g*t9%u3)eq_s^l((t-&(t8#)(p1zk(+m*+pp@u9c&za8$)8@z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,11 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_simple_cookie_consent.apps.DjangoSimpleCookieConsentConfig',
     'widget_tweaks',
-    'crispy_forms',
 
-    'remote_camera',
+    'camera_control',
 ]
 
 MIDDLEWARE = [
@@ -123,5 +121,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+
+
+<div class="form-group row">
+  <label class="col-sm-4 col-form-label text-right" for="{{ field.auto_id }}">
+    <span class="text-info">{{ field.label_tag }}</span>
+    <br>
+    <span class="text-secondary small mr-2">{{ field.help_text }}</span>
+  </label>
+
+  <div class="col-sm-8">
+    {% if field.errors %}
+      {% render_field field class="form-control is-invalid" %}
+
+      {% for error in field.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+      {% endfor %}
+    {% else %}
+      {% render_field field class="form-control" %}
+    {% endif %}
+
+  </div>
+</div>

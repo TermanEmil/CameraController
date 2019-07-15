@@ -1,0 +1,20 @@
+{% extends "./base.html" %}
+
+{%load static from staticfiles %}
+
+{% block content %}
+  <div class="row">
+    {% for camera in cameras %}
+      <center class="column col-md-6">
+        <img class="" style="width:100%;" src="{% url 'live_preview_source' camera.id %}">
+
+        <div>
+          <span class="text-primary">{{ camera.name }}</span>
+          <span class="text-secondary small">ID: {{ camera.id }}</span>
+        </div>
+      </center>
+    {% empty %}
+      <div class="text-primary">No cameras detected</div>
+    {% endfor %}
+  </div>
+{% endblock content %}

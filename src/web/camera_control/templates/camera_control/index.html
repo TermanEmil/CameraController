@@ -1,0 +1,59 @@
+{% extends "./base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="add-item text-center col-sm-12">
+        <ul class="list-group">
+
+          {% for camera in cameras %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+              <div class="text-primary" data-toggle="tooltip" title="Camera name">
+                {{ camera.name }}
+              </div>
+
+              <div class="ml-auto text-info px-3 small">
+                ID: {{ camera.id }}
+              </div>
+
+              <div class="ml-auto text-secondary px-3 small" data-toggle="tooltip" title="Summary">
+                {{ camera.summary }}
+              </div>
+
+              <span class="ml-auto"></span>
+
+              <a class="pl-3" href="{% url 'live_preview' camera.id %}">
+                <i aria-hidden="true" class="fa fa-play" data-toggle="tooltip" title="Live preview"></i>
+              </a>
+
+              <a class="pl-3" href="{% url 'config_list' camera.id %}">
+                <i aria-hidden="true" class="fa fa-cog" data-toggle="tooltip" title="Quick single settings"></i>
+              </a>
+
+              <a class="pl-3" href="{% url 'all_configs' camera.id %}">
+                <i aria-hidden="true" class="fa fa-sliders" data-toggle="tooltip" title="All settings"></i>
+              </a>
+
+            </li>
+          {% empty %}
+            <li class="list-group-item text-primary big">No cameras detected</li>
+          {% endfor %}
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <form action="{% url 'camera_search' %}" method="post">
+    {% csrf_token %}
+
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <center>
+      <button type="submit" class="btn btn-primary">Search for cameras</button>
+    </center>
+  </form>
+
+{% endblock content %}

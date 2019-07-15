@@ -1,3 +1,3 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
-setup(name='camera_ctrl', version='1.0', packages=find_packages())
+setup(name='app', version='1.0', packages=['business'])
