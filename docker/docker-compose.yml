@@ -4,7 +4,7 @@ services:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
-    command: sh run_server.sh
+    command: python ./src/web/manage.py runserver 0.0.0.0:5000
     ports:
       - "5000:5000"
     privileged: true

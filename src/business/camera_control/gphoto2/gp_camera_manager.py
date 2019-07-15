@@ -1,7 +1,6 @@
-import atexit
+from threading import Lock
 
 import gphoto2 as gp
-from threading import Lock
 
 from .gp_camera import GpCamera
 from ..camera import Camera
@@ -14,8 +13,6 @@ class GpCameraManager(CameraManager):
 
         gp.check_result(gp.use_python_logging())
         self._cameras_dict = {}
-
-        atexit.register(self.disconnect_all)
 
     def detect_all_cameras(self):
         self.disconnect_all()
@@ -49,7 +46,11 @@ class GpCameraManager(CameraManager):
         return self._cameras_dict.get(camera_id)
 
     def disconnect_all(self):
+        print('Disconnecting from all cameras...')
         for camera in self.cameras:
             assert isinstance(camera, GpCamera)
             camera.disconnect()
+
+        self._cameras_dict.clear()
+        print('Disconnected from all cameras')
 

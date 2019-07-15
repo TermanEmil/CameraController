@@ -14,7 +14,8 @@ class GpCamera(camera.Camera):
         self._gp_camera = gp_camera
         self._name = name
         self._port = port
-        self._serial_nb = self._get_serial_number()
+        # self._serial_nb = self._get_serial_number()
+        self._serial_nb = 'fuck'
 
     @property
     def name(self) -> str:
@@ -22,15 +23,16 @@ class GpCamera(camera.Camera):
 
     @property
     def id(self):
-        return str(self._serial_nb)
+        return str(self._port)
 
     @property
     def summary(self) -> str:
-        return 'Serial Nb: {0}. Port: {1}'.format(self._serial_nb, self._port)
+        return 'Port: {1}'.format(self._serial_nb, self._port)
 
     def disconnect(self):
         with self._gp_lock:
             self._gp_camera.exit()
+            print('Disconnected from {0} ID: {1} Port: {2}'.format(self.name, self.id, self._port))
 
     def list_configs(self) -> iter:
         with self._gp_lock:
