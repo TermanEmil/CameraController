@@ -3,12 +3,9 @@
 {% load static from staticfiles %}
 
 {% block content %}
- <center class="col-md-12">
+ <center class="col-md-8 mx-5">
    <img style="width:100%" src="{% url 'live_preview_source' camera_id %}">
+   <span class="text-primary">{{ camera_name }}</span>
+   <span class="text-secondary small">ID: {{ camera_id }}</span>
   </center>
-
-  <center>
-    <span class="text-primary">{{ camera_name }}</span>
-    <span class="text-secondary small">ID: {{ camera_id }}</span>
-</center>
 {% endblock content %}

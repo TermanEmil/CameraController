@@ -5,6 +5,7 @@ from typing import Optional
 
 from .gp_camera_config import *
 from .. import camera
+import os
 
 
 class GpCamera(camera.Camera):
@@ -71,6 +72,31 @@ class GpCamera(camera.Camera):
             file_data = gp.check_result(gp.gp_file_get_data_and_size(camera_file))
 
         return memoryview(file_data)
+
+    def capture_img(self, storage_dir, filename_prefix) -> str:
+        if not os.path.isdir(storage_dir):
+            raise Exception('Path: "{0}" does not exist'.format(storage_dir))
+
+        self.disconnect()
+
+        with self._gp_lock:
+            file_device_path = gp.check_result(gp.gp_camera_capture(self._gp_camera, gp.GP_CAPTURE_IMAGE))
+
+        _, file_extension = os.path.splitext(file_device_path.name)
+        file_extension = file_extension[1:]
+        filename = '{0}.{1}'.format(filename_prefix, file_extension)
+        file_path = os.path.join(storage_dir, filename)
+
+        with self._gp_lock:
+            camera_file = gp.check_result(
+                gp.gp_camera_file_get(
+                    self._gp_camera,
+                    file_device_path.folder,
+                    file_device_path.name,
+                    gp.GP_FILE_TYPE_NORMAL))
+            gp.check_result(gp.gp_file_save(camera_file, file_path))
+
+        return file_path
 
     def _get_serial_number(self):
         with self._gp_lock:

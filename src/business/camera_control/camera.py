@@ -29,3 +29,6 @@ class Camera:
 
     def capture_preview(self) -> memoryview:
         raise NotImplementedError()
+
+    def capture_img(self, storage_dir, filename_prefix) -> str:
+        raise NotImplementedError()

@@ -8,6 +8,7 @@ from views.all_configs import all_configs
 from views.live_preview import live_preview
 from views.live_preview_source import live_preview_source
 from views.multi_live_preview import multi_live_preview
+from views.capture_img_and_download import capture_img_and_download
 
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     path('live_preview/<str:camera_id>', live_preview, name='live_preview'),
     path('live_preview_source/<str:camera_id>', live_preview_source, name='live_preview_source'),
     path('multi_live_preview', multi_live_preview, name='multi_live_preview'),
+    path('capture_img_and_download/<str:camera_id>', capture_img_and_download, name='capture_img_and_download')
 ]

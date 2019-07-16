@@ -28,6 +28,10 @@
                 <i aria-hidden="true" class="fa fa-play" data-toggle="tooltip" title="Live preview"></i>
               </a>
 
+              <a class="pl-3" href="{% url 'capture_img_and_download' camera.id %}" target="_blank">
+                <i aria-hidden="true" class="fa fa-camera" data-toggle="tooltip" title="Capture img"></i>
+              </a>
+
               <a class="pl-3" href="{% url 'config_list' camera.id %}">
                 <i aria-hidden="true" class="fa fa-cog" data-toggle="tooltip" title="Quick single settings"></i>
               </a>

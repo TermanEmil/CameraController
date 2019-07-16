@@ -1,0 +1,9 @@
+{% extends "./base.html" %}
+
+{% block content %}
+  {% if error %}
+    <div class="text-primary">{{ error }}</div>
+  {% else %}
+    <div class="text-primary">Internal error</div>
+  {% endif %}
+{% endblock content %}
