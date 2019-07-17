@@ -11,6 +11,7 @@ from views.multi_live_preview import multi_live_preview
 from views.capture_img_and_download import capture_img_and_download
 from views.camera_remove import camera_remove
 from views.object_not_found import camera_not_found
+from views.camera_reconnect import camera_reconnect
 
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('multi_live_preview', multi_live_preview, name='multi_live_preview'),
     path('capture_img_and_download/<str:camera_id>', capture_img_and_download, name='capture_img_and_download'),
     path('camera_remove/<str:camera_id>', camera_remove, name='camera_remove'),
+    path('camera_reconnect/<str:camera_id>', camera_reconnect, name='camera_reconnect'),
 ]

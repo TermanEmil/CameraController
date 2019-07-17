@@ -8,6 +8,28 @@ function removeCamera(cameraId) {
     });
 }
 
+function cameraReconnect(element, cameraId) {
+    var iconElement = element.getElementsByTagName("i")[0];
+    var iconClassNameSave = iconElement.className;
+
+    elementOnClickSave = element.onclick;
+    element.onclick = null;
+
+    iconElement.className = "fa fa-fw fa-spinner fa-spin";
+
+    $.ajax({
+        url: '/camera_control/camera_reconnect/' + cameraId,
+    })
+    .always(function() {
+        iconElement.className = iconClassNameSave;
+        element.onclick = elementOnClickSave;
+    })
+    .fail(function(data) {
+        msg = "Failed to reconnect: " + data["statusText"] + ": " + data["status"];
+        alert(msg);
+    });
+}
+
 function captureImg(element, cameraId) {
     var iconElement = element.getElementsByTagName("i")[0];
     var iconClassNameSave = iconElement.className;

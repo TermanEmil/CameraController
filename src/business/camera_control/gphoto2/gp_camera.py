@@ -29,8 +29,8 @@ class GpCamera(camera.Camera):
         return 'Port: {0}'.format(self._port)
 
     def disconnect(self):
-        # with self._gp_lock:
-        self._gp_camera.exit()
+        with self._gp_lock:
+            self._gp_camera.exit()
         print('Disconnected from {0} ID: {1} Port: {2}'.format(self.name, self.id, self._port))
 
     def list_configs(self) -> iter:
