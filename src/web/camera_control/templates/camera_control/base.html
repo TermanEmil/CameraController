@@ -20,6 +20,8 @@
 
     <link rel="shortcut icon" href="#" />
 
+    <link rel="stylesheet" type="text/css" href="{% static 'camera_control/css/app.css' %}">
+
     {% block styles %}
     {% endblock styles %}
 </head>
@@ -54,6 +56,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+    <script src="{% static 'camera_control/js/app.js' %}"></script>
 
     <script>
         $(function () {

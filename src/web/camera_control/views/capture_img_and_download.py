@@ -1,12 +1,11 @@
-from django.shortcuts import render
+import os
+from time import time
+
+from django.http import Http404, HttpResponse
+from django.shortcuts import render, redirect
 
 from factories import CameraManagerFactory
 from .object_not_found import camera_not_found
-from time import time
-import os
-from mimetypes import guess_type
-from django.http import Http404, HttpResponse
-import ntpath
 
 
 def capture_img_and_download(request, camera_id):
@@ -27,10 +26,12 @@ def capture_img_and_download(request, camera_id):
         return Http404()
 
     with open(file_path, 'rb') as fh:
-        response = HttpResponse(fh, content_type=guess_type(file_path))
-
         file_extension = os.path.splitext(file_path)[1][1:]
         download_filename = 'capture_sample{0}.{1}'.format(time(), file_extension)
+
+        # I'm using this response as a blob inside an ajax request.
+        # And the only easy way to get the filename from a blob, is to save it into content_type.
+        response = HttpResponse(fh, content_type=download_filename)
         response['Content-Disposition'] = 'attachment;filename={0}'.format(download_filename)
         return response
 

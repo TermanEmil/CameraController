@@ -7,5 +7,7 @@
    <img style="width:100%" src="{% url 'live_preview_source' camera_id %}">
    <span class="text-primary">{{ camera_name }}</span>
    <span class="text-secondary small">ID: {{ camera_id }}</span>
+
+   {% include './_camera_buttons.html' %}
   </center>
 {% endblock content %}

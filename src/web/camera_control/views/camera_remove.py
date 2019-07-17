@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.http import JsonResponse
 
 from factories import CameraManagerFactory
 from .object_not_found import camera_not_found
@@ -11,6 +11,4 @@ def camera_remove(request, camera_id):
         return camera_not_found(request, camera_id)
 
     camera_manager.remove_camera(camera_id)
-
-    # Redirect to previous page?
-    return redirect(request.META['HTTP_REFERER'])
+    return JsonResponse({})

@@ -10,10 +10,12 @@ from views.live_preview_source import live_preview_source
 from views.multi_live_preview import multi_live_preview
 from views.capture_img_and_download import capture_img_and_download
 from views.camera_remove import camera_remove
+from views.object_not_found import camera_not_found
 
 
 urlpatterns = [
     path('', index, name='index'),
+    path('camera_not_found', camera_not_found, name='camera_not_found'),
     path('camera_search', camera_search, name='camera_search'),
     path('config_list/<str:camera_id>', config_list, name='config_list'),
     path('single_config/<str:camera_id>/<str:config_name>', single_config, name='single_config'),

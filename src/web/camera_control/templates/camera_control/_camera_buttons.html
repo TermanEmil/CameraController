@@ -1,0 +1,22 @@
+
+<span class="fa-1x">
+<a class="pl-3 no-underscore" href="{% url 'live_preview' camera_id %}">
+  <i aria-hidden="true" class="fa fa-play fa-fw" data-toggle="tooltip" title="Live preview"></i>
+</a>
+
+<a class="pl-3 no-underscore" href="#" onclick="captureImg(this, '{{ camera_id }}')">
+  <i aria-hidden="true" class="fa fa-camera fa-fw" data-toggle="tooltip" title="Capture img"></i>
+</a>
+
+<a class="pl-3 no-underscore" href="{% url 'config_list' camera_id %}">
+  <i aria-hidden="true" class="fa fa-cog fa-fw" data-toggle="tooltip" title="Quick single settings"></i>
+</a>
+
+<a class="pl-3 no-underscore" href="{% url 'all_configs' camera_id %}">
+  <i aria-hidden="true" class="fa fa-sliders fa-fw" data-toggle="tooltip" title="All settings"></i>
+</a>
+
+<a id="camera-rm-btn" class="pl-3 no-underscore" href="#" onclick="removeCamera('{{ camera_id }}')">
+  <i aria-hidden="true" class="fa fa-trash fa-fw" data-toggle="tooltip" title="Remove"></i>
+</a>
+</span>

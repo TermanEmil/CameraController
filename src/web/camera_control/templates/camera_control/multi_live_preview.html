@@ -11,6 +11,11 @@
         <div>
           <span class="text-primary">{{ camera.name }}</span>
           <span class="text-secondary small">ID: {{ camera.id }}</span>
+
+          {% with camera.id as camera_id %}
+            {% include './_camera_buttons.html' %}
+          {% endwith %}
+
         </div>
       </center>
     {% empty %}
