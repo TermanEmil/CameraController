@@ -33,7 +33,7 @@ class GpCameraManager(CameraManager):
                 gp_camera.set_port_info(port_info_list[idx])
 
             try:
-                camera = GpCamera(name=name, port=port, gp_camera=gp_camera, gp_lock=self._gp_lock)
+                camera = GpCamera(name=name, port=port, gp_camera=gp_camera)
                 self._cameras_dict[camera.id] = camera
             except Exception as e:
                 print('Detect all: {0}'.format(e))

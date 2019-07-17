@@ -9,14 +9,12 @@ import os
 
 
 class GpCamera(camera.Camera):
-    def __init__(self, name, port, gp_camera: gp.Camera, gp_lock: Lock):
-        self._gp_lock = gp_lock
+    def __init__(self, name, port, gp_camera: gp.Camera):
+        self._gp_lock = Lock()
 
         self._gp_camera = gp_camera
         self._name = name
         self._port = port
-        # self._serial_nb = self._get_serial_number()
-        self._serial_nb = 'fuck'
 
     @property
     def name(self) -> str:
