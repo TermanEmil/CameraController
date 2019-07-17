@@ -26,12 +26,12 @@ class GpCamera(camera.Camera):
 
     @property
     def summary(self) -> str:
-        return 'Port: {1}'.format(self._serial_nb, self._port)
+        return 'Port: {0}'.format(self._port)
 
     def disconnect(self):
-        with self._gp_lock:
-            self._gp_camera.exit()
-            print('Disconnected from {0} ID: {1} Port: {2}'.format(self.name, self.id, self._port))
+        # with self._gp_lock:
+        self._gp_camera.exit()
+        print('Disconnected from {0} ID: {1} Port: {2}'.format(self.name, self.id, self._port))
 
     def list_configs(self) -> iter:
         with self._gp_lock:

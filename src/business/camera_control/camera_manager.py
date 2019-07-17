@@ -11,3 +11,6 @@ class CameraManager:
 
     def get_camera(self, camera_id) -> Camera:
         raise NotImplementedError()
+
+    def remove_camera(self, camera_id):
+        raise NotImplementedError()

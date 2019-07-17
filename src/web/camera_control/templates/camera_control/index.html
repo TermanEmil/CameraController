@@ -40,6 +40,10 @@
                 <i aria-hidden="true" class="fa fa-sliders" data-toggle="tooltip" title="All settings"></i>
               </a>
 
+              <a class="pl-3" href="{% url 'camera_remove' camera.id %}">
+                <i aria-hidden="true" class="fa fa-trash" data-toggle="tooltip" title="Remove"></i>
+              </a>
+
             </li>
           {% empty %}
             <li class="list-group-item text-primary big">No cameras detected</li>

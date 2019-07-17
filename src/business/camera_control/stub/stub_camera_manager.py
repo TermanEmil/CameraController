@@ -18,3 +18,7 @@ class StubCameraManager(CameraManager):
 
     def get_camera(self, camera_id):
         return self._cameras.get(camera_id)
+
+    def remove_camera(self, camera_id):
+        if camera_id in self._cameras:
+            self._cameras.pop(camera_id)

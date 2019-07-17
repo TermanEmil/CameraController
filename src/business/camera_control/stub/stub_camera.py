@@ -60,6 +60,9 @@ class StubCamera(Camera):
         img.save(file_path, format='JPEG')
         return file_path
 
+    def disconnect(self):
+        pass
+
     @staticmethod
     def _stub_img():
         # Draw 2 triangles

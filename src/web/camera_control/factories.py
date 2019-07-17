@@ -2,13 +2,14 @@ from business.camera_control.stub.stub_camera import StubCamera
 from business.camera_control.stub.stub_camera_manager import StubCameraManager
 from business.camera_control.stub.stub_camera_config import *
 from business.camera_control.gphoto2.gp_camera_manager import GpCameraManager
+from business.camera_control.camera_manager import CameraManager
 
 
 class CameraManagerFactory:
     instance = None
 
     @staticmethod
-    def get():
+    def get() -> CameraManager:
         if CameraManagerFactory.instance is None:
             # CameraManagerFactory.instance = CameraManagerFactory._create_stub()
             CameraManagerFactory.instance = GpCameraManager()
