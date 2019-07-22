@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
 
-    'camera_control',
+    'camera_control.apps.CameraControlConfig',
 ]
 
 MIDDLEWARE = [

@@ -15,7 +15,7 @@ class Camera:
         raise NotImplementedError()
 
     def list_configs(self) -> iter:
-        # List all the available config names
+        # List all the available camera_config names
         raise NotImplementedError()
 
     def get_single_config(self, config_name) -> CameraConfigField:

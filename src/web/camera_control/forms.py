@@ -1,5 +1,6 @@
 from business.camera_control.camera_config import *
 from django import forms
+from camera_control.models import Profile, FavField
 
 
 class CameraConfigForm(forms.Form):
@@ -99,3 +100,17 @@ def _field_config_to_django_form_field(config_field: CameraConfigField):
         )
 
     return None
+
+
+class FavConfigsProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['name']
+
+
+class FavConfigsFieldForm(forms.ModelForm):
+    model_pk = None
+
+    class Meta:
+        model = FavField
+        fields = ['label', 'name_pattern']

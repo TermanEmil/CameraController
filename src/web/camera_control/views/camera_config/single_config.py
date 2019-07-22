@@ -3,7 +3,7 @@ from django.shortcuts import render
 from business.camera_control.camera import Camera
 from business.camera_control.camera_config import CameraConfigField
 from factories import CameraManagerFactory
-from .object_not_found import camera_not_found, object_not_found
+from views.object_not_found import camera_not_found, object_not_found
 from forms import CameraSingleConfigForm
 
 
@@ -37,11 +37,11 @@ def single_config(request, camera_id, config_name):
         'form': form,
     }
 
-    return render(request, 'camera_control/single_config.html', context)
+    return render(request, 'camera_control/camera_config/single_config.html', context)
 
 
 def _config_not_found(request, camera: Camera, config_name):
-    msg_format = 'Could not find a config with id = {0} on camera with {1} with id = {2}'
+    msg_format = 'Could not find a camera_config with id = {0} on camera with {1} with id = {2}'
     return object_not_found(request, msg_format.format(config_name, camera.name, camera.id))
 
 

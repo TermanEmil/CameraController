@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 from factories import CameraManagerFactory
-from .view_models import CameraViewModel
 
 
 def index(request):
@@ -11,3 +10,10 @@ def index(request):
     }
 
     return render(request, 'camera_control/index.html', context)
+
+
+class CameraViewModel:
+    def __init__(self, camera):
+        self.name = camera.name
+        self.id = camera.id
+        self.summary = camera.summary

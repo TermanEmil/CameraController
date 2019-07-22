@@ -20,6 +20,7 @@ def capture_img_and_download(request, camera_id):
         file_path = camera.capture_img(storage_dir, filename_prefix)
     except Exception as e:
         error = 'Internal error: {0}'.format(e)
+        print(error)
         return render(request, 'camera_control/internal_error.html', {'error': error}, status=500)
 
     if not os.path.exists(file_path):

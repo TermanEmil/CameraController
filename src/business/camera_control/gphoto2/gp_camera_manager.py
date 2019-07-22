@@ -11,6 +11,7 @@ from ..camera_manager import CameraManager
 class GpCameraManager(CameraManager):
     def __init__(self):
         self._gp_lock = Lock()
+        self._cameras_dict_lock = Lock()
 
         gp.check_result(gp.use_python_logging())
         self._cameras_dict = {}
@@ -36,31 +37,39 @@ class GpCameraManager(CameraManager):
 
             try:
                 camera = GpCamera(name=name, port=port, gp_camera=gp_camera)
-                self._cameras_dict[camera.id] = camera
+                with self._cameras_dict_lock:
+                    self._cameras_dict[camera.id] = camera
             except Exception as e:
                 print('Detect all: {0}'.format(e))
 
     @property
     def cameras(self) -> iter:
-        return self._cameras_dict.values()
+        with self._cameras_dict_lock:
+            return list(self._cameras_dict.values())
 
     def get_camera(self, camera_id) -> Camera:
-        return self._cameras_dict.get(camera_id)
+        with self._cameras_dict_lock:
+            return self._cameras_dict.get(camera_id)
 
     def remove_camera(self, camera_id):
-        if camera_id not in self._cameras_dict:
-            return
+        with self._cameras_dict_lock:
+            if camera_id not in self._cameras_dict:
+                return
 
-        camera = self._cameras_dict[camera_id]
+        with self._cameras_dict_lock:
+            camera = self._cameras_dict[camera_id]
         camera.disconnect()
-        self._cameras_dict.pop(camera_id)
+
+        with self._cameras_dict_lock:
+            self._cameras_dict.pop(camera_id)
 
     def disconnect_all(self):
         print('Disconnecting from all cameras...')
-        for camera in self.cameras:
-            assert isinstance(camera, GpCamera)
-            camera.disconnect()
+        with self._cameras_dict_lock:
+            for camera in self._cameras_dict.values():
+                assert isinstance(camera, GpCamera)
+                camera.disconnect()
 
-        self._cameras_dict.clear()
+            self._cameras_dict.clear()
         print('Disconnected from all cameras')
 

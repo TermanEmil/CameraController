@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/business/camera_control" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/business" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/web" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -12,6 +12,9 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="gphoto2.*" />
+          <option value="models.Profile.objects" />
+          <option value="models.FavSection.*" />
+          <option value="models.FavField.*" />
         </list>
       </option>
     </inspection_tool>

@@ -1,4 +1,4 @@
-{% extends "./base.html" %}
+{% extends "camera_control/base.html" %}
 
 {% load static from staticfiles %}
 
@@ -8,6 +8,6 @@
    <span class="text-primary">{{ camera_name }}</span>
    <span class="text-secondary small">ID: {{ camera_id }}</span>
 
-   {% include './_camera_buttons.html' %}
+   {% include 'camera_control/_camera_buttons.html' %}
   </center>
 {% endblock content %}

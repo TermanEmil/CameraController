@@ -54,4 +54,4 @@ def all_configs(request, camera_id):
         'form': form,
     }
 
-    return render(request, 'camera_control/all_configs.html', context)
+    return render(request, 'camera_control/camera_config/all_configs.html', context)

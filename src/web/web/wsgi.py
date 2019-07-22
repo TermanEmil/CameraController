@@ -1,5 +1,5 @@
 """
-WSGI config for web project.
+WSGI camera_config for web project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
