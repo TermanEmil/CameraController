@@ -15,6 +15,7 @@
           <option value="models.Profile.objects" />
           <option value="models.FavSection.*" />
           <option value="models.FavField.*" />
+          <option value="models.Profile.*" />
         </list>
       </option>
     </inspection_tool>

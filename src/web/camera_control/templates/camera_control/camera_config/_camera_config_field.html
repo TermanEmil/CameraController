@@ -2,13 +2,18 @@
 
 
 <div class="form-group row">
-  <label class="col-4 col-form-label text-right" for="{{ field.auto_id }}">
-    <span class="text-info">{{ field.label_tag }}</span>
-    <br>
-    <span class="text-secondary small mr-2">{{ field.help_text }}</span>
+  <label class="col-6 col-form-label text-right" for="{{ field.auto_id }}">
+    {% if short_mode is True %}
+      <span class="text-info">{{ field.label_tag }}</span>
+      <span class="text-secondary small">({{ field.help_text }})</span>
+    {% else %}
+      <span class="text-info">{{ field.label_tag }}</span>
+      <br>
+      <span class="text-secondary small mr-2">{{ field.help_text }}</span>
+    {% endif %}
   </label>
 
-  <div class="col-8">
+  <div class="col-6">
     {% if field.errors %}
       {% render_field field class="form-control is-invalid" %}
 

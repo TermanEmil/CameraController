@@ -4,6 +4,7 @@ from django.shortcuts import render
 from camera_control.models import Profile, FavField
 from forms import FavConfigsProfileForm, FavConfigsFieldForm
 from ..object_not_found import object_not_found
+from factories import FavConfigsManagerFactory
 
 
 def favourite_configs_profiles(request):
@@ -30,6 +31,9 @@ def favourite_configs_profile(request, profile_id):
         field_form.model_pk = field.pk
         field_forms.append(field_form)
 
+    fav_configs_manager = FavConfigsManagerFactory.get()
+    current_profile = fav_configs_manager.get_profile(request)
+
     if request.method == 'POST':
         if profile_form.is_valid():
             profile_form.save()
@@ -37,6 +41,9 @@ def favourite_configs_profile(request, profile_id):
         for field_form in field_forms:
             if field_form.is_valid():
                 field_form.save()
+
+    if current_profile.pk == profile.pk:
+        fav_configs_manager.set_profile(request, profile)
 
     context = {
         'profile_id': profile_id,

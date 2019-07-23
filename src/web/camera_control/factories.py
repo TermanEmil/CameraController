@@ -3,6 +3,7 @@ from business.camera_control.stub.stub_camera_manager import StubCameraManager
 from business.camera_control.stub.stub_camera_config import *
 from business.camera_control.gphoto2.gp_camera_manager import GpCameraManager
 from business.camera_control.camera_manager import CameraManager
+from utils.fav_configs_manager import FavConfigsManager
 
 
 class CameraManagerFactory:
@@ -74,7 +75,45 @@ class CameraManagerFactory:
                     range_min=0.0,
                     range_max=1.0),
 
+                'shuterspeed2': StubCameraConfigRangeField(
+                    'shuterspeed2',
+                    'Shuterspeed2',
+                    is_readonly=False,
+                    value=0.5,
+                    range_min=0.0,
+                    range_max=1.0),
+
+                'shuterspeed3': StubCameraConfigRangeField(
+                    'shuterspeed3',
+                    'Shuterspeed3',
+                    is_readonly=False,
+                    value=0.5,
+                    range_min=0.0,
+                    range_max=1.0),
+
+                'shuterspeed4': StubCameraConfigRangeField(
+                    'shuterspeed4',
+                    'Shuterspeed4',
+                    is_readonly=False,
+                    value=0.5,
+                    range_min=0.0,
+                    range_max=1.0),
+
+                'shuterspeed5': StubCameraConfigRangeField(
+                    'shuterspeed5',
+                    'Shuterspeed5',
+                    is_readonly=False,
+                    value=0.5,
+                    range_min=0.0,
+                    range_max=1.0),
+
                 'date': StubCameraConfigField('date', 'Date', False, '12314232T131')
             }),
         }
         return StubCameraConfig(sections)
+
+
+class FavConfigsManagerFactory:
+    @staticmethod
+    def get():
+        return FavConfigsManager()
