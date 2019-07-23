@@ -1,6 +1,7 @@
 from business.camera_control.camera_config import CameraConfigField
 from camera_control.models import Profile, FavField
 from business.camera_control.camera import Camera
+from typing import Iterable
 
 
 class FavConfigsManager:
@@ -18,11 +19,13 @@ class FavConfigsManager:
     def set_profile(self, request, profile: Profile):
         request.session[self._c_fav_config_profile_id] = profile.name
 
-    def extract_configs(self, profile: Profile, camera: Camera) -> CameraConfigField:
+    def extract_configs(self, request, camera: Camera) -> Iterable[CameraConfigField]:
+        profile = self.get_profile(request)
+
         for field in profile.fields.all():
             assert isinstance(field, FavField)
 
-            config = camera.get_single_config(field.name_pattern)
+            config = camera.get_single_config(field.name)
             if config is None:
                 continue
 

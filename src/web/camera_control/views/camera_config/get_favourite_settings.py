@@ -16,7 +16,7 @@ def get_favourite_settings(request, camera_id):
     for field in profile.fields.all:
         assert isinstance(field, FavField)
 
-        config = camera.get_single_config(field.name_pattern)
+        config = camera.get_single_config(field.name)
         if config is None:
             continue
 

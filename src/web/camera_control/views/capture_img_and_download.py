@@ -2,7 +2,7 @@ import os
 from time import time
 
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from factories import CameraManagerFactory
 from .object_not_found import camera_not_found

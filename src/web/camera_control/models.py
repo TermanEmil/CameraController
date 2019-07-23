@@ -15,14 +15,12 @@ class Profile(models.Model):
 
         shutterspeed = FavField()
         shutterspeed.profile = profile
-        shutterspeed.name_pattern = 'shutterspeed'
-        shutterspeed.label = 'Shutter speed'
+        shutterspeed.name = 'shutterspeed'
         shutterspeed.save()
 
         iso = FavField()
         iso.profile = profile
-        iso.name_pattern = 'iso'
-        iso.label = 'ISO'
+        iso.name = 'iso'
         iso.save()
 
         return profile
@@ -30,10 +28,9 @@ class Profile(models.Model):
 
 class FavField(models.Model):
     profile = models.ForeignKey(Profile, related_name='fields', on_delete=models.CASCADE)
-    name_pattern = models.CharField(max_length=128)
-    label = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
 
     def __str__(self):
-        return '{0}/{1}'.format(self.profile.name, self.name_pattern)
+        return '{0}/{1}'.format(self.profile.name, self.name)
 
 

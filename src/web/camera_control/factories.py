@@ -12,8 +12,8 @@ class CameraManagerFactory:
     @staticmethod
     def get() -> CameraManager:
         if CameraManagerFactory.instance is None:
-            CameraManagerFactory.instance = CameraManagerFactory._create_stub()
-            # CameraManagerFactory.instance = GpCameraManager()
+            # CameraManagerFactory.instance = CameraManagerFactory._create_stub()
+            CameraManagerFactory.instance = GpCameraManager()
 
         return CameraManagerFactory.instance
 

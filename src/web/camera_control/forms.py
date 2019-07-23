@@ -1,34 +1,52 @@
-from business.camera_control.camera_config import *
+from collections import OrderedDict
+from typing import Iterable
+
 from django import forms
+
+from business.camera_control.camera_config import *
 from camera_control.models import Profile, FavField
 
 
 class CameraConfigForm(forms.Form):
-    def __init__(self, config: CameraConfig, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.sections_dict = OrderedDict()
 
-        self.sections = []
-        for _, section in config.sections.items():
-            section_form = CameraConfigSectionForm(section)
-            self.fields.update(section_form.fields)
-            self.sections.append(section_form)
+    @property
+    def sections(self):
+        return self.sections_dict.values()
 
-        # Apparently, I can only render fields from visible_fields.
-        self.visible_fields_dict = dict((field.name, field) for field in self.visible_fields())
-        for section in self.sections:
-            assert isinstance(section, CameraConfigSectionForm)
-            section.set_visible_fields(self.visible_fields_dict)
+    @property
+    def visible_fields_dict(self) -> dict:
+        return dict((field.name, field) for field in self.visible_fields())
+
+    def load_from_camera_config(self, camera_config: CameraConfig):
+        for section in camera_config.sections.values():
+            assert isinstance(section, CameraConfigSection)
+            self.add_fields(section.fields.values(), section.label, section.name)
+
+    def add_fields(self, fields: Iterable[CameraConfigField], section_label, section_name):
+        if section_name in self.sections_dict:
+            section = self.sections_dict[section_name]
+        else:
+            section = CameraConfigSectionForm(section_label, section_name)
+            self.sections_dict[section_name] = section
+
+        section.add_fields(fields)
+        self.fields.update(section.fields)
+        section.set_visible_fields(self.visible_fields_dict)
 
 
 class CameraConfigSectionForm:
-    def __init__(self, section: CameraConfigSection):
-        self.label = section.label
-        self.name = section.name
+    def __init__(self, section_label, section_name):
+        self.label = section_label
+        self.name = section_name
         self.visible_fields = []
 
         self.fields = {}
-        for _, field in section.fields.items():
-            assert isinstance(field, CameraConfigField)
+
+    def add_fields(self, fields: Iterable[CameraConfigField]):
+        for field in fields:
             form_field = _field_config_to_django_form_field(field)
 
             if form_field is not None:
@@ -113,4 +131,4 @@ class FavConfigsFieldForm(forms.ModelForm):
 
     class Meta:
         model = FavField
-        fields = ['label', 'name_pattern']
+        fields = ['name']

@@ -7,15 +7,15 @@
   {% if form.sections|length == 0 %}
     <div class="text-primary">No settings detected</div>
   {% else %}
-
-    <div class="sticky-top">
-      <hr />
-      <button class="btn btn-light openall">Open all</button>
-      <button class="btn btn-light closeall">Close all</button>
-      <hr />
-    </div>
-
     <form action="{% url 'all_configs' camera_id %}" method="post">
+      <div class="sticky-top">
+        <hr />
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-light openall" type="button">Open all</button>
+        <button class="btn btn-light closeall" type="button">Close all</button>
+        <hr />
+      </div>
+
       {% csrf_token %}
 
       {% for hidden_field in form.hidden_fields %}
@@ -51,10 +51,6 @@
           </div>
 
         {% endfor %}
-      </div>
-
-      <div class="fixed-bottom mb-5 ml-5">
-        <button class="btn btn-primary" type="submit">Submit</button>
       </div>
     </form>
   {% endif %}

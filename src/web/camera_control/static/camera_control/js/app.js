@@ -18,7 +18,7 @@ function cameraReconnect(element, cameraId) {
     iconElement.className = "fa fa-fw fa-spinner fa-spin";
 
     $.ajax({
-        url: '/camera_control/camera_reconnect/' + cameraId,
+        url: '/camera_reconnect/' + cameraId,
     })
     .always(function() {
         iconElement.className = iconClassNameSave;
@@ -41,7 +41,7 @@ function captureImg(element, cameraId) {
 
     // Download the file. The filename is saved in the content's type.
     $.ajax({
-        url: '/camera_control/capture_img_and_download/' + cameraId,
+        url: '/capture_img_and_download/' + cameraId,
         xhrFields: {
             responseType: 'blob'
         },

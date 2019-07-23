@@ -60,7 +60,7 @@ def favourite_configs_profile_add_new(request, profile_id):
 
     new_field = FavField()
     new_field.profile = profile
-    new_field.name_pattern = 'This can be a regex pattern'
+    new_field.name = 'This can be a regex pattern'
     new_field.label = 'New field'
     new_field.save()
 

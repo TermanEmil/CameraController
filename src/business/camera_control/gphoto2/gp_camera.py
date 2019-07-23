@@ -41,7 +41,10 @@ class GpCamera(camera.Camera):
 
     def get_single_config(self, config_name) -> Optional[CameraConfigField]:
         with self._gp_lock:
-            config = self._gp_camera.get_single_config(config_name)
+            try:
+                config = self._gp_camera.get_single_config(config_name)
+            except gp.GPhoto2Error:
+                config = None
 
         if config is None:
             return None
