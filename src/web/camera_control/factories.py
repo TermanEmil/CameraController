@@ -5,17 +5,20 @@ from business.camera_control.gphoto2.gp_camera_manager import GpCameraManager
 from business.camera_control.camera_manager import CameraManager
 from utils.fav_configs_manager import FavConfigsManager
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.base import BaseScheduler
+
 
 class CameraManagerFactory:
-    instance = None
+    _instance = None
 
     @staticmethod
     def get() -> CameraManager:
-        if CameraManagerFactory.instance is None:
-            # CameraManagerFactory.instance = CameraManagerFactory._create_stub()
-            CameraManagerFactory.instance = GpCameraManager()
+        if CameraManagerFactory._instance is None:
+            # CameraManagerFactory._instance = CameraManagerFactory._create_stub()
+            CameraManagerFactory._instance = GpCameraManager()
 
-        return CameraManagerFactory.instance
+        return CameraManagerFactory._instance
 
     @staticmethod
     def _create_stub():
@@ -117,3 +120,14 @@ class FavConfigsManagerFactory:
     @staticmethod
     def get():
         return FavConfigsManager()
+
+
+class ApSchedulerFactory:
+    _instance = None
+
+    @staticmethod
+    def get() -> BaseScheduler:
+        if ApSchedulerFactory._instance is None:
+            ApSchedulerFactory._instance = BackgroundScheduler()
+
+        return ApSchedulerFactory._instance

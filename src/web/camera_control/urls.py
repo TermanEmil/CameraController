@@ -14,6 +14,7 @@ from views.object_not_found import camera_not_found
 from views.camera_reconnect import camera_reconnect
 from views.app_settings.app_settings import app_settings
 from views.app_settings.favourite_configs_profiles import *
+from views.timelapse.timelapse_create import timelapse_create
 
 
 urlpatterns = [
@@ -48,4 +49,6 @@ urlpatterns = [
         'settings/favourite_configs_profile_remove/<int:field_id>',
         favourite_configs_profile_remove,
         name='settings/favourite_configs_profile_remove'),
+
+    path('timelapse/timelapse_create', timelapse_create, name='timelapse/timelapse_create'),
 ]
