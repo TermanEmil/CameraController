@@ -11,6 +11,10 @@ class Camera:
         raise NotImplementedError()
 
     @property
+    def serial_nb(self):
+        raise NotImplementedError()
+
+    @property
     def summary(self) -> str:
         raise NotImplementedError()
 

@@ -19,30 +19,69 @@
         </div>
       {% endif %}
 
-      {% for field in form.visible_fields %}
-        <div class="form-group">
-          {{ field.label_tag }}
+      <div class="form-group">
+        {% include 'camera_control/form_utils/std_field.html' with field=form.name %}
+        <br/>
 
-          {% if form.is_bound %}
-            {% if field.errors %}
-              {% render_field field class="form-control is-invalid" %}
-              {% for error in field.errors %}
-                <div class="invalid-feedback">
-                  {{ error }}
-                </div>
-              {% endfor %}
-            {% else %}
-              {% render_field field class="form-control is-valid" %}
-            {% endif %}
-          {% else %}
-            {% render_field field class="form-control" %}
-          {% endif %}
+        {% include 'camera_control/form_utils/std_field.html' with field=form.storage_dir_format %}
+        <br/>
 
-          {% if field.help_text %}
-            <small class="form-text text-muted">{{ field.help_text }}</small>
-          {% endif %}
+        {% include 'camera_control/form_utils/std_field.html' with field=form.filename_format %}
+        <br/>
+
+        <!--Start date & end date-->
+        <div class="row">
+          <span class="col-6">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.start_date %}
+          </span>
+
+          <span class="col-6">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.end_date %}
+          </span>
         </div>
-      {% endfor %}
+        <br/>
+
+        <!--day month-->
+        <div class="row">
+          <span class="col-6">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.day %}
+          </span>
+
+          <span class="col-6">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.month %}
+          </span>
+        </div>
+        <br/>
+
+        <!--ss mm hh-->
+        <div class="row">
+          <span class="col-4">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.second %}
+          </span>
+
+          <span class="col-4">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.minute %}
+          </span>
+
+          <span class="col-4">
+            {% include 'camera_control/form_utils/std_field.html' with field=form.hour %}
+          </span>
+        </div>
+        <br/>
+
+        {% include 'camera_control/form_utils/std_field.html' with field=form.day_of_week %}
+        <br/>
+
+        <a class="text-secondary" href="#optional-fields" data-toggle="collapse">Advanced</a>
+        <div id="optional-fields" class="collapse">
+          <hr/>
+          {% include 'camera_control/form_utils/std_field.html' with field=form.week %}
+          <br/>
+
+          {% include 'camera_control/form_utils/std_field.html' with field=form.year %}
+          <br/>
+        </div>
+      </div>
 
       <button class="btn btn-primary" type="submit">Submit</button>
     </form>

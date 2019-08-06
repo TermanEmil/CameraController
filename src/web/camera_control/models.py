@@ -40,11 +40,9 @@ class FavField(models.Model):
 
 
 class CronTimelapse(models.Model):
-    job = models.OneToOneField(DjangoJob, on_delete=models.CASCADE, primary_key=True)
-
-    name = models.CharField(max_length=64, default='My schedule')
-    storage_dir = models.CharField(max_length=256, default='~/Pictures/')
-    filename_pattern = models.CharField(max_length=256, default='capture')
+    name = models.CharField(max_length=64, default='My timelapse')
+    storage_dir_format = models.CharField(max_length=256, default='~/Pictures/')
+    filename_format = models.CharField(max_length=256, default='capture')
 
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now() + timedelta(days=1), blank=True)
@@ -58,10 +56,12 @@ class CronTimelapse(models.Model):
     minute = models.CharField(max_length=128, default='*')
     second = models.CharField(max_length=128, default='*')
 
+    capture_index = models.IntegerField(default=0)
+
     def __str__(self):
         return self.name
 
 
 @receiver(post_delete, sender=CronTimelapse)
 def auto_delete_publish_info_with_book(sender, instance: CronTimelapse, **kwargs):
-    instance.job.delete()
+    DjangoJob.objects.filter(name=str(instance.pk)).delete()

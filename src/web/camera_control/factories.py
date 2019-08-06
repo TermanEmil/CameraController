@@ -26,6 +26,7 @@ class CameraManagerFactory:
             StubCamera(
                 name='Nikon 6',
                 camera_id='0',
+                serial_nb='000',
                 summary='Port: usb:000,020',
                 config=CameraManagerFactory._create_stub_config(),
             ),
@@ -33,6 +34,7 @@ class CameraManagerFactory:
             StubCamera(
                 name='Nikon 6',
                 camera_id='1',
+                serial_nb='001',
                 summary='Port: usb:000,022',
                 config=CameraManagerFactory._create_stub_config(),
             ),
@@ -40,6 +42,7 @@ class CameraManagerFactory:
             StubCamera(
                 name='Nikon 6',
                 camera_id='2',
+                serial_nb='002',
                 summary='Port: usb:000,022',
                 config=CameraManagerFactory._create_stub_config(),
             ),
@@ -47,6 +50,7 @@ class CameraManagerFactory:
             StubCamera(
                 name='Nikon 6',
                 camera_id='3',
+                serial_nb='003',
                 summary='Port: usb:000,022',
                 config=CameraManagerFactory._create_stub_config(),
             ),

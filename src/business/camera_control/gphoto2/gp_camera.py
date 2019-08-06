@@ -15,6 +15,7 @@ class GpCamera(camera.Camera):
         self._gp_camera = gp_camera
         self._name = name
         self._port = port
+        self._serial_nb = None
 
     @property
     def name(self) -> str:
@@ -23,6 +24,13 @@ class GpCamera(camera.Camera):
     @property
     def id(self):
         return str(self._port)
+
+    @property
+    def serial_nb(self):
+        if self._serial_nb is None:
+            self._serial_nb = self._get_serial_number()
+
+        return self._serial_nb
 
     @property
     def summary(self) -> str:
@@ -83,12 +91,11 @@ class GpCamera(camera.Camera):
         with self._gp_lock:
             file_device_path = gp.check_result(gp.gp_camera_capture(self._gp_camera, gp.GP_CAPTURE_IMAGE))
 
-        _, file_extension = os.path.splitext(file_device_path.name)
-        file_extension = file_extension[1:]
-        filename = '{0}.{1}'.format(filename_prefix, file_extension)
-        file_path = os.path.join(storage_dir, filename)
+            _, file_extension = os.path.splitext(file_device_path.name)
+            file_extension = file_extension[1:]
+            filename = '{0}.{1}'.format(filename_prefix, file_extension)
+            file_path = os.path.join(storage_dir, filename)
 
-        with self._gp_lock:
             camera_file = gp.check_result(
                 gp.gp_camera_file_get(
                     self._gp_camera,
