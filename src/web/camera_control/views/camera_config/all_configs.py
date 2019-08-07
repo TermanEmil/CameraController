@@ -32,7 +32,7 @@ def _build_form(request, camera: Camera, config: CameraConfig):
 
     fav_configs = FavConfigsManagerFactory.get().extract_configs(request, camera)
     form.add_fields(fav_configs, section_label='Favourites', section_name='favourites')
-    
+
     form.load_from_camera_config(config)
 
     return form

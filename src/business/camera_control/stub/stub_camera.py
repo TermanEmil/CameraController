@@ -6,10 +6,11 @@ import os
 
 
 class StubCamera(Camera):
-    def __init__(self, name, camera_id, summary, config: CameraConfig):
+    def __init__(self, name, camera_id, serial_nb, summary, config: CameraConfig):
         self._name = name
         self._summary = summary
         self._id = camera_id
+        self._serial_nb = serial_nb
         self._config = config
 
     @property
@@ -19,6 +20,10 @@ class StubCamera(Camera):
     @property
     def id(self):
         return self._id
+
+    @property
+    def serial_nb(self):
+        pass
 
     @property
     def summary(self):

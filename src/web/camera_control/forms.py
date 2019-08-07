@@ -1,10 +1,11 @@
+import os
 from collections import OrderedDict
 from typing import Iterable
 
 from django import forms
 
 from business.camera_control.camera_config import *
-from camera_control.models import Profile, FavField
+from camera_control.models import Profile, FavField, CronTimelapse
 
 
 class CameraConfigForm(forms.Form):
@@ -132,3 +133,43 @@ class FavConfigsFieldForm(forms.ModelForm):
     class Meta:
         model = FavField
         fields = ['name']
+
+
+class CronTimelapseForm(forms.ModelForm):
+    class Meta:
+        model = CronTimelapse
+        fields = [
+            'name',
+            'storage_dir_format',
+            'filename_format',
+
+            'start_date',
+            'end_date',
+
+            'second',
+            'minute',
+            'hour',
+            'day_of_week',
+            'week',
+            'day',
+            'month',
+            'year',
+        ]
+
+        help_texts = {
+            'storage_dir_format': 'Tilde (~) is short for home directory',
+
+            'second': '0-59',
+            'minute': '0-59',
+            'hour': '0-23',
+            'day_of_week': 'Number or name of weekday (0-6 or mon, tue, wed, thu, fri, sat, sun)',
+            'week': '1-53',
+            'day': '1-31',
+            'month': '1-12',
+            'year': '4 digit year'
+        }
+
+    def clean(self):
+        super().clean()
+
+        self.cleaned_data['storage_dir_format'] = os.path.expanduser(self.cleaned_data.get('storage_dir_format'))

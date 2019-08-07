@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+
+<label class="text-info" for="{{ field.id_for_label }}">{{ field.label }}</label>
+{% if form.is_bound %}
+  {% if field.errors %}
+    {% render_field field class="form-control is-invalid" %}
+
+    {% for error in field.errors %}
+      <div class="invalid-feedback">
+        {{ error }}
+      </div>
+    {% endfor %}
+  {% else %}
+    {% render_field field class="form-control is-valid" %}
+  {% endif %}
+{% else %}
+  {% render_field field class="form-control" %}
+{% endif %}
+
+{% if field.help_text %}
+  <div class="text-secondary small help">{{ field.help_text|safe }}</div>
+{% endif %}
