@@ -121,7 +121,7 @@ class LazyFormatDictIgnoreMissing(dict):
 # Use lazy dictionary values because some of these values may be computing intensive and may not even be used.
 def apply_naming_tricks(name_format, time: datetime, timelapse: CronTimelapse, camera: Camera):
     format_args = LazyFormatDictIgnoreMissing({
-        'timestamp': lambda: datetime.timestamp(time),
+        'timestamp': lambda: time.timestamp() * 1000,
         'time': lambda: time,
         'capture_index': lambda: timelapse.capture_index,
 

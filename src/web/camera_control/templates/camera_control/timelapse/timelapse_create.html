@@ -3,6 +3,13 @@
 
 {% block content %}
   <div class="container">
+    <a class="" href="#help-text" data-toggle="collapse">Help</a>
+    <div id="help-text" class="collapse">
+      <hr/>
+      {% include './_timelapse_man.html' %}
+    </div>
+    <hr/>
+
 
     <form action="#" method="post">
       {% csrf_token %}
