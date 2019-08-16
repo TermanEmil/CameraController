@@ -19,8 +19,8 @@ class CameraManagerSingleton:
     @staticmethod
     def get() -> CameraManager:
         if CameraManagerSingleton.instance is None:
-            # CameraManagerSingleton.instance = create_stub_camera()
-            CameraManagerSingleton.instance = GpCameraManager()
+            CameraManagerSingleton.instance = create_stub_camera()
+            # CameraManagerSingleton.instance = GpCameraManager()
 
         return CameraManagerSingleton.instance
 

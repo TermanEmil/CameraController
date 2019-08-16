@@ -1,0 +1,28 @@
+<h4>Manual: Scheduling</h4>
+<blockquote class="ml-3">
+  <span class="small">
+    For more details:
+      <a href="https://apscheduler.readthedocs.io/en/latest/modules/triggers/cron.html#module-apscheduler.triggers.cron">link</a>
+    <br/>
+    For even more details (needs a bit more understanding):
+      <a href="https://www.freeformatter.com/cron-expression-generator-quartz.html">link</a>
+  </span>
+
+  <h5>General examples</h5>
+  <blockquote class="ml-3">
+    <ul>
+      <li> Day: mon-fri; - will work from Monday until Friday
+      <li> Day: mon-wed,fri-sun; - Monday until Wednesday and Friday until Sunday
+      <li> Hour: 8-13,14-19; - from 8 to 13 and 14 to 19 (with a lunch break of 1 hour)
+      <li> Second: 0; Minute: */2; - every 2 minutes
+      <li> Second: 0; Minute: 15,30,45; - every hour at minute 15, 30 and 45
+      <li> Second: 0; Minute: 0; Hour: *; - every hour
+      <li> Second: 0; Minute: 0; Hour: 8; - every day at 8:00
+      <li> Second: 0/2; - every even second
+      <li> Second: 1/2; - every uneven second
+      <li> Second: 0; Minute: */5; Hour: 8-19; - every 5th minute from 8:00 to 19:00
+
+    </ul>
+  </blockquote>
+
+</blockquote>
