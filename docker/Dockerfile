@@ -13,4 +13,4 @@ COPY . /app
 WORKDIR /app
 
 RUN pip install -r requirements.txt
-RUN python ./src/web/manage.py migrate
+RUN python ./src/infrastructure/django_framework/manage.py migrate

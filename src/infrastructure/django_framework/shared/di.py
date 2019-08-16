@@ -3,6 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from adapters.utils.stub_camera import create_stub_camera
 from enterprise.camera_ctrl.camera_manager import CameraManager
+from enterprise.camera_ctrl.gphoto2.gp_camera_manager import GpCameraManager
 from scheduling.implementations.aps_scheduler import ApsScheduler
 from shared.repositories.timelapse_repository import TimelapseRepository
 from .repositories.favourite_config_repository import FavouriteConfigRepository
@@ -18,8 +19,8 @@ class CameraManagerSingleton:
     @staticmethod
     def get() -> CameraManager:
         if CameraManagerSingleton.instance is None:
-            CameraManagerSingleton.instance = create_stub_camera()
-            # CameraManagerSingleton.instance = GpCameraManager()
+            # CameraManagerSingleton.instance = create_stub_camera()
+            CameraManagerSingleton.instance = GpCameraManager()
 
         return CameraManagerSingleton.instance
 

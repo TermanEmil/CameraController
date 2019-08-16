@@ -11,6 +11,7 @@ tmpf*
 *.jpg
 *.jpeg
 *.gif
+*.arw
 
 # -- venv
 .venv/
