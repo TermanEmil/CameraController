@@ -1,0 +1,99 @@
+{% extends './base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+  {{ block.super }}
+
+  <div class="container">
+    {% include 'shared/generic_toast_messages.html' %}
+    <br/>
+
+    <h4 class="text-primary float-right">
+      {% if updating %}
+        Update Schedule
+      {% else %}
+        Create Schedule
+      {% endif %}
+    </h4>
+    <br/>
+    <br/>
+    <br/>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% include './_schedule_create_field.html' with field=form.name %}
+
+      <br/>
+      {% include './_schedule_create_field.html' with field=form.start_date %}
+      {% include './_schedule_create_field.html' with field=form.end_date %}
+
+      <br/>
+      {% include './_schedule_create_field.html' with field=form.second %}
+      {% include './_schedule_create_field.html' with field=form.minute %}
+      {% include './_schedule_create_field.html' with field=form.hour %}
+
+      <br/>
+      {% include './_schedule_create_field.html' with field=form.day %}
+      {% include './_schedule_create_field.html' with field=form.day_of_week %}
+
+      <br/>
+      <a class="text-secondary" href="#optional-fields" data-toggle="collapse">Advanced</a>
+
+      <br/>
+      <br/>
+      <div id="optional-fields" class="collapse">
+        {% include './_schedule_create_field.html' with field=form.month %}
+        {% include './_schedule_create_field.html' with field=form.week %}
+        {% include './_schedule_create_field.html' with field=form.year %}
+      </div>
+
+      <hr/>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+        {% if updating %}
+          <div class="col">
+            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#exampleModal">
+              Delete
+            </button>
+
+            {% include 'shared/modal.html' with title='Confirmation' content='Are you sure? All the jobs that depend on this schedule will be removed.' %}
+          </div>
+        {% endif %}
+      </div>
+    </form>
+
+    <div hidden>
+      <data id="list-url" value="{% url 'cron/list' %}"></data>
+    </div>
+
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'scheduling/js/schedule_delete_btn_click.js' %}"></script>
+
+  <script>
+    $("#modal-ok-btn").click(function() {
+      {% url 'cron/delete' object.pk as delete_link %}
+      scheduleDeleteBtnClick('{{ delete_link }}');
+    });
+  </script>
+{% endblock scripts %}
+

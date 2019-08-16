@@ -4,19 +4,22 @@
     <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">
         <list>
+          <option value="W391" />
           <option value="W292" />
+          <option value="E501" />
+          <option value="E722" />
         </list>
       </option>
     </inspection_tool>
     <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredIdentifiers">
         <list>
+          <option value="gphoto2.CameraWidget" />
           <option value="gphoto2.*" />
-          <option value="models.Profile.objects" />
-          <option value="models.FavSection.*" />
-          <option value="models.FavField.*" />
-          <option value="models.Profile.*" />
-          <option value="django.db.models.fields.related.OneToOneField.delete" />
+          <option value="infrastructure.django_framework.camera_config.models.FavField.objects" />
+          <option value="camera_config.models.FavField.objects" />
+          <option value="scheduling.models.CronSchedule.*" />
+          <option value="scheduling.models.Timelapse.*" />
         </list>
       </option>
     </inspection_tool>

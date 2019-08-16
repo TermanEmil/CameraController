@@ -1,0 +1,29 @@
+{% extends './app_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <!-- Camera controls -->
+  <div class="sticky-top bg-light row">
+    <div class="col pull-right d-flex flex-row-reverse my-auto">
+      {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera_id %}
+    </div>
+    <br/>
+    <br/>
+  </div>
+  <br/>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {% for field in form.visible_fields %}
+      {% include './_camera_config_field.html' with field=field %}
+    {% endfor %}
+
+    <center>
+      <br/>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </center>
+  </form>
+</div>
+{% endblock content %}

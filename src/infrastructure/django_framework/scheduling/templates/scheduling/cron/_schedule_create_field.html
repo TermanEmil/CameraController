@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+
+<div class="row">
+  <div class="col-2">
+    <span class="text-primary">{{ field.label_tag }}</span>
+  </div>
+
+  <div class="col mb-1">
+    <div class="row">
+      <div class="col">
+        {% include 'shared/generic_field.html' %}
+      </div>
+
+      <div class="my-auto">
+        {% if field.help_text %}
+          <span class="text-info">
+        {% else %}
+          <span class="text-secondary">
+        {% endif %}
+          <i class="fa fa-info-circle" data-toggle="tooltip" title="{{ field.help_text|safe }}"></i>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</div>

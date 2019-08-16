@@ -1,0 +1,40 @@
+{% load widget_tweaks %}
+
+
+<div class="form-group row">
+  <label class="col-6 col-form-label text-right" for="{{ field.auto_id }}">
+
+    {% if form.tried_to_change and not form.managed_to_change %}
+      <i aria-hidden="true" class="fa fa-exclamation-triangle fa-fw text-warning" data-toggle="tooltip" title="Did not change"></i>
+    {% endif %}
+
+    {% if form.tried_to_change and form.managed_to_change %}
+      <i aria-hidden="true" class="fa fa-check fa-fw text-success" data-toggle="tooltip" title="Changed"></i>
+    {% endif %}
+    <span class="text-info">{{ field.label_tag }}</span>
+
+    {% if short_mode is True %}
+      <span class="text-secondary small">({{ field.help_text }})</span>
+    {% else %}
+      <br>
+      <span class="text-secondary small mr-2">{{ field.help_text }}</span>
+    {% endif %}
+  </label>
+
+  <div class="col-6">
+    {% if field.errors %}
+      {% render_field field class="form-control is-invalid" %}
+
+      {% for error in field.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+      {% endfor %}
+    {% else %}
+      {% if form.tried_to_change and form.managed_to_change %}
+        {% render_field field class="form-control is-valid" %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+    {% endif %}
+
+  </div>
+</div>

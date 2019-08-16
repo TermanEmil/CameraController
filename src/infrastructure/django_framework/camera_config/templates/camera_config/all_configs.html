@@ -1,0 +1,89 @@
+{% extends './app_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <form method="post" action="{% url 'all_configs' camera_id %}">
+    {% csrf_token %}
+    <div class="sticky-top row bg-light">
+      <hr />
+      <div class="col-6 my-auto">
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-light openall" type="button">Open all</button>
+        <button class="btn btn-light closeall" type="button">Close all</button>
+      </div>
+
+      <div class="col-6 pull-right d-flex flex-row-reverse my-auto">
+        {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera_id %}
+      </div>
+      <br/>
+      <br/>
+    </div>
+
+    <br/>
+    <div class="accordion">
+      {% for section in form.sections %}
+        <div class="card">
+          <div class="card-header">
+            <a class="card-link d-flex" data-toggle="collapse" href="#{{ section.name }}">
+
+              <span class="text-primary">{{ section.label }}</span>
+              {% if section.has_fields_that_did_not_manage_to_change %}
+                <span class="my-auto ml-2">
+                  <i aria-hidden="true"
+                     class="fa fa-exclamation-triangle fa-fw text-warning"
+                     data-toggle="tooltip"
+                     title="Some fields did not change"></i>
+                </span>
+              {% endif %}
+
+              {% if section.has_fields_that_manage_to_change %}
+                <span class="my-auto ml-2">
+                  <i aria-hidden="true"
+                     class="fa fa-check fa-fw text-success"
+                     data-toggle="tooltip"
+                     title="Some fields changed"></i>
+                </span>
+              {% endif %}
+
+              <span class="ml-auto d-flex">
+                {% if section.has_errors %}
+                  <span class="small align-items-center d-flex">
+                    <span class="badge badge-danger badge-pill mr-2">Errors</span>
+                  </span>
+                {% endif %}
+                <span class="text-secondary small ml-auto">{{ section.name }}</span>
+              </span>
+            </a>
+          </div>
+
+          <div class="collapse panel-collapse" id="{{ section.name }}">
+            <div class="card-body">
+              {% for form in section.form_fields %}
+                {% for field in form.visible_fields %}
+                  {% include './_camera_config_field.html' with field=field %}
+                {% endfor %}
+              {% empty %}
+                <div class="text-secondary small">Empty</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="text-secondary">Empty</div>
+      {% endfor %}
+    </div>
+
+  </form>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'camera_config/js/accordion_ctrls.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_remove_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_reconnect_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_capture_img_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_all_configs_btn_click.js' %}"></script>
+{% endblock scripts %}

@@ -1,0 +1,31 @@
+{% extends './app_base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="row">
+    <center class="col-5">
+        <img style="width:100%" src="{% url 'api/camera_preview_source' camera_id=camera.id %}">
+        <span class="text-primary">{{ camera.name }}</span>
+        <span class="text-secondary small">ID: {{ camera.id }}</span>
+
+        {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera.id %}
+    </center>
+
+    <div class="col-5">
+      <form method="post">
+        {% csrf_token %}
+
+        {% for form in form.form_fields %}
+          {% for field in form.visible_fields %}
+            {% include 'camera_config/_camera_config_field.html' with field=field %}
+          {% endfor %}
+        {% empty %}
+          <div class="text-secondary">No favourite fields</div>
+        {% endfor %}
+
+        <br/>
+        <button class="btn btn-primary pull-right" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends './app_base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="add-item text-center col-sm-12">
+        <ul class="list-group">
+
+          {% for camera in cameras %}
+            <li class="list-group-item">
+              <div class="row">
+
+                <div class="text-primary col-4 text-left" data-toggle="tooltip" title="Camera name">
+                  {{ camera.name|truncatechars:40 }}
+                </div>
+
+                <div class="ml-auto text-info px-3 small col-2">
+                  ID: {{ camera.id }}
+                </div>
+
+                <div class="ml-auto text-secondary px-3 small col-2" data-toggle="tooltip" title="Summary">
+                  {{ camera.summary }}
+                </div>
+
+                <div class="col-4 d-flex flex-row-reverse">
+                  {% include './_camera_buttons.html' with camera_id=camera.id %}
+                </div>
+
+              </div>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-primary big">No cameras detected</li>
+          {% endfor %}
+        </ul>
+
+        <br/>
+        <button class="btn btn-primary" onclick="camerasAutodetect()">Autodetect cameras</button>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+
+{% endblock content %}

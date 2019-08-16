@@ -1,10 +1,16 @@
 gphoto2==2.0.0
+pillow==6.1.0
+apscheduler==3.6.1
+
+object-mapper==1.0.7
+pinject==0.14.1
+python-dateutil==2.8.0
+pytz==2019.2
+
 Django==2.2.3
 django-simple-cookie-consent==0.1.1
 django-bootstrap4==0.0.8
-pillow==6.1.0
 django-widget-tweaks==1.4.5
-apscheduler==3.6.1
 django-apscheduler==0.3.0
 
 ./src/

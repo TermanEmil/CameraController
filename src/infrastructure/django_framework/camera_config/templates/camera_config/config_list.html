@@ -1,0 +1,37 @@
+{% extends './app_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <!-- Camera controls -->
+  <div class="sticky-top bg-light row">
+    <div class="col pull-right d-flex flex-row-reverse my-auto">
+      {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera_id %}
+    </div>
+    <br/>
+    <br/>
+  </div>
+
+  <div class="row">
+    <div class="add-item text-center col-12">
+      <h2 class="text-primary">Camera
+        <span class="text-secondary small">ID: {{ camera_id }}</span>
+      </h2>
+
+      <div class="list-group">
+
+        {% for config_name in config_names %}
+          <a href="{% url 'single_config' camera_id config_name %}"
+             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+
+            <span class="text-info">{{ config_name }}</span>
+          </a>
+        {% empty %}
+          <div class="text-info list-group-item">No configs found</div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

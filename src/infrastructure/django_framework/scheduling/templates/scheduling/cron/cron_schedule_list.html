@@ -1,0 +1,34 @@
+{% extends './base.html' %}
+{% load static %}
+{% load tz %}
+
+{% block content %}
+  {{ block.super }}
+
+  <div class="container">
+    <h3 class="text-primary">Schedules</h3>
+
+    <div class="list-group">
+      {% for schedule in object_list %}
+        <a
+          class="list-group-item list-group-item-action"
+          href="{% url 'cron/update' schedule.pk %}">
+
+          <div class="row">
+            <div class="col-8 text-primary">{{ schedule.name }}</div>
+            <div class="col-3 text-info small">{{ schedule.start_date|date:'H:i m-d' }} → {{ schedule.end_date|date:'H:i m-d' }}</div>
+            <div class="col-1 text-secondary small">Id: {{ schedule.pk }}</div>
+          </div>
+        </a>
+      {% empty %}
+        <div class="text-secondary">No schedules</div>
+      {% endfor %}
+    </div>
+
+    <br/>
+    <form action="{% url 'cron/create' %}">
+      <button type="submit" class="btn btn-primary">Create schedule</button>
+    </form>
+  </div>
+{% endblock content %}
+

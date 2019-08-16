@@ -1,0 +1,14 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block scripts %}
+  {{ block.super }}
+
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/app.js' %}"></script>
+
+  <!-- The camera ctrl buttons' scripts -->
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_remove_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_reconnect_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_capture_img_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_all_configs_btn_click.js' %}"></script>
+{% endblock scripts %}

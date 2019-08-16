@@ -1,0 +1,32 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+  {{ block.super }}
+
+  <div class="container">
+    <h3 class="text-primary">Timelapses</h3>
+    <div class="list-group">
+      {% for timelapse in object_list %}
+        <a
+          class="list-group-item list-group-item-action"
+          href="{% url 'timelapse/update' timelapse.pk %}">
+
+          <div class="row">
+            <div class="col-8 text-primary">{{ timelapse.name }}</div>
+            <div class="col-3 text-info small my-auto">Capture Index: {{ timelapse.capture_index }}</div>
+            <div class="col-1 text-secondary small my-auto">Id: {{ timelapse.pk }}</div>
+          </div>
+        </a>
+      {% empty %}
+        <div class="text-secondary">No schedules</div>
+      {% endfor %}
+    </div>
+
+    <br/>
+    <form action="{% url 'timelapse/create' %}">
+      <button type="submit" class="btn btn-primary">Create timelapse</button>
+    </form>
+  </div>
+{% endblock content %}
+
