@@ -6,7 +6,7 @@ from proj_settings.settings_facade import SettingsFacade
 
 
 def _get_log_msg(camera: Camera, filepath: str):
-    return 'Camera {}: Photo taken to {}'.format(camera.name, filepath)
+    return '{}: Photo taken to {}'.format(camera.name, filepath)
 
 
 def photo_taken_log(camera: Camera, filepath: str, **kwargs):

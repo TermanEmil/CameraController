@@ -8,7 +8,7 @@ from proj_settings.settings_facade import SettingsFacade
 
 
 def _get_log_msg(camera: Camera, error: str) -> str:
-    return 'Camera {}: Failed to take picture. Error: {}'.format(camera.name, error)
+    return '{}: Failed to take picture. Error: {}'.format(camera.name, error)
 
 
 def capture_error_log(camera: Camera, error: str, **kwargs):
