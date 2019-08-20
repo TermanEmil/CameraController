@@ -9,4 +9,5 @@ urlpatterns = [
     path('camera_config/', include('camera_config.urls')),
     path('settings/', include('proj_settings.urls')),
     path('scheduling/', include('scheduling.urls')),
+    path('logging/', include('proj_logging.urls')),
 ]

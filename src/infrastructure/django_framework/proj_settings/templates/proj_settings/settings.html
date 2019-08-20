@@ -2,6 +2,8 @@
 
 {% block content %}
   <div class="container">
-    <a href="{% url 'fav_fields' %}" class="text-primary"><i class="fa fa-heart mr-1"></i>Favourite camera configs</a>
+    <a href="{% url 'fav_fields' %}" class="text-primary">Favourite camera configs</a>
+    <br/>
+    <a href="{% url 'general_settings' pk=1 %}" class="text-primary">General settings</a>
   </div>
 {% endblock content %}

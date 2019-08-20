@@ -2,6 +2,7 @@ import pinject
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from adapters.utils.stub_camera import create_stub_camera
+from business.messaging.event_manager import EventManager
 from enterprise.camera_ctrl.camera_manager import CameraManager
 from enterprise.camera_ctrl.gphoto2.gp_camera_manager import GpCameraManager
 from scheduling.implementations.aps_scheduler import ApsScheduler
@@ -19,14 +20,26 @@ class CameraManagerSingleton:
     @staticmethod
     def get() -> CameraManager:
         if CameraManagerSingleton.instance is None:
-            CameraManagerSingleton.instance = create_stub_camera()
-            # CameraManagerSingleton.instance = GpCameraManager()
+            # CameraManagerSingleton.instance = create_stub_camera()
+            CameraManagerSingleton.instance = GpCameraManager()
 
         return CameraManagerSingleton.instance
 
 
+class EventManagerSingleton:
+    instance: EventManager = None
+
+    @staticmethod
+    def get() -> EventManager:
+        if EventManagerSingleton.instance is None:
+            EventManagerSingleton.instance = EventManager()
+
+        return EventManagerSingleton.instance
+
+
 class DjangoProjectBindingSpec(pinject.BindingSpec):
     def configure(self, bind):
+        bind('camera_manager_provider', to_instance=CameraManagerSingleton.get)
         bind('camera_manager', to_instance=CameraManagerSingleton.get())
 
         bind('favourite_config_repository', to_class=FavouriteConfigRepository)
@@ -36,7 +49,8 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('scheduler', to_class=ApsScheduler)
         bind('aps_scheduler', to_class=BackgroundScheduler)
 
-        bind('camera_manager_provider', to_instance=CameraManagerSingleton.get)
+        bind('event_manager_provider', to_instance=EventManagerSingleton.get)
+        bind('event_manager', to_instance=EventManagerSingleton.get())
 
 
 pinject_imports()

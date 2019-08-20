@@ -20,6 +20,8 @@
           <option value="camera_config.models.FavField.objects" />
           <option value="scheduling.models.CronSchedule.*" />
           <option value="scheduling.models.Timelapse.*" />
+          <option value="scheduling.models.HistoryUnit.objects" />
+          <option value="proj_logging.models.HistoryUnit.objects" />
         </list>
       </option>
     </inspection_tool>

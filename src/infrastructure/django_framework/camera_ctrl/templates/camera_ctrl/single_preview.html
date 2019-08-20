@@ -5,7 +5,7 @@
   <div class="row">
     <center class="col-5">
         <img style="width:100%" src="{% url 'api/camera_preview_source' camera_id=camera.id %}">
-        <span class="text-primary">{{ camera.name }}</span>
+        <span class="text-primary">{{ camera.name|truncatechars:12 }}</span>
         <span class="text-secondary small">ID: {{ camera.id }}</span>
 
         {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera.id %}

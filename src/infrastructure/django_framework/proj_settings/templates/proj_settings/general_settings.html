@@ -1,0 +1,19 @@
+{% extends './app_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <h4 class="text-primary">General settings</h4>
+    <br/>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% include 'shared/generic_form.html' %}
+
+      <hr/>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock content %}

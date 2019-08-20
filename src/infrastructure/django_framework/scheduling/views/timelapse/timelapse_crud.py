@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseServerError
 from django.views.generic import CreateView, ListView, UpdateView, View
 

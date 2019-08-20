@@ -10,3 +10,5 @@ services:
     privileged: true
     volumes:
       - ..:/app
+      - /dev/bus/usb:/dev/bus/usb
+      - /run/udev:/run/udev:ro
