@@ -2,9 +2,6 @@
 **/.DS_store
 **/tmpf*
 
-# -- current_state
-**/*.json
-
 # -- media
 **/*.mjpg
 **/*.mjpeg

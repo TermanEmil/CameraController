@@ -1,0 +1,32 @@
+[
+  {
+    "model": "camera_config.FavField",
+    "fields": {
+      "name": "shutterspeed"
+    }
+  },
+  {
+    "model": "camera_config.FavField",
+    "fields": {
+      "name": "iso"
+    }
+  },
+  {
+    "model": "camera_config.FavField",
+    "fields": {
+      "name": "f-number"
+    }
+  },
+  {
+    "model": "camera_config.FavField",
+    "fields": {
+      "name": "quality"
+    }
+  },
+  {
+    "model": "camera_config.FavField",
+    "fields": {
+      "name": "imagequality"
+    }
+  }
+]

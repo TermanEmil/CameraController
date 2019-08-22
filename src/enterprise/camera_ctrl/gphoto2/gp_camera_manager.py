@@ -64,12 +64,10 @@ class GpCameraManager(CameraManager):
             self._cameras_dict.pop(camera_id)
 
     def disconnect_all(self):
-        print('Disconnecting from all cameras...')
         with self._cameras_dict_lock:
             for camera in self._cameras_dict.values():
                 assert isinstance(camera, GpCamera)
                 camera.disconnect()
 
             self._cameras_dict.clear()
-        print('Disconnected from all cameras')
 

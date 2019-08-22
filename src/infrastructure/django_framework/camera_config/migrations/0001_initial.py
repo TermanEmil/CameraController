@@ -12,14 +12,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='HistoryUnit',
+            name='FavField',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('log_type', models.CharField(max_length=32)),
-                ('category', models.CharField(max_length=32, null=True)),
-                ('title', models.CharField(max_length=64)),
-                ('content', models.CharField(max_length=256)),
-                ('created_time', models.DateTimeField(auto_now=True, null=True)),
+                ('name', models.CharField(max_length=128)),
             ],
         ),
     ]

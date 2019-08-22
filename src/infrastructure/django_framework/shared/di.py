@@ -1,5 +1,8 @@
+from typing import Optional
+
 import pinject
 from apscheduler.schedulers.background import BackgroundScheduler
+from pinject.object_graph import ObjectGraph
 
 from adapters.utils.stub_camera import create_stub_camera
 from business.messaging.event_manager import EventManager
@@ -53,6 +56,15 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('event_manager', to_instance=EventManagerSingleton.get())
 
 
-pinject_imports()
-obj_graph = pinject.new_object_graph(
-    binding_specs=(DjangoProjectBindingSpec(),))
+_obj_graph: Optional[ObjectGraph] = None
+
+
+def obj_graph() -> ObjectGraph:
+    global _obj_graph
+
+    if _obj_graph is None:
+        pinject_imports()
+        _obj_graph = pinject.new_object_graph(binding_specs=(DjangoProjectBindingSpec(),))
+
+    return _obj_graph
+
