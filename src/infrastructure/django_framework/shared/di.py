@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 import pinject
@@ -10,11 +11,10 @@ from enterprise.camera_ctrl.camera_manager import CameraManager
 from enterprise.camera_ctrl.gphoto2.gp_camera_manager import GpCameraManager
 from scheduling.implementations.aps_scheduler import ApsScheduler
 from shared.repositories.timelapse_repository import TimelapseRepository
-from .repositories.favourite_config_repository import FavouriteConfigRepository
-from .repositories.cron_schedule_repository import CronScheduleRepository
-
 # Imports used by pinject
 from .di_imports import pinject_imports
+from .repositories.cron_schedule_repository import CronScheduleRepository
+from .repositories.favourite_config_repository import FavouriteConfigRepository
 
 
 class CameraManagerSingleton:
@@ -23,8 +23,10 @@ class CameraManagerSingleton:
     @staticmethod
     def get() -> CameraManager:
         if CameraManagerSingleton.instance is None:
-            # CameraManagerSingleton.instance = create_stub_camera()
-            CameraManagerSingleton.instance = GpCameraManager()
+            if 'USE_STUB' in os.environ:
+                CameraManagerSingleton.instance = create_stub_camera()
+            else:
+                CameraManagerSingleton.instance = GpCameraManager()
 
         return CameraManagerSingleton.instance
 
