@@ -9,6 +9,7 @@ class LogsList(ListView):
     model = HistoryUnit
     template_name = 'proj_logging/logs_list.html'
     paginate_by = 30
+    allow_empty = True
     ordering = ['-created_time']
 
     def get_queryset(self):
@@ -29,6 +30,9 @@ class LogsList(ListView):
 class LogsDelete(DeleteView):
     model = HistoryUnit
     success_url = reverse_lazy('all_logs')
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
 
 class LogsDeleteAll(View):

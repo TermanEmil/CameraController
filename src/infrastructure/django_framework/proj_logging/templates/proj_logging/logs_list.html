@@ -10,7 +10,7 @@
         All
       </a>
 
-      <a href="{% url 'all_logs' %}?log_type=ERROR" role="button" aria-pressed="true"
+      <a href="{% url 'all_logs' %}?log_type=ERROR&{{ request.GET.urlencode }}" role="button" aria-pressed="true"
          class="btn btn-danger btn-sm">
         Errors
       </a>
@@ -18,7 +18,7 @@
       <form method="get" action="." class="form-group d-flex my-2">
         <input  id="search_box" type="text" name="search" placeholder="Search..." class="form-control">
         <button id="search_submit" type="submit" class="btn btn-primary ml-2">Search</button>
-    </form>
+      </form>
     </div>
     <hr/>
 
@@ -54,9 +54,10 @@
 
               <div class="row">
                 <div class="col small d-flex flex-row-reverse">
-                  <form action="{% url 'delete' log.id %}" method="POST">
+                  <form action="{% url 'delete' log.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="close" value="DELETE">
+
+                    <button type="submit" class="close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </form>
@@ -76,14 +77,14 @@
             <span class="page-links">
 
                 {% if page_obj.has_previous %}
-                  <a href="{% url 'all_logs' %}?page={{ page_obj.previous_page_number }}" role="button" aria-pressed="true"
+                  <a href="{% url 'all_logs' %}?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" role="button" aria-pressed="true"
                      class="btn btn-primary btn-sm">
                     Previous
                   </a>
                 {% endif %}
 
                 {% if page_obj.has_next %}
-                  <a href="{% url 'all_logs' %}?page={{ page_obj.next_page_number }}" role="button" aria-pressed="true"
+                  <a href="{% url 'all_logs' %}?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" role="button" aria-pressed="true"
                      class="btn btn-primary btn-sm">
                     Next
                   </a>
