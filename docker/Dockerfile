@@ -15,3 +15,6 @@ RUN python ./src/infrastructure/django_framework/manage.py loaddata fav_field_in
 
 # Create default superuser
 RUN cat web/create_default_superuser.sh | python ./src/infrastructure/django_framework/manage.py shell
+
+# Migrate again coz of some shit.
+RUN python ./src/infrastructure/django_framework/manage.py migrate
