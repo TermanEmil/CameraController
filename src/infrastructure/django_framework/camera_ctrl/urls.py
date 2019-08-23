@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/camera_reconnect/<str:camera_id>', camera_reconnect_view_factory()),
     path('api/camera_capture_img_and_download/<str:camera_id>', camera_capture_img_and_download_factory()),
     path('api/camera_preview_source/<str:camera_id>', camera_preview_source_factory(), name='api/camera_preview_source'),
+    path('api/cameras_hard_reset_all', cameras_hard_reset_all(), name='api/cameras_hard_reset_all'),
 ]

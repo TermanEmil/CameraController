@@ -1,4 +1,3 @@
-from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
 from adapters.scheduling.schedule_service import ScheduleService
 from business.messaging.event_manager import EventManager
 from business.timelapse.events import TimelapseEvents
@@ -8,6 +7,10 @@ from scheduling.events.photo_taken import photo_taken_log, photo_taken_log_to_db
 
 
 # noinspection PyMethodMayBeStatic
+from scheduling.events.timelapse_error import timelapse_error_send_email, TimelapseErrorHardReset
+from shared.di import obj_graph
+
+
 class Startup:
     def __init__(
             self,
@@ -55,3 +58,7 @@ class Startup:
         self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_log)
         self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_send_email)
         self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_log_to_db)
+
+        timelapse_error_hard_reset = obj_graph().provide(TimelapseErrorHardReset)
+        self._event_manager.register(TimelapseEvents.TIMELAPSE_ERROR, timelapse_error_hard_reset.run)
+        self._event_manager.register(TimelapseEvents.TIMELAPSE_ERROR, timelapse_error_send_email)

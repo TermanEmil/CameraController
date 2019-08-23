@@ -8,6 +8,7 @@ from business.messaging.event_manager import EventManager
 from business.scheduling.timelapse_repository import TimelapseRepository
 from business.timelapse.events import TimelapseEvents
 from business.timelapse.naming_tricks import apply_naming_tricks
+from business.utils.thread_with_return_value import ThreadWithReturnValue
 from enterprise.camera_ctrl.camera import Camera
 from enterprise.camera_ctrl.camera_manager import CameraManager
 from enterprise.scheduling.timelapse import Timelapse
@@ -18,6 +19,8 @@ def timelapse_func(
         timelapse_repository: TimelapseRepository,
         camera_manager_provider: Callable[[], CameraManager],
         event_manager_provider: Callable[[], EventManager]):
+
+    timelapse_errors = []
 
     event_manager = event_manager_provider()
 
@@ -32,12 +35,18 @@ def timelapse_func(
         capture_task.start()
 
     for capture_task in img_capture_tasks:
-        capture_task.join()
+        return_value = capture_task.join()
+        if return_value:
+            timelapse_errors.append(return_value)
 
     timelapse.capture_index += 1
     timelapse_repository.update(timelapse)
 
     event_manager.trigger_event(TimelapseEvents.ALL_PHOTOS_TAKEN, kwargs={'timelapse': timelapse})
+
+    if len(timelapse_errors) != 0:
+        kwargs = {'timelapse': timelapse, 'errors': timelapse_errors}
+        event_manager.trigger_event(TimelapseEvents.TIMELAPSE_ERROR, kwargs=kwargs)
 
 
 def _create_img_capture_tasks(
@@ -67,14 +76,16 @@ def _create_img_capture_tasks(
             event_manager.trigger_event(TimelapseEvents.CAPTURE_ERROR, kwargs={'camera': camera, 'error': error})
             continue
 
-        yield threading.Thread(target=_capture_picture, args=(camera, storage_dir, filename, event_manager))
+        yield ThreadWithReturnValue(target=_capture_picture, args=(camera, storage_dir, filename, event_manager))
 
 
 def _capture_picture(camera: Camera, storage_dir: dir, filename: dir, event_manager: EventManager):
     try:
         filepath = camera.capture_img(storage_dir, filename)
     except Exception as e:
-        event_manager.trigger_event(TimelapseEvents.CAPTURE_ERROR, kwargs={'camera': camera, 'error': str(e)})
-        return
+        kwargs = {'camera': camera, 'error': str(e)}
+        event_manager.trigger_event(TimelapseEvents.CAPTURE_ERROR, kwargs=kwargs)
+        return kwargs
 
     event_manager.trigger_event(TimelapseEvents.PHOTO_TAKEN, kwargs={'camera': camera, 'filepath': filepath})
+    return None

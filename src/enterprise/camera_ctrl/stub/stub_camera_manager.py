@@ -1,3 +1,5 @@
+from threading import Lock
+
 from ..camera_manager import CameraManager
 from ..camera import Camera
 
@@ -6,6 +8,11 @@ class StubCameraManager(CameraManager):
     def __init__(self, cameras):
         self._cameras = {}
         self._cameras_to_detect = cameras
+        self._stub_lock = Lock()
+
+    @property
+    def sync_lock(self) -> Lock:
+        return self._stub_lock
 
     @property
     def cameras(self):

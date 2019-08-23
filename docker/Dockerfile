@@ -8,3 +8,4 @@ RUN	./scripts/install_ykush.sh ||  echo 'Ykush failed to install. Ignoring' >&2
 
 ENV PYTHONUNBUFFERED 1
 RUN pip install -r requirements.txt
+RUN pip install -e ./src/

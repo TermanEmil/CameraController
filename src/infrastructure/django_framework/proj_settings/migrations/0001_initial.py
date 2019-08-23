@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='GeneralSettings',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('send_email_on_error', models.BooleanField(default=True)),
+                ('send_email_on_capture_error', models.BooleanField(default=True)),
                 ('log_to_db_timelapse_capture', models.BooleanField(default=False, verbose_name='Log timelapse capture')),
                 ('log_to_db_camera_capture', models.BooleanField(default=False, verbose_name='Log camera capture')),
                 ('autodetect_cameras_on_start', models.BooleanField(default=True)),

@@ -28,9 +28,8 @@ function cameraCaptureImgBtnClick(element, cameraId) {
         },
 
         error: function(data) {
-            msg = "Failed to capture picture: " + data.responseText;
-            alert(msg);
-        },
+            alert('Failed to capture picture');
+        }
     }).always(function() {
         iconElement.className = iconClassNameSave;
         element.onclick = elementOnClickSave;

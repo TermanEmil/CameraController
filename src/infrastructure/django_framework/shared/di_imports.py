@@ -10,6 +10,7 @@ def pinject_imports():
     import business.camera.ctrl.reconnect_bl_rule
     import business.camera.ctrl.capture_img_and_download_bl_rule
     import business.camera.ctrl.capture_preview_bl_rule
+    import business.camera.ctrl.hard_reset_all_cameras_bl_rule
 
     import business.camera.config.get_all_config_names_bl_rule
     import business.camera.config.get_config_bl_rule
@@ -24,3 +25,5 @@ def pinject_imports():
 
     import adapters.camera.ctrl.camera_ctrl_service
     import adapters.camera.configs.camera_config_service
+
+    import scheduling.events.timelapse_error

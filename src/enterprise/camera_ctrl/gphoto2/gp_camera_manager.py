@@ -43,6 +43,10 @@ class GpCameraManager(CameraManager):
                 print('Detect all: {0}'.format(e))
 
     @property
+    def sync_lock(self) -> Lock:
+        return self._gp_lock
+
+    @property
     def cameras(self) -> iter:
         with self._cameras_dict_lock:
             return list(self._cameras_dict.values())

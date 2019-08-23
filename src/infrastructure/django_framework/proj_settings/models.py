@@ -19,7 +19,11 @@ class SingletonModel(models.Model):
 
 
 class GeneralSettings(SingletonModel):
-    send_email_on_error = models.BooleanField(default=True)
+    send_email_on_timelapse_error = models.BooleanField(default=True)
+    hard_reset_on_timelapse_error = models.BooleanField(default=True)
+    seconds_to_wait_after_hard_reset = models.IntegerField(default=2)
+
+    send_email_on_capture_error = models.BooleanField(default=False)
 
     log_to_db_timelapse_capture = models.BooleanField(default=False, verbose_name='Log timelapse capture')
     log_to_db_camera_capture = models.BooleanField(default=False, verbose_name='Log camera capture')

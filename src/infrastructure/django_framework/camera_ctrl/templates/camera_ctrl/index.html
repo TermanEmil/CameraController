@@ -35,10 +35,29 @@
         </ul>
 
         <br/>
-        <button class="btn btn-primary" onclick="camerasAutodetect()">Autodetect cameras</button>
+        <div>
+          <button class="btn btn-primary pull-left" onclick="camerasAutodetect()">Autodetect cameras</button>
+
+          <button
+            class="btn btn-danger btn-sm pull-right"
+            onclick="hardResetBtnClick(this, this.value)"
+            value="{% url 'api/cameras_hard_reset_all' %}"
+            data-toggle="tooltip" title="Hard reset ykush3 board"
+          >
+            <span class="spinner spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+            Hard reset
+          </button>
+
+        </div>
       </div>
     </div>
   </div>
 
   <br />
 {% endblock content %}
+
+{% block scripts %}
+  {{ block.super }}
+
+  <script type="text/javascript" src="{% static 'camera_ctrl/js/hard_reset_btn_click.js' %}"></script>
+{% endblock scripts %}
