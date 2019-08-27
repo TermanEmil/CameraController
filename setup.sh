@@ -1,14 +1,4 @@
 #!/usr/bin/env bash
+set -e
 
-# Installs
-apt-get update && apt-get install -y \
-    nfs-common \
-    inotify-tools
-
-./scripts/install_python.sh
-./scripts/install_gphoto2.sh
-./scripts/install_ykush.sh
-
-
-# Other
-./scripts/mount_nfs.sh
+./scripts/setup_web_app.sh

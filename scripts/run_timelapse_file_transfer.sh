@@ -10,6 +10,9 @@
 PATH_TO_WATCH='./Timelapses/'
 PATH_TO_MOVE_FILES_TO='/Mounted/Cern/Timelapse/Software/Timelapses'
 
+mkdir -p ${PATH_TO_WATCH};
+mkdir -p ${PATH_TO_MOVE_FILES_TO};
+
 inotifywait -r -m ${PATH_TO_WATCH} -e close_write -e moved_to |
     while read path action file; do
         echo "The file '$file' appeared in directory '$path' via '$action'";
@@ -28,7 +31,7 @@ inotifywait -r -m ${PATH_TO_WATCH} -e close_write -e moved_to |
 
             echo 'Trying to send an email about this accident...';
             { # try
-                curl localhost:5000/scheduling/api/sync_failed_error_email_send
+                curl localhost:5000/scheduling/api/sync_failed_error_email_send;
             } || { # catch
                 echo 'Failed to send email' >&2;
             }
