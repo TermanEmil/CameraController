@@ -13,6 +13,10 @@ class SettingsFacade:
         return GeneralSettings.get().send_email_on_timelapse_error
 
     @property
+    def send_email_on_sync_error(self) -> bool:
+        return GeneralSettings.get().send_email_on_sync_error
+
+    @property
     def seconds_to_wait_after_hard_reset(self) -> int:
         return GeneralSettings.get().seconds_to_wait_after_hard_reset
 
