@@ -1,6 +1,7 @@
 import os
 import typing
 import time
+from threading import Lock
 
 from business.camera import exceptions
 from business.camera.ctrl.autodetect_bl_rule import AutodetectBlRule
@@ -37,7 +38,9 @@ class CameraCtrlService:
         self._reconnect_bl_rule = reconnect_bl_rule
         self._capture_img_and_download_bl_rule = capture_img_and_download_bl_rule
         self._capture_preview_bl_rule = capture_preview_bl_rule
+
         self._hard_reset_all_cameras_bl_rule = hard_reset_all_cameras_bl_rule
+        self._hard_reset_lock = Lock()
 
     def cameras_autodetect(self):
         self._autodetect_bl_rule.execute()
@@ -90,10 +93,13 @@ class CameraCtrlService:
             raise CameraNotFound(e)
 
     def hard_reset_all_cameras(self, wait_seconds_after_reset: int = None):
-        with self._camera_manager.sync_lock:
-            self._hard_reset_all_cameras_bl_rule.execute()
+        with self._hard_reset_lock:
+            try:
+                with self._camera_manager.all_locks:
+                    self._hard_reset_all_cameras_bl_rule.execute()
 
-            if wait_seconds_after_reset:
-                time.sleep(wait_seconds_after_reset)
+                    if wait_seconds_after_reset:
+                        time.sleep(wait_seconds_after_reset)
 
-        self._autodetect_bl_rule.execute()
+            finally:
+                self._autodetect_bl_rule.execute()

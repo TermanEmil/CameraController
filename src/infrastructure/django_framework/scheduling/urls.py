@@ -1,3 +1,5 @@
+import sys
+
 from django.conf.urls import url
 from django.urls import path
 from django.views.generic import RedirectView
@@ -21,3 +23,13 @@ urlpatterns = [
 
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
 ]
+
+
+def startup():
+    if 'runserver' not in sys.argv:
+        return
+
+    startup_factory().run()
+
+
+startup()

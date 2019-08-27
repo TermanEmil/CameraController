@@ -1,9 +1,14 @@
+from threading import Lock
 from typing import Iterable
 
 from .camera_config import CameraConfig, CameraConfigField
 
 
 class Camera:
+    @property
+    def sync_lock(self) -> Lock:
+        raise NotImplementedError()
+
     @property
     def name(self) -> str:
         raise NotImplementedError()

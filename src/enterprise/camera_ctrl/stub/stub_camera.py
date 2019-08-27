@@ -1,3 +1,5 @@
+from threading import Lock
+
 from ..camera import Camera
 from ..camera_config import CameraConfig, CameraConfigField
 from PIL import Image, ImageDraw
@@ -12,6 +14,11 @@ class StubCamera(Camera):
         self._id = camera_id
         self._serial_nb = serial_nb
         self._config = config
+        self._sync_lock = Lock()
+
+    @property
+    def sync_lock(self) -> Lock:
+        return self._sync_lock
 
     @property
     def name(self):

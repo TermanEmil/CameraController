@@ -7,7 +7,6 @@ services:
     command: python ./src/infrastructure/django_framework/manage.py runserver 0.0.0.0:5000
     ports:
       - "5000:5000"
-    restart: on-failure
     privileged: true
     volumes:
       - ..:/app

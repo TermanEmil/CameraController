@@ -1,5 +1,6 @@
 from threading import Lock
 
+from enterprise.camera_ctrl.utils.multi_lock import MultiLock
 from ..camera_manager import CameraManager
 from ..camera import Camera
 
@@ -9,6 +10,12 @@ class StubCameraManager(CameraManager):
         self._cameras = {}
         self._cameras_to_detect = cameras
         self._stub_lock = Lock()
+
+    @property
+    def all_locks(self) -> MultiLock:
+        locks = [camera.sync_lock for camera in self.cameras]
+        locks.append(self._stub_lock)
+        return MultiLock(locks)
 
     @property
     def sync_lock(self) -> Lock:
