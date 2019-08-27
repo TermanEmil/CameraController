@@ -3,7 +3,7 @@ set -e;
 
 ./scripts/install_python.sh
 ./scripts/install_gphoto2.sh
-./scripts/install_ykush.sh
+./scripts/install_ykush.sh || echo 'Failed to install ykush --- Ignoring' >&2
 
 apt-get update && apt-get install -y virtualenv python3.7-dev
 
