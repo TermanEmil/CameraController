@@ -15,7 +15,7 @@ inotifywait -r -m ${PATH_TO_WATCH} -e close_write -e moved_to |
         echo "The file '$file' appeared in directory '$path' via '$action'";
 	
         { # try
-            rsync -rvh --chmod=a+rw ${PATH_TO_WATCH} ${PATH_TO_MOVE_FILES_TO} --remove-source-files;
+            rsync -rvh --chmod=a+rw --perms ${PATH_TO_WATCH} ${PATH_TO_MOVE_FILES_TO} --remove-source-files;
         } || { # catch
             echo 'Failed to sync folders' >&2;
             echo 'Trying to (re)mount...';

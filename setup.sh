@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Installs
-
 apt-get update && apt-get install -y \
     nfs-common \
     inotify-tools
