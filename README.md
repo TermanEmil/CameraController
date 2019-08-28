@@ -49,6 +49,38 @@ By default, it will wait for any changes in `./Timelapses` and move the files to
 The file transfer will work even if the nfs server was not mounted. It will simply move the files to a different directory.
 
 
+## Max
+
+#### Web app
+Run the web app as sudo in background:
+~~~bash
+sudo bash -c 'source .venv/bin/activate && ./run.sh 2>&1 1>> out.log &'
+~~~
+
+You will need `sudo` for ykush thing.
+
+The output will be written in out.log.
+
+
+#### NFS file transfer
+
+Mount the nfs server. It will mount the nfs server to `/Mounted/Cern/`
+~~~bash
+sudo ./scripts/mount_nfs.sh
+~~~
+
+To make sure it has been successfully mounted, run a quick check:
+~~~bash
+ls /Mounted/Cern/
+~~~
+You should see a list with all the files/directories in the nfs server
+
+To continuously transfer the files, run:
+~~~bash
+sudo ./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
+~~~
+
+The output will be written in sync.log.
 
 # Screenshots
 **Index:**

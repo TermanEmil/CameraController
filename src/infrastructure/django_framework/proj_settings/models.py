@@ -22,12 +22,12 @@ class GeneralSettings(SingletonModel):
     send_email_on_timelapse_error = models.BooleanField(default=True)
     hard_reset_on_timelapse_error = models.BooleanField(default=True)
     send_email_on_sync_error = models.BooleanField(default=True)
-    seconds_to_wait_after_hard_reset = models.FloatField(default=1.0)
+    seconds_to_wait_after_hard_reset = models.FloatField(default=5.0)
 
     send_email_on_capture_error = models.BooleanField(default=False)
 
     log_to_db_timelapse_capture = models.BooleanField(default=False, verbose_name='Log timelapse capture')
-    log_to_db_camera_capture = models.BooleanField(default=False, verbose_name='Log camera capture')
+    log_to_db_camera_capture = models.BooleanField(default=True, verbose_name='Log camera capture')
 
     autodetect_cameras_on_start = models.BooleanField(default=True)
 
