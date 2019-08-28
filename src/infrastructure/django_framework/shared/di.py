@@ -11,7 +11,6 @@ from enterprise.camera_ctrl.camera_manager import CameraManager
 from enterprise.camera_ctrl.gphoto2.gp_camera_manager import GpCameraManager
 from scheduling.implementations.aps_scheduler import ApsScheduler
 from shared.repositories.timelapse_repository import TimelapseRepository
-# Imports used by pinject
 from .di_imports import pinject_imports
 from .repositories.cron_schedule_repository import CronScheduleRepository
 from .repositories.favourite_config_repository import FavouriteConfigRepository
