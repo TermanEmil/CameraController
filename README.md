@@ -29,7 +29,7 @@ Requirements:
 Install the python packages from `./requiremenets.txt`
 
 ## How to run
-`$ ./run.sh` - it should start the web app at the port 5000.
+`$ ./run.sh` - it should start the web app at the port 80.
 
 
 ## Timelapse file transfer
@@ -51,22 +51,44 @@ The file transfer will work even if the nfs server was not mounted. It will simp
 
 ## Max
 
-#### Web app
-Run the web app as sudo in background:
+Before everything, I would suggest running: `sudo su` to run the below commands as sudo.
+
+#### Setup
+This will setup both web app and file transfer.
 ~~~bash
-sudo bash -c 'source .venv/bin/activate && ./run.sh 2>&1 1>> out.log &'
+./setup.sh
 ~~~
 
-You will need `sudo` for ykush thing.
+To setup only the web app:
+~~~bash
+./scripts/setup_web_app.sh
+~~~
+
+To setup only the file transfer (install dependencies and mount nfs server):
+~~~bash
+./scripts/setup_timelapse_file_transfer.sh
+~~~
+
+
+#### Web app
+Run the web app in background:
+~~~bash
+bash -c 'source .venv/bin/activate && ./run.sh 2>&1 1>> out.log &'
+~~~
 
 The output will be written in out.log.
+
+If you get an error like: 'The port is already in use', then the server has already been started. To close it, run:
+~~~bash
+pkill -f run.sh # Kill all processes containing 'run.sh'
+~~~
 
 
 #### NFS file transfer
 
 Mount the nfs server. It will mount the nfs server to `/Mounted/Cern/`
 ~~~bash
-sudo ./scripts/mount_nfs.sh
+./scripts/mount_nfs.sh
 ~~~
 
 To make sure it has been successfully mounted, run a quick check:
@@ -77,7 +99,7 @@ You should see a list with all the files/directories in the nfs server
 
 To continuously transfer the files, run:
 ~~~bash
-sudo ./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
+./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
 ~~~
 
 The output will be written in sync.log.
