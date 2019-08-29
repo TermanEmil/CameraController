@@ -80,7 +80,7 @@ The output will be written in out.log.
 
 If you get an error like: 'The port is already in use', then the server has already been started. To close it, run:
 ~~~bash
-pkill -f run.sh # Kill all processes containing 'run.sh'
+pkill -f runserver # Kill all processes containing 'runserver'
 ~~~
 
 
@@ -99,7 +99,7 @@ You should see a list with all the files/directories in the nfs server
 
 To continuously transfer the files, run:
 ~~~bash
-./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
+./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log &
 ~~~
 
 The output will be written in sync.log.
