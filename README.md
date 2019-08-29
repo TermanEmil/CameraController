@@ -107,7 +107,13 @@ The output will be written in sync.log.
 #### Start everything on system boot:
 This explains how to automatically start the web app and file transfer at boot.
 
-For this, we need to add a root cron job.
+First, make sure `vim` is installed:
+~~~bash
+sudo apt update
+sudo apt install vim
+~~~
+
+Next, add a root cron job:
 ~~~bash
 sudo crontab -e
 ~~~
@@ -116,12 +122,18 @@ Choose `vim` (to edit the crontab file through vim text editor).
 Now, at the end of the file, add the following:
 ~~~
 SHELL=/bin/bash
-@reboot cd /home/nucpcaps2/CameraController/ && source .venv/bin/activate && ./run.sh 2>&1 1>> ./out.loge
+@reboot cd /home/nucpcaps2/CameraController/ && source .venv/bin/activate && ./run.sh 2>&1 1>> ./out.log
 @reboot cd /home/nucpcaps2/CameraController/ && ./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
 ~~~
 Save & exit.
 
 Reboot to see if it works.
+
+#### Autodetect cameras every 5 minutes
+Add a cron job (described above). No need for root privileges:
+~~~bash
+*/5 * * * * curl localhost:80/api/cameras_autodetect
+~~~
 
 # Screenshots
 **Index:**

@@ -4,7 +4,7 @@
 #  inotify-tools
 #
 # ./scripts/mount_nfs.sh
-# [Optional] For emailing: the web app should be running: localhost:5000 should be accessible.
+# [Optional] For emailing: the web app should be running: localhost:80 should be accessible.
 
 
 PATH_TO_WATCH='./Timelapses/'
@@ -50,7 +50,7 @@ inotifywait -r -m ${PATH_TO_WATCH} -e close_write -e moved_to |
 
             echo 'Trying to send an email about this accident...';
             { # try
-                curl localhost:5000/scheduling/api/sync_failed_error_email_send;
+                curl localhost/scheduling/api/sync_failed_error_email_send;
             } || { # catch
                 echo 'Failed to send email' >&2;
             }
