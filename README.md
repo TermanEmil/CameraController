@@ -122,8 +122,8 @@ Choose `vim` (to edit the crontab file through vim text editor).
 Now, at the end of the file, add the following:
 ~~~
 SHELL=/bin/bash
-@reboot cd /home/nucpcaps2/CameraController/ && source .venv/bin/activate && ./run.sh 2>&1 1>> ./out.log
-@reboot cd /home/nucpcaps2/CameraController/ && ./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
+@reboot cd /home/*/CameraController/ && source .venv/bin/activate && ./run.sh 2>&1 1>> ./out.log
+@reboot cd /home/*/CameraController/ && ./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
 ~~~
 Save & exit.
 
