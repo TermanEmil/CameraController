@@ -15,7 +15,7 @@ class GeneralSettingsUpdateView(UpdateView):
         'seconds_to_wait_after_hard_reset',
         'send_email_on_capture_error',
         'send_email_on_sync_error',
-        'log_to_db_timelapse_capture',
         'log_to_db_camera_capture',
         'autodetect_cameras_on_start',
-        'emails']
+        'emails',
+        'email_subject_prefix']

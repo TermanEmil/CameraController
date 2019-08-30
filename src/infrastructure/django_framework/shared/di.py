@@ -9,7 +9,9 @@ from adapters.utils.stub_camera import create_stub_camera
 from business.messaging.event_manager import EventManager
 from enterprise.camera_ctrl.camera_manager import CameraManager
 from enterprise.camera_ctrl.gphoto2.gp_camera_manager import GpCameraManager
+from proj_settings.settings_facade import SettingsFacade
 from scheduling.implementations.aps_scheduler import ApsScheduler
+from shared.implementations.django_email_sender import DjangoEmailSender
 from shared.repositories.timelapse_repository import TimelapseRepository
 from .di_imports import pinject_imports
 from .repositories.cron_schedule_repository import CronScheduleRepository
@@ -55,6 +57,9 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
 
         bind('event_manager_provider', to_instance=EventManagerSingleton.get)
         bind('event_manager', to_instance=EventManagerSingleton.get())
+
+        bind('emailing_settings', to_class=SettingsFacade)
+        bind('email_sender', to_class=DjangoEmailSender)
 
 
 _obj_graph: Optional[ObjectGraph] = None
