@@ -1,8 +1,18 @@
 {% extends './base.html' %}
+{% load static %}
+
 
 {% block content %}
+  {{ block.super }}
+
   <div class="container">
     <h4 class="text-primary">Logs</h4>
+
+    <span class="small text-info">
+      UTC time: <span id="live-utc-clock"></span>
+    </span>
+    <br/>
+    <br/>
 
     <div >
       <a href="{% url 'all_logs' %}" role="button" aria-pressed="true"
@@ -104,3 +114,10 @@
     </form>
   </div>
 {% endblock content %}
+
+
+{% block scripts %}
+  {{ block.super }}
+
+  <script type="text/javascript" src="{% static 'shared/js/live_utc_clock.js' %}"></script>
+{% endblock scripts %}
