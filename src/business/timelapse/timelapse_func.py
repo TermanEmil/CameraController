@@ -80,7 +80,6 @@ def _create_img_capture_tasks(
 def _capture_picture(camera: Camera, storage_dir: dir, filename: dir, event_manager: EventManager):
     try:
         filepath = camera.capture_img(storage_dir, filename)
-        raise Exception('test')
     except Exception as e:
         kwargs = {'camera': camera, 'error': str(e)}
         event_manager.trigger_event(TimelapseEvents.CAPTURE_ERROR, kwargs=kwargs)
