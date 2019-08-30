@@ -4,6 +4,7 @@ from typing import Iterable
 from django.core.mail import send_mail
 
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
+from adapters.emailing.email_service import EmailService
 from enterprise.camera_ctrl.camera import Camera
 from enterprise.scheduling.timelapse import Timelapse
 from proj_settings.settings_facade import SettingsFacade
@@ -25,21 +26,23 @@ def _get_log_msg(timelapse: Timelapse, errors: Iterable[dict]) -> str:
     return msg
 
 
-def timelapse_error_send_email(timelapse: Timelapse, errors: Iterable[dict], **kwargs):
-    settings = SettingsFacade()
-    if not settings.send_email_on_timelapse_error:
-        return
+class TimelapseErrorSendEmail:
+    def __init__(self, email_service: EmailService):
+        self._email_service = email_service
 
-    try:
-        send_mail(
-            subject='Timelapse failed',
-            message=_get_log_msg(timelapse, errors),
-            from_email='devemail42@gmail.com',
-            recipient_list=list(settings.emails),
-            fail_silently=False)
+    def run(self, timelapse: Timelapse, errors: Iterable[dict], **kwargs):
+        settings = SettingsFacade()
+        if not settings.send_email_on_timelapse_error:
+            return
 
-    except Exception as e:
-        logging.error('Failed to send emails. Error: {}'.format(e))
+        subject = 'Timelapse failed'
+        message = _get_log_msg(timelapse, errors)
+
+        try:
+            self._email_service.send_email(subject=subject, message=message)
+
+        except Exception as e:
+            logging.error('Failed to send emails. Error: {}'.format(e))
 
 
 class TimelapseErrorHardReset:

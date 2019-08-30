@@ -7,7 +7,7 @@ from scheduling.events.photo_taken import photo_taken_log, photo_taken_log_to_db
 
 
 # noinspection PyMethodMayBeStatic
-from scheduling.events.timelapse_error import timelapse_error_send_email, TimelapseErrorHardReset
+from scheduling.events.timelapse_error import TimelapseErrorHardReset, TimelapseErrorSendEmail
 from shared.di import obj_graph
 
 
@@ -55,10 +55,12 @@ class Startup:
         self._event_manager.register(TimelapseEvents.ALL_PHOTOS_TAKEN, all_photos_taken_log)
         self._event_manager.register(TimelapseEvents.ALL_PHOTOS_TAKEN, all_photos_taken_log_to_db)
 
+        capture_error_send_email: CaptureErrorSendEmail = obj_graph().provide(CaptureErrorSendEmail)
         self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_log)
-        self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_send_email)
+        self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_send_email.run)
         self._event_manager.register(TimelapseEvents.CAPTURE_ERROR, capture_error_log_to_db)
 
         timelapse_error_hard_reset = obj_graph().provide(TimelapseErrorHardReset)
+        timelapse_error_send_email = obj_graph().provide(TimelapseErrorSendEmail)
         self._event_manager.register(TimelapseEvents.TIMELAPSE_ERROR, timelapse_error_hard_reset.run)
-        self._event_manager.register(TimelapseEvents.TIMELAPSE_ERROR, timelapse_error_send_email)
+        self._event_manager.register(TimelapseEvents.TIMELAPSE_ERROR, timelapse_error_send_email.run)

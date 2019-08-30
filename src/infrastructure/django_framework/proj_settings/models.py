@@ -1,4 +1,5 @@
 from django.db import models
+import getpass
 
 
 class SingletonModel(models.Model):
@@ -18,6 +19,10 @@ class SingletonModel(models.Model):
         return obj
 
 
+def get_default_email_subject_prefix() -> str:
+    return '[{}]'.format(getpass.getuser())
+
+
 class GeneralSettings(SingletonModel):
     send_email_on_timelapse_error = models.BooleanField(default=True)
     hard_reset_on_timelapse_error = models.BooleanField(default=True)
@@ -32,6 +37,7 @@ class GeneralSettings(SingletonModel):
     autodetect_cameras_on_start = models.BooleanField(default=True)
 
     emails = models.CharField(max_length=512, blank=True, help_text='Space separated emails')
+    email_subject_prefix = models.CharField(max_length=64, blank=True, default=get_default_email_subject_prefix())
 
     @staticmethod
     def get() -> 'GeneralSettings':
