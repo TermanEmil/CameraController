@@ -34,11 +34,10 @@ Install the python packages from `./requiremenets.txt`
 
 ## Timelapse file transfer
 1. Mount the nfs server
-2. Watch for any changes in `./Timelapses` and transfer all any files inside to the nfs server
+2. Watch for any changes in `./Timelapses` and transfer all the files inside to the nfs server
 
 #### Requirements
-- nfs-common
-- inotify-tools
+`apt install nfs-common inotify-tools`
 
 
 - **Setup**: `./scripts/setup_timelapse_file_transfer.sh`
@@ -52,6 +51,7 @@ The file transfer will work even if the nfs server was not mounted. It will simp
 ## Max
 
 Before everything, I would suggest running: `sudo su` to run the below commands as sudo.
+Actually, the root privileges are required only because of ykush.
 
 #### Setup
 This will setup both web app and file transfer.
@@ -134,6 +134,8 @@ Add a cron job (described above). No need for root privileges:
 ~~~bash
 */5 * * * * curl localhost:80/api/cameras_autodetect
 ~~~
+
+This will send a request to the web app to autodetect the cameras every 5 mins.
 
 # Screenshots
 **Index:**
