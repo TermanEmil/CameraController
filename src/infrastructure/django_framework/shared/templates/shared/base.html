@@ -68,18 +68,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
-    <script>
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-
-    <script>
-        $(document).ready(function(){
-          $('.toast').toast('show');
-          $('.toast').attr("hidden", false);
-        });
-    </script>
+    <script type="text/javascript" src="{% static 'shared/js/app.js' %}"></script>
 
     {% block scripts %}
     {% endblock scripts %}
