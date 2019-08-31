@@ -39,7 +39,8 @@
 
             <div class="col-10">
               <div class="text-primary">{{ log.title }}
-                <span class="text-secondary small "><i>{{ log.created_time|timesince }}</i></span>
+                <span class="text-info small">{{ log.created_time }}</span>
+                <i class="text-secondary small">{{ log.created_time|timesince }}</i>
               </div>
 
               <div class="text-secondary small">{{ log.content }}</div>
@@ -81,6 +82,7 @@
         <div class="text-secondary">Empty</div>
       {% endfor %}
 
+      <!-- Pagination buttons -->
       {% if is_paginated %}
         <br/>
         <div class="pagination">
