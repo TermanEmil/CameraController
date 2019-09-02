@@ -1,5 +1,5 @@
 from django.db import models
-import getpass
+import socket
 
 
 class SingletonModel(models.Model):
@@ -20,7 +20,7 @@ class SingletonModel(models.Model):
 
 
 def get_default_email_subject_prefix() -> str:
-    return '[{}]'.format(getpass.getuser())
+    return '[{}]'.format(socket.gethostname())
 
 
 class GeneralSettings(SingletonModel):
