@@ -58,7 +58,7 @@
             </a>
           </div>
 
-          <div class="collapse multi-collapse" id="{{ section.name }}">
+          <div class="collapse multi-collapse panel-collapse" id="{{ section.name }}">
             <div class="card-body">
               {% for form in section.form_fields %}
                 {% for field in form.visible_fields %}
@@ -82,9 +82,4 @@
 {% block scripts %}
   {{ block.super }}
   <script type="text/javascript" src="{% static 'camera_config/js/accordion_ctrls.js' %}"></script>
-
-  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_remove_btn_click.js' %}"></script>
-  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_reconnect_btn_click.js' %}"></script>
-  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_capture_img_btn_click.js' %}"></script>
-  <script type="text/javascript" src="{% static 'camera_ctrl/js/camera_all_configs_btn_click.js' %}"></script>
 {% endblock scripts %}
