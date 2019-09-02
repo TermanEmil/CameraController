@@ -7,19 +7,25 @@
     <i aria-hidden="true" class="fa fa-camera fa-fw" data-toggle="tooltip" title="Capture img"></i>
   </a>
 
-  <a class="pl-3 no-underscore" href="{% url 'config_list' camera_id %}">
-    <i aria-hidden="true" class="fa fa-cog fa-fw" data-toggle="tooltip" title="Quick single settings"></i>
-  </a>
-
   <a class="pl-3 no-underscore" href="{% url 'all_configs' camera_id %}" onclick="cameraAllConfigsBtnClick(this)">
     <i aria-hidden="true" class="fa fa-sliders fa-fw" data-toggle="tooltip" title="All settings"></i>
   </a>
 
-  <a id="camera-reconnect-btn" class="pl-3 no-underscore" href="javascript:void(0)" onclick="cameraReconnectBtnClick(this, '{{ camera_id }}')">
-    <i aria-hidden="true" class="fa fa-retweet fa-fw" data-toggle="tooltip" title="Reconnect"></i>
+  <a class="pl-3 no-underscore advanced-ctrl-btns collapse show" href=".advanced-ctrl-btns" data-toggle="collapse">
+    <i aria-hidden="true" class="fa fa-ellipsis-h fa-fw" data-toggle="tooltip" title="Advanced"></i>
   </a>
 
-  <a id="camera-rm-btn" class="pl-3 no-underscore" href="javascript:void(0)" onclick="cameraRemoveBtnClick('{{ camera_id }}')">
-    <i aria-hidden="true" class="fa fa-trash fa-fw" data-toggle="tooltip" title="Remove"></i>
-  </a>
+  <span class="advanced-ctrl-btns collapse">
+    <a class="pl-3 no-underscore" href="{% url 'config_list' camera_id %}">
+      <i aria-hidden="true" class="fa fa-cog fa-fw" data-toggle="tooltip" title="Quick single settings"></i>
+    </a>
+
+    <a id="camera-reconnect-btn" class="pl-3 no-underscore" href="javascript:void(0)" onclick="cameraReconnectBtnClick(this, '{{ camera_id }}')">
+      <i aria-hidden="true" class="fa fa-retweet fa-fw" data-toggle="tooltip" title="Reconnect"></i>
+    </a>
+
+    <a id="camera-rm-btn" class="pl-3 no-underscore" href="javascript:void(0)" onclick="cameraRemoveBtnClick('{{ camera_id }}')">
+      <i aria-hidden="true" class="fa fa-trash fa-fw" data-toggle="tooltip" title="Remove"></i>
+    </a>
+  </span>
 </span>

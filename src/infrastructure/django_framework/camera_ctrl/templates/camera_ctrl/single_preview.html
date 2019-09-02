@@ -3,15 +3,22 @@
 
 {% block content %}
   <div class="row">
-    <center class="col-5">
-        <img style="width:100%" src="{% url 'api/camera_preview_source' camera_id=camera.id %}">
-        <span class="text-primary">{{ camera.name|truncatechars:12 }}</span>
-        <span class="text-secondary small">ID: {{ camera.id }}</span>
+    <!-- If the request query asks big preview, then set the col accordingly -->
+    <center class="{% if not request.GET.big_preview %}col-lg-7{% endif %} col-sm-12">
 
-        {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera.id %}
+      <!-- Url to toggle between big and normal preview -->
+      <a href="{% url 'single_preview' camera.id %}{% if not request.GET.big_preview %}?big_preview=True{% endif %}">
+        <img style="width:100%" src="{% url 'api/camera_preview_source' camera_id=camera.id %}">
+      </a>
+
+      <span class="text-primary">{{ camera.name|truncatechars:12 }}</span>
+      <span class="text-secondary small">ID: {{ camera.id }}</span>
+
+      {% include 'camera_ctrl/_camera_buttons.html' with camera_id=camera.id %}
+      <hr/>
     </center>
 
-    <div class="col-5">
+    <div class="{% if not request.GET.big_preview %}col-lg-5{% endif %} col-sm-12">
       <form method="post">
         {% csrf_token %}
 
