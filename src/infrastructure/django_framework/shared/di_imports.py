@@ -22,9 +22,11 @@ def pinject_imports():
     import business.scheduling.cron_bl_rules
 
     import business.timelapse.get_timelapse_func_bl_rule
+    import business.file_transfer.file_transfer_manager
 
     import adapters.camera.ctrl.camera_ctrl_service
     import adapters.camera.configs.camera_config_service
     import adapters.scheduling.schedule_service
+    import adapters.file_transfer.file_transfer_service
 
     import scheduling.events.timelapse_error

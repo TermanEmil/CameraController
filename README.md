@@ -9,7 +9,7 @@ For supported cameras, please visit [this](http://www.gphoto.org/proj/libgphoto2
 - Live preview
 - Capture image and download (chrome only for now)
 - Change camera settings
-- Favourite settings (available in live preview)
+- Favorite settings (available in live preview)
 - Manage timelapses
 - Logs
 
@@ -24,28 +24,28 @@ Otherwise, it's possible to run `$ source .venv/bin/activate` after `./setup.sh`
 Requirements:
 - python3.7 python3.7-dev
 - gphoto2
-- *[Yepkit/ykush](https://github.com/Yepkit/ykush.git) (if you want to use ykush3 board)
+- [Yepkit/ykush](https://github.com/Yepkit/ykush.git) (if you want to use ykush3 board)
 
 Install the python packages from `./requiremenets.txt`
 
 ## How to run
-`$ ./run.sh` - it should start the web app at the port 80.
+`$ ./run.sh` - it should start the web app at the port 80 (python required)
 
 
 ## Timelapse file transfer
-1. Mount the nfs server
-2. Watch for any changes in `./Timelapses` and transfer all the files inside to the nfs server
+The web app should automatically mount the nfs server and transfer the files to it. `./scripts/configs.sh` contains some settings you may want to tweak.
 
 #### Requirements
 `apt install nfs-common inotify-tools`
 
+#### Info
+The script used by the web app: `./scripts/run_timelapse_file_transfer.sh`.
 
-- **Setup**: `./scripts/setup_timelapse_file_transfer.sh`
-- **Run**: `./scripts/run_timelapse_file_transfer.sh`
+By default, it will wait for any changes in `$TIMELAPSE_DIR` and move the files to `"${MOUNT_POINT}/${TIMELAPSE_DEST}"`.
 
-By default, it will wait for any changes in `./Timelapses` and move the files to `/Mounted/Cern/Timelapse/Software/Timelapses`.
+If the nfs server gets disconnected, it will automatically try to mount it again and save any lost files. A lost file - a file that gets transferred to the destination while the server is not mounted, very rare - but possible.
 
-The file transfer will work even if the nfs server was not mounted. It will simply move the files to a different directory.
+The errors are logged, and it will also send an email about these errors.
 
 
 ## Max
@@ -58,17 +58,6 @@ This will setup both web app and file transfer.
 ~~~bash
 ./setup.sh
 ~~~
-
-To setup only the web app:
-~~~bash
-./scripts/setup_web_app.sh
-~~~
-
-To setup only the file transfer (install dependencies and mount nfs server):
-~~~bash
-./scripts/setup_timelapse_file_transfer.sh
-~~~
-
 
 #### Web app
 Run the web app in background:
@@ -85,27 +74,10 @@ pkill -f runserver # Kill all processes containing 'runserver'
 
 
 #### NFS file transfer
-
-Mount the nfs server. It will mount the nfs server to `/Mounted/Cern/`
-~~~bash
-./scripts/mount_nfs.sh
-~~~
-
-To make sure it has been successfully mounted, run a quick check:
-~~~bash
-ls /Mounted/Cern/
-~~~
-You should see a list with all the files/directories in the nfs server
-
-To continuously transfer the files, run:
-~~~bash
-./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log &
-~~~
-
-The output will be written in sync.log.
+The transfer is now handled by the web app.
 
 #### Start everything on system boot:
-This explains how to automatically start the web app and file transfer at boot.
+This explains how to automatically start the web app at boot.
 
 First, make sure `vim` is installed:
 ~~~bash
@@ -123,19 +95,19 @@ Now, at the end of the file, add the following:
 ~~~
 SHELL=/bin/bash
 @reboot cd /home/*/CameraController/ && source .venv/bin/activate && ./run.sh 2>&1 1>> ./out.log
-@reboot cd /home/*/CameraController/ && ./scripts/run_timelapse_file_transfer.sh 2>&1 1>> sync.log
 ~~~
-Save & exit.
+Save & exit (esc -> `:x`)
+To edit: `i`
 
 Reboot to see if it works.
 
-#### Autodetect cameras every 5 minutes
+#### Autodetect cameras every 10 minutes
 Add a cron job (described above). No need for root privileges:
 ~~~bash
-*/5 * * * * curl localhost:80/api/cameras_autodetect
+*/10 * * * * curl localhost:80/api/cameras_autodetect
 ~~~
 
-This will send a request to the web app to autodetect the cameras every 5 mins.
+This will send a request to the web app to autodetect cameras every n minutes.
 
 # Screenshots
 **Index:**

@@ -1,13 +1,13 @@
 from adapters.scheduling.schedule_service import ScheduleService
 from scheduling.implementations.aps_scheduler import ApsScheduler
-from scheduling.startup import Startup
+from scheduling.startup import SchedulingStartup
 from scheduling.views.cron.cron_schedule_crud import CronScheduleUpdate, CronScheduleDelete
 from scheduling.views.timelapse.timelapse_crud import TimelapseCreate, TimelapseUpdate
 from shared.di import obj_graph
 
 
-def startup_factory() -> Startup:
-    return obj_graph().provide(Startup)
+def startup_factory() -> SchedulingStartup:
+    return obj_graph().provide(SchedulingStartup)
 
 
 def timelapse_create_view_factory():
