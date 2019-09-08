@@ -3,56 +3,80 @@
 # Requirements:
 #  inotify-tools
 #
-# ./scripts/mount_nfs.sh
+# ./scripts/mount_tools.sh
 # [Optional] For emailing: the web app should be running: localhost:80 should be accessible.
 
+# Exit on signal
+trap "exit" SIGHUP SIGINT SIGTERM
 
-PATH_TO_WATCH='./Timelapses/'
-PATH_TO_MOVE_FILES_TO='/Mounted/Cern/Timelapse/Software/Timelapses'
+. ./scripts/mount_tools.sh
 
-mkdir -p ${PATH_TO_WATCH};
-mkdir -p ${PATH_TO_MOVE_FILES_TO};
+PATH_TO_MOVE_FILES_TO="${MOUNT_POINT}/${TIMELAPSE_DEST}"
 
-inotifywait -r -m ${PATH_TO_WATCH} -e close_write -e moved_to |
-    while read path action file; do
-        echo "The file '$file' appeared in directory '$path' via '$action'";
+function sync_files() {
+    SOURCE_DIR=$1
+    DEST_DIR=$2
+    VERBOSE_PREFIX=$3
 
-        # Continuously try to mount the nfs server
-        while :
-        do
-            # Check if NFS server is mounted.
-            if [[ $(mount -v | grep Mounted/Cern) ]]; then
-                # It's mounted
-                break
-            else
-                { # try to mount it
-                    ./scripts/mount_nfs.sh;
-                } || { # catch
-                    echo 'Failed to mount nfs server'
-                }
-                sleep 1;
-            fi
-        done
+    # rsync:
+    #  --chmod: in case this is run as root:
+    #   give everyone read & write permissions
+    #  -i: print the copied files in the following format: >f+++++++++ my_file
+    # grep:
+    #  Extract only the lines that start with '>f' (to avoid dirs: '>d')
+    # sed:
+    #  Add a prefix to the copied file
+    rsync \
+        -ri \
+        --chmod=g+rw --perms \
+        ${SOURCE_DIR} ${DEST_DIR} \
+        --remove-source-files \
+        --prune-empty-dirs | \
+    grep '^>f' | \
+    sed "s/>f......... \(.*\)/${VERBOSE_PREFIX}\1/g"
+}
 
-        # Move the files to the nfs server
-        { # try
-            # chmod: in case this is run as root, give everyone read & write permissions
-            rsync -rvh --chmod=a+rw --perms ${PATH_TO_WATCH} ${PATH_TO_MOVE_FILES_TO} --remove-source-files --prune-empty-dirs;
-        } || { # catch
-            echo 'Failed to sync folders' >&2;
-            echo 'Trying to (re)mount...';
+function continously_try_to_mount() {
+    while :
+    do
+        # Check if it's mounted.
+        if is_mounted; then
+            # It's mounted
+            break
+        else
+            { # try to mount
+                # There's a chance for files to sneak into the unmounted
+                #  mount point. So, first, move those files to the timelapse dir
+                # This happens when the mounted server is disconnected and
+                #  files are still being transported or smth
+                mkdir -p ${MOUNT_POINT};
+                sync_files "${PATH_TO_MOVE_FILES_TO}/" ${TIMELAPSE_DIR} '[recovered]';
 
-            { # try
-                ./scripts/mount_nfs.sh;
+                do_the_mounting;
             } || { # catch
-                echo 'Failed to mount' >&2;
-            };
-
-            echo 'Trying to send an email about this accident...';
-            { # try
-                curl localhost/scheduling/api/sync_failed_error_email_send;
-            } || { # catch
-                echo 'Failed to send email' >&2;
+                echo '[error] Failed to mount' >&2;
             }
-        }
+            sleep 1;
+        fi
     done
+}
+
+
+mkdir -p ${TIMELAPSE_DIR}
+inotifywait -r -m ${TIMELAPSE_DIR} -e close_write -e moved_to |
+while read path action file; do
+    # Continously try to move the files to the mounted server
+    while :
+    do
+        continously_try_to_mount
+        { # try
+            mkdir -p ${PATH_TO_MOVE_FILES_TO};
+            sync_files "${TIMELAPSE_DIR}/" ${PATH_TO_MOVE_FILES_TO} '[copied]';
+            break;
+        } || { # catch
+            echo "[error] Failed to sync folders" >&2;
+        }
+
+        sleep 1
+    done
+done

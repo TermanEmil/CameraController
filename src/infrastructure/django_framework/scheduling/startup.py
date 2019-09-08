@@ -11,33 +11,18 @@ from scheduling.events.timelapse_error import TimelapseErrorHardReset, Timelapse
 from shared.di import obj_graph
 
 
-class Startup:
+class SchedulingStartup:
     def __init__(
             self,
-            camera_ctrl_service: CameraCtrlService,
             schedule_service: ScheduleService,
             event_manager: EventManager):
 
-        self._camera_ctrl_service = camera_ctrl_service
         self._schedule_service = schedule_service
         self._event_manager = event_manager
 
     def run(self):
-        self._check_autodetect_cameras_action()
-        self._init_logging()
         self._init_scheduling()
         self._register_events()
-
-    def _check_autodetect_cameras_action(self):
-        settings = SettingsFacade()
-        if settings.autodetect_cameras_on_start:
-            try:
-                self._camera_ctrl_service.cameras_autodetect()
-            except Exception as e:
-                logging.error('Failed to autodetect cameras on start. Error: {}'.format(e))
-
-    def _init_logging(self):
-        logging.getLogger('apscheduler').setLevel(logging.ERROR)
 
     def _init_scheduling(self):
         try:
@@ -47,8 +32,6 @@ class Startup:
             logging.critical('Failed to run schedule_id startup. Error = {}'.format(e))
 
     def _register_events(self):
-        self._event_manager.clear()
-
         self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_log)
         self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_log_to_db)
 

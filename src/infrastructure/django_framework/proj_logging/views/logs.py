@@ -1,7 +1,10 @@
+from django.db.models import F, Sum
+from django.db.models.functions import Concat
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, View
 
+from proj_logging.filters.log_filter import LogFilter
 from proj_logging.models import HistoryUnit
 
 
@@ -13,18 +16,11 @@ class LogsList(ListView):
     ordering = ['-created_time']
 
     def get_queryset(self):
-        log_type = self.request.GET.get('log_type', None)
-        search = self.request.GET.get('search', None)
+        objs = super().get_queryset().annotate(
+            title_content=Concat(F('title'), F('content')))
 
-        objs = super().get_queryset()
-
-        if log_type:
-            objs = objs.filter(log_type=log_type)
-
-        if search:
-            objs = objs.filter(content__icontains=search)
-
-        return objs
+        filtered_logs = LogFilter(self.request.GET, queryset=objs)
+        return filtered_logs.qs
 
 
 class LogsDelete(DeleteView):

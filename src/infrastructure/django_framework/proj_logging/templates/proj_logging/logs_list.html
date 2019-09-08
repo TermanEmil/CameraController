@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {% load static %}
-
+{% load helper_tags %}
 
 {% block content %}
   {{ block.super }}
@@ -15,19 +15,43 @@
     <br/>
 
     <div >
-      <a href="{% url 'all_logs' %}" role="button" aria-pressed="true"
-         class="btn btn-primary btn-sm">
+      <a href="{% url 'all_logs' %}"
+         role="button"
+         aria-pressed="true"
+         class="btn btn-primary btn-sm"
+      >
         All
       </a>
 
-      <a href="{% url 'all_logs' %}?log_type=ERROR&{{ request.GET.urlencode }}" role="button" aria-pressed="true"
-         class="btn btn-danger btn-sm">
+      <a href="{% url 'all_logs' %}{% toggle_url_var 'log_type' 'ERROR' %}"
+         role="button"
+         aria-pressed="true"
+         class="btn btn-danger btn-sm"
+      >
         Errors
       </a>
 
-      <form method="get" action="." class="form-group d-flex my-2">
-        <input  id="search_box" type="text" name="search" placeholder="Search..." class="form-control">
-        <button id="search_submit" type="submit" class="btn btn-primary ml-2">Search</button>
+      <a href="{% url 'all_logs' %}{% toggle_url_var 'category' 'timelapse' %}"
+         role="button"
+         aria-pressed="true"
+         class="btn btn-info btn-sm"
+      >
+        Timelapses
+      </a>
+
+      <a href="{% url 'all_logs' %}{% toggle_url_var 'category' 'filetransfer' %}"
+         role="button"
+         aria-pressed="true"
+         class="btn btn-info btn-sm"
+      >
+        File Transfer
+      </a>
+
+      <form method="get" action=".">
+        <span class="form-group d-flex my-2">
+          <input  id="search_box" type="text" name="title_content" placeholder="Search..." class="form-control">
+          <button id="search_submit" type="submit" class="btn btn-primary ml-2">Search</button>
+        </span>
       </form>
     </div>
     <hr/>
@@ -87,17 +111,23 @@
         <br/>
         <div class="pagination">
             <span class="page-links">
-
                 {% if page_obj.has_previous %}
-                  <a href="{% url 'all_logs' %}?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" role="button" aria-pressed="true"
-                     class="btn btn-primary btn-sm">
+                  <a
+                    href="{% url 'all_logs' %}{% url_var 'page' page_obj.previous_page_number %}"
+                    role="button"
+                    aria-pressed="true"
+                    class="btn btn-primary btn-sm"
+                  >
                     Previous
                   </a>
                 {% endif %}
 
                 {% if page_obj.has_next %}
-                  <a href="{% url 'all_logs' %}?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" role="button" aria-pressed="true"
-                     class="btn btn-primary btn-sm">
+                  <a
+                    href="{% url 'all_logs' %}{% url_var 'page' page_obj.next_page_number %}"
+                    role="button" aria-pressed="true"
+                    class="btn btn-primary btn-sm"
+                  >
                     Next
                   </a>
                 {% endif %}

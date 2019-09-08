@@ -2,6 +2,7 @@ from adapters.camera.configs.camera_config_service import CameraConfigService
 from adapters.camera.configs.favourite_configs_service import FavouriteConfigsService
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
 from camera_ctrl.api.cameras_hard_reset_all import CamerasHardResetAll
+from camera_ctrl.startup import CameraCtrlStartup
 from shared.di import obj_graph
 from .api.camera_capture_img_and_download import CameraCaptureImgAndDownload
 from .api.camera_preview_source import CameraPreviewSource
@@ -12,6 +13,10 @@ from .app_obj_mapper import AppObjectMapper
 from .views.index import Index
 from .views.multi_preview import MultiPreview
 from .views.single_preview import SinglePreview
+
+
+def startup_factory() -> CameraCtrlStartup:
+    return obj_graph().provide(CameraCtrlStartup)
 
 
 def index_view_factory():
