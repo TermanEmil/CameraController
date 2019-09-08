@@ -28,7 +28,7 @@ function sync_files() {
     #  Add a prefix to the copied file
     rsync \
         -ri \
-        --chmod=g+rw --perms \
+        --chmod=a+rw --perms \
         ${SOURCE_DIR} ${DEST_DIR} \
         --remove-source-files \
         --prune-empty-dirs | \

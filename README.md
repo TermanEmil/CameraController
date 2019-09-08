@@ -62,7 +62,7 @@ This will setup both web app and file transfer.
 #### Web app
 Run the web app in background:
 ~~~bash
-bash -c 'source .venv/bin/activate && ./run.sh 2>&1 1>> out.log &'
+bash -c 'source .venv/bin/activate && ./run.sh >> out.log 2>&1 &'
 ~~~
 
 The output will be written in out.log.
