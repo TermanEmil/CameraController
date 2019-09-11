@@ -16,7 +16,7 @@ do
 
   { # try
     (cd ./src/infrastructure/django_framework/ && ./entrypoint.sh);
-    ./src/infrastructure/django_framework/manage.py runserver 0.0.0.0:5000;
+    ./src/infrastructure/django_framework/manage.py runserver 0.0.0.0:80;
   } || { # catch
     echo '[Error] Crashed or smth. Restarting' >&2;
   }
