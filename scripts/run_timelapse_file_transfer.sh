@@ -7,7 +7,8 @@
 # [Optional] For emailing: the web app should be running: localhost:80 should be accessible.
 
 # Exit on signal
-trap "exit" SIGHUP SIGINT SIGTERM
+# Exit on signal
+trap 'kill $(jobs -p) || true' EXIT
 
 . ./scripts/mount_tools.sh
 
@@ -26,14 +27,18 @@ function sync_files() {
     #  Extract only the lines that start with '>f' (to avoid dirs: '>d')
     # sed:
     #  Add a prefix to the copied file
-    rsync \
-        -ri \
-        --chmod=a+rw --perms \
-        ${SOURCE_DIR} ${DEST_DIR} \
-        --remove-source-files \
-        --prune-empty-dirs | \
-    grep '^>f' | \
-    sed "s/>f......... \(.*\)/${VERBOSE_PREFIX}\1/g"
+    { # try
+      rsync \
+          -ri \
+          --chmod=a+rw --perms \
+          ${SOURCE_DIR} ${DEST_DIR} \
+          --remove-source-files \
+          --prune-empty-dirs | \
+      grep '^>f' | \
+      sed "s/>f......... \(.*\)/${VERBOSE_PREFIX}\1/g"
+    } || { # catch
+      echo 'rsync failed. --- ignoring' >&2;
+    }
 }
 
 function continously_try_to_mount() {
@@ -62,12 +67,12 @@ function continously_try_to_mount() {
 }
 
 
-mkdir -p ${TIMELAPSE_DIR}
-inotifywait -r -m ${TIMELAPSE_DIR} -e close_write -e moved_to |
-while read path action file; do
-    # Continously try to move the files to the mounted server
-    while :
-    do
+function sync_core() {
+  inotifywait -r -m ${TIMELAPSE_DIR} -e close_write -e moved_to |
+    while read path action file; do
+      # Continously try to move the files to the mounted server
+      while :
+      do
         continously_try_to_mount
         { # try
             mkdir -p ${PATH_TO_MOVE_FILES_TO};
@@ -78,5 +83,18 @@ while read path action file; do
         }
 
         sleep 1
+      done
     done
+}
+
+
+mkdir -p ${TIMELAPSE_DIR}
+
+while :
+do
+  { # try
+    sync_core
+  } || { # catch
+    echo '[error] Inotify crashed --- Restarting' >&2;
+  }
 done
