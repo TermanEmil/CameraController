@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 
 from adapters.camera.configs.camera_config_service import CameraConfigService
+from business.camera.exceptions import CameraException
 from camera_config.views.post_config_field_mixin import PostConfigFieldMixin
 from shared.mixins.error_utils_mixin import ErrorUtilsMixin
 from ..forms import CameraConfigFormManager
@@ -25,7 +26,7 @@ class AllConfigs(TemplateView, PostConfigFieldMixin, ErrorUtilsMixin):
             if request.method == 'POST':
                 self.post(camera_id=camera_id, config_form_manager=config_form_manager)
 
-        except Exception as e:
+        except CameraException as e:
             return self.render_to_error(request=request, error=str(e))
 
         context['form'] = config_form_manager

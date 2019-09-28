@@ -1,13 +1,14 @@
 from threading import Lock
+from typing import Dict
 
-from enterprise.camera_ctrl.utils.multi_lock import MultiLock
-from ..camera_manager import CameraManager
-from ..camera import Camera
+from enterprise.camera_ctrl.camera_manager import CameraManager
+from enterprise.camera_ctrl.multi_lock import MultiLock
+from infrastructure.camera_glue_code.stub.stub_camera import StubCamera
 
 
 class StubCameraManager(CameraManager):
     def __init__(self, cameras):
-        self._cameras = {}
+        self._cameras: Dict[StubCamera] = dict()
         self._cameras_to_detect = cameras
         self._stub_lock = Lock()
 
@@ -27,8 +28,10 @@ class StubCameraManager(CameraManager):
 
     def detect_all_cameras(self):
         for camera in self._cameras_to_detect:
-            assert isinstance(camera, Camera)
             self._cameras[camera.id] = camera
+
+    def disconnect_all(self):
+        self._cameras.clear()
 
     def get_camera(self, camera_id):
         return self._cameras.get(camera_id)

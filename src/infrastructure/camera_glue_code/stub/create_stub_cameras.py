@@ -1,9 +1,16 @@
-from enterprise.camera_ctrl.stub.stub_camera import StubCamera
-from enterprise.camera_ctrl.stub.stub_camera_config import *
-from enterprise.camera_ctrl.stub.stub_camera_manager import StubCameraManager
+from infrastructure.camera_glue_code.stub.stub_camera import StubCamera
+from infrastructure.camera_glue_code.stub.stub_camera_manager import StubCameraManager
+from infrastructure.camera_glue_code.stub.stub_camera_config import\
+    StubCameraConfigSection, \
+    StubCameraConfigToggleField,\
+    StubCameraConfigTextField,\
+    StubCameraConfigChoiceField,\
+    StubCameraConfigRangeField, \
+    StubCameraConfigField,\
+    StubCameraConfig
 
 
-def create_stub_camera():
+def create_stub_cameras():
     cameras = [
         StubCamera(
             name='Nikon 6',

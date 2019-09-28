@@ -3,12 +3,13 @@ import re
 from threading import Lock
 from typing import Optional, Iterable
 
+from enterprise.camera_ctrl.camera import Camera
+from enterprise.camera_ctrl.camera_config import CameraConfigField, CameraConfig
 from .gp_camera_config import *
-from .. import camera
 import os
 
 
-class GpCamera(camera.Camera):
+class GpCamera(Camera):
     def __init__(self, name, port, gp_camera: gp.Camera, lock: Lock = None):
         if lock is None:
             lock = Lock()

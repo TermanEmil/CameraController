@@ -1,7 +1,9 @@
-from django.http import HttpResponseServerError, HttpResponseNotFound, StreamingHttpResponse
+from django.http import HttpResponseServerError, StreamingHttpResponse
 from django.views.generic import View
 
-from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService, CameraNotFound
+from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
+from business.camera.exceptions import CameraNotFoundException, CameraException
+from camera_ctrl.api_exceptions import CameraNotFoundApiException
 
 
 class CameraPreviewSource(View):
@@ -17,12 +19,17 @@ class CameraPreviewSource(View):
     def _preview_generator(self, camera_id):
         try:
             while True:
-                frame = self.camera_ctrl_service.camera_capture_preview(camera_id=camera_id)
+                frame = self\
+                    .camera_ctrl_service\
+                    .camera_capture_preview(camera_id=camera_id)
+
                 yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame.tobytes() + b'\r\n')
+                       b'Content-Type: image/jpeg\r\n\r\n'
+                       + frame.tobytes()
+                       + b'\r\n')
 
-        except CameraNotFound as e:
-            return HttpResponseNotFound(content=str(e))
+        except CameraNotFoundException:
+            return CameraNotFoundApiException(camera_id=camera_id)
 
-        except Exception as e:
+        except CameraException as e:
             return HttpResponseServerError(content=str(e))

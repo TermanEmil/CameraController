@@ -1,4 +1,11 @@
-from ..camera_config import *
+from enterprise.camera_ctrl.camera_config import\
+    CameraConfig,\
+    CameraConfigSection,\
+    CameraConfigField, \
+    CameraConfigTextField,\
+    CameraConfigChoiceField,\
+    CameraConfigToggleField,\
+    CameraConfigRangeField
 
 
 class StubCameraConfig(CameraConfig):
@@ -38,7 +45,14 @@ class StubCameraConfigSection(CameraConfigSection):
 
 
 class StubCameraConfigField(CameraConfigField):
-    def __init__(self, name: str, label: str, is_readonly: bool, value: object, changes: bool = True):
+    def __init__(
+            self,
+            name: str,
+            label: str,
+            is_readonly: bool,
+            value: object,
+            changes: bool = True):
+
         super().__init__(name, label, is_readonly)
         self._value = value
         self.changes = changes

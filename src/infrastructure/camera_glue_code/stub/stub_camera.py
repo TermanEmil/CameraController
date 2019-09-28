@@ -1,10 +1,11 @@
 from threading import Lock
 
-from ..camera import Camera
-from ..camera_config import CameraConfig, CameraConfigField
 from PIL import Image, ImageDraw
 import io
 import os
+
+from enterprise.camera_ctrl.camera import Camera
+from enterprise.camera_ctrl.camera_config import CameraConfig, CameraConfigField
 
 
 class StubCamera(Camera):

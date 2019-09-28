@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 
 from adapters.camera.configs.camera_config_service import CameraConfigService
+from business.camera.exceptions import CameraNotFoundException, CameraException
 from shared.mixins.error_utils_mixin import ErrorUtilsMixin
 
 
@@ -15,9 +16,10 @@ class ConfigList(TemplateView, ErrorUtilsMixin):
         context['camera_id'] = camera_id
 
         try:
-            context['config_names'] = list(self.camera_config_service.get_all_config_names(camera_id=camera_id))
+            config_names = self.camera_config_service.get_all_config_names(camera_id=camera_id)
+            context['config_names'] = list(config_names)
 
-        except Exception as e:
+        except CameraException as e:
             return self.render_to_error(request=request, error=str(e))
 
         return self.render_to_response(context=context)
