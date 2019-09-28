@@ -19,7 +19,8 @@ class CameraCaptureImgAndDownload(View):
 
             return FileResponse(
                 open(capture_dto.real_file_path, 'rb'),
-                content_type=capture_dto.download_filename)
+                as_attachment=True,
+                filename=capture_dto.download_filename)
 
         except CameraNotFoundException:
             return CameraNotFoundApiException(camera_id=camera_id)
