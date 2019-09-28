@@ -9,7 +9,7 @@ class FavFieldAdd(View):
 
     def get(self, request, *args, **kwargs):
         try:
-            self.favourite_configs_service.add_dummy()
+            self.favourite_configs_service.add(config_name='shutterspeed')
             return HttpResponse(status=201)
 
         except Exception as e:

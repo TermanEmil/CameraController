@@ -6,4 +6,5 @@ class FileTransferService:
         self._file_transfer_manager = file_transfer_manager
 
     def run_in_background(self):
-        self._file_transfer_manager.run_in_background()
+        # self._file_transfer_manager.run_in_background()
+        pass

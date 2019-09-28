@@ -1,9 +1,10 @@
-def hard_map_objects(obj1, obj2):
-    for atr, value in obj1.__dict__.items():
-        if atr in obj2.__dict__:
-            setattr(obj2, atr, value)
+def hard_map_objects(src, dest):
+    for atr, value in src.__dict__.items():
+        if atr in dest.__dict__:
+            setattr(dest, atr, value)
 
     try:
-        obj2.pk = obj1.pk
+        dest.pk = src.pk
     except:
+        # Ignore if it doesn't have pk
         pass

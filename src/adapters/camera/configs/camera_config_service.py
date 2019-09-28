@@ -1,10 +1,8 @@
 from typing import Iterable
 
-from business.camera.config.get_all_config_names_bl_rule import GetAllConfigNamesBlRule
-from business.camera.config.get_all_configs_bl_rule import GetAllConfigsBlRule
-from business.camera.config.get_config_bl_rule import GetConfigBlRule
-from business.camera.config.set_config_bl_rule import SetConfigBlRule
-from .dtos import ConfigFieldDto
+from business.camera.exceptions import CameraNotFoundException, ConfigNotFoundException
+from enterprise.camera_ctrl.camera_manager import CameraManager
+from .dtos import ConfigFieldDto, ConfigSectionDto
 from .favourite_configs_repository import FavouriteConfigsRepository
 from .mappers import configs_to_dto, config_field_to_dto, ConfigsDto
 
@@ -12,44 +10,61 @@ from .mappers import configs_to_dto, config_field_to_dto, ConfigsDto
 class CameraConfigService:
     def __init__(
             self,
-            favourite_config_repository: FavouriteConfigsRepository,
-            get_all_configs_bl_rule: GetAllConfigsBlRule,
-            get_all_config_names_bl_rule: GetAllConfigNamesBlRule,
-            get_config_bl_rule: GetConfigBlRule,
-            set_config_bl_rule: SetConfigBlRule):
+            camera_manager: CameraManager,
+            favourite_config_repository: FavouriteConfigsRepository):
 
+        self._camera_manager = camera_manager
         self._favourite_config_repository = favourite_config_repository
-        self._get_all_bl_rule = get_all_configs_bl_rule
-        self._get_all_config_names_bl_rule = get_all_config_names_bl_rule
-        self._get_config_bl_rule = get_config_bl_rule
-        self._set_config_bl_rule = set_config_bl_rule
 
-    def get_all_configs(self, camera_id: str) -> ConfigsDto:
-        configs = self._get_all_bl_rule.set_params(camera_id=camera_id).execute()
+    def get_all_configs(self, camera_id) -> ConfigsDto:
+        camera = self._get_camera(camera_id)
+        configs = camera.get_config()
         dto = configs_to_dto(configs=configs)
-        dto.sections = [section for section in dto.sections if section.name != 'other']
+        dto.sections = list(self._filter_unwanted_sections(dto.sections))
         return dto
 
-    def get_all_config_names(self, camera_id: str) -> Iterable[str]:
-        return self._get_all_config_names_bl_rule.set_params(camera_id=camera_id).execute()
+    def get_all_config_names(self, camera_id) -> Iterable[str]:
+        camera = self._get_camera(camera_id)
+        return camera.list_configs()
 
-    def get_config(self, camera_id: str, config_name: str) -> ConfigFieldDto:
-        config_field = self._get_config_bl_rule.set_params(camera_id=camera_id, config_name=config_name).execute()
-        return config_field_to_dto(field=config_field)
+    def get_configs(self, camera_id, config_name: str) -> ConfigFieldDto:
+        _, config = self._get_cam_and_config(camera_id, config_name)
+        return config_field_to_dto(field=config)
 
-    def set_config(self, camera_id: str, config_name: str, config_value: str):
-        self._set_config_bl_rule \
-            .set_params(camera_id=camera_id, config_name=config_name, config_value=config_value) \
-            .execute()
+    def set_config(self, camera_id, config_name: str, config_value: str):
+        camera, config = self._get_cam_and_config(camera_id, config_name)
+        config.set_value(value=config_value)
+        camera.set_config((config,))
 
     def get_favourite_configs(self, camera_id: str) -> Iterable[ConfigFieldDto]:
+        camera = self._get_camera(camera_id)
         favourite_fields = self._favourite_config_repository.get_all()
 
-        for fav_field in favourite_fields:
-            try:
-                config = self.get_config(camera_id=camera_id, config_name=fav_field.name)
-                yield config
-
-            except:
+        for fav_config in favourite_fields:
+            config = camera.get_single_config(config_name=fav_config.name)
+            if config is None:
                 continue
 
+            yield config_field_to_dto(field=config)
+
+    @staticmethod
+    def _filter_unwanted_sections(sections: Iterable[ConfigSectionDto]):
+        for section in sections:
+            if section.name != 'other':
+                yield section
+
+    def _get_camera(self, camera_id):
+        camera = self._camera_manager.get_camera(camera_id=camera_id)
+        if camera is None:
+            raise CameraNotFoundException()
+
+        return camera
+
+    def _get_cam_and_config(self, camera_id, config_name: str):
+        camera = self._get_camera(camera_id)
+        config = camera.get_single_config(config_name=config_name)
+
+        if config is None:
+            raise ConfigNotFoundException(config_name)
+
+        return camera, config

@@ -1,8 +1,8 @@
 from threading import Lock
-
-from enterprise.camera_ctrl.utils.multi_lock import MultiLock
-from .camera import Camera
 from typing import Iterable
+
+from .camera import Camera
+from .multi_lock import MultiLock
 
 
 class CameraManager:

@@ -14,9 +14,6 @@ class FavouriteConfigsService:
         fav_config = FavouriteConfig(pk=-1, name=config_name)
         self._favourite_config_repository.add(favourite_config=fav_config)
 
-    def add_dummy(self):
-        self.add(config_name='shutterspeed')
-
     def update(self, pk: int, config_name: str):
         fav_config = FavouriteConfig(pk=pk, name=config_name)
         self._favourite_config_repository.update(fav_config)

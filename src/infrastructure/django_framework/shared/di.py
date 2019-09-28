@@ -5,10 +5,10 @@ import pinject
 from apscheduler.schedulers.background import BackgroundScheduler
 from pinject.object_graph import ObjectGraph
 
-from adapters.utils.stub_camera import create_stub_camera
 from business.messaging.event_manager import EventManager
 from enterprise.camera_ctrl.camera_manager import CameraManager
-from enterprise.camera_ctrl.gphoto2.gp_camera_manager import GpCameraManager
+from infrastructure.camera_glue_code.gphoto2.gp_camera_manager import GpCameraManager
+from infrastructure.camera_glue_code.stub.create_stub_cameras import create_stub_cameras
 from proj_settings.settings_facade import SettingsFacade
 from scheduling.implementations.aps_scheduler import ApsScheduler
 from shared.implementations.django_email_sender import DjangoEmailSender
@@ -25,7 +25,7 @@ class CameraManagerSingleton:
     def get() -> CameraManager:
         if CameraManagerSingleton.instance is None:
             if 'USE_STUB' in os.environ:
-                CameraManagerSingleton.instance = create_stub_camera()
+                CameraManagerSingleton.instance = create_stub_cameras()
             else:
                 CameraManagerSingleton.instance = GpCameraManager()
 

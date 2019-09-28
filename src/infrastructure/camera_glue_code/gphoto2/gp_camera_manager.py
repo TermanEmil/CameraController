@@ -3,10 +3,10 @@ from threading import Lock
 import gphoto2 as gp
 import atexit
 
-from enterprise.camera_ctrl.utils.multi_lock import MultiLock
-from .gp_camera import GpCamera
-from ..camera import Camera
-from ..camera_manager import CameraManager
+from enterprise.camera_ctrl.camera import Camera
+from enterprise.camera_ctrl.camera_manager import CameraManager
+from enterprise.camera_ctrl.multi_lock import MultiLock
+from infrastructure.camera_glue_code.gphoto2.gp_camera import GpCamera
 
 
 class GpCameraManager(CameraManager):
@@ -48,9 +48,15 @@ class GpCameraManager(CameraManager):
                 gp_camera.set_port_info(port_info)
 
                 try:
-                    camera = GpCamera(name=name, port=port, gp_camera=gp_camera, lock=self.sync_lock)
+                    camera = GpCamera(
+                        name=name,
+                        port=port,
+                        gp_camera=gp_camera,
+                        lock=self.sync_lock)
+
                     with self._cameras_dict_lock:
                         self._cameras_dict[camera.id] = camera
+
                 except Exception as e:
                     print('Detect all: {0}'.format(e))
 
@@ -67,7 +73,6 @@ class GpCameraManager(CameraManager):
             camera.disconnect()
 
             self._cameras_dict.pop(camera_id)
-            assert camera_id not in self._cameras_dict
 
     def disconnect_all(self):
         camera_ids = [camera.id for camera in self.cameras]

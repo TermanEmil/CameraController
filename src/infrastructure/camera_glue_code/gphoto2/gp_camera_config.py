@@ -3,7 +3,8 @@ from typing import Tuple
 
 import gphoto2 as gp
 
-from ..camera_config import *
+from enterprise.camera_ctrl.camera_config import CameraConfig, CameraConfigSection, CameraConfigField, \
+    CameraConfigTextField, CameraConfigChoiceField, CameraConfigToggleField, CameraConfigRangeField
 
 
 class GpCameraConfig(CameraConfig):
