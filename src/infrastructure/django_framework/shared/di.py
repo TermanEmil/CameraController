@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, TypeVar
 
 import pinject
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -62,15 +62,27 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('email_sender', to_class=DjangoEmailSender)
 
 
-_obj_graph: Optional[ObjectGraph] = None
+class ObjectGraphWrapper:
+    """A wrapper to allow typing"""
+
+    T = TypeVar('T')
+
+    def __init__(self, pinject_obj_graph: ObjectGraph):
+        self._obj_graph = pinject_obj_graph
+
+    def provide(self, cls: T) -> T:
+        return self._obj_graph.provide(cls)
 
 
-def obj_graph() -> ObjectGraph:
+_obj_graph: Optional[ObjectGraphWrapper] = None
+
+
+def obj_graph() -> ObjectGraphWrapper:
     global _obj_graph
 
     if _obj_graph is None:
         pinject_imports()
-        _obj_graph = pinject.new_object_graph(binding_specs=(DjangoProjectBindingSpec(),))
+        pinject_obj_graph = pinject.new_object_graph(binding_specs=(DjangoProjectBindingSpec(),))
+        _obj_graph = ObjectGraphWrapper(pinject_obj_graph)
 
     return _obj_graph
-

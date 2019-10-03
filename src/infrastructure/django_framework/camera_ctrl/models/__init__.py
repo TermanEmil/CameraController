@@ -1,0 +1,1 @@
+from .camera_config_models import FavField

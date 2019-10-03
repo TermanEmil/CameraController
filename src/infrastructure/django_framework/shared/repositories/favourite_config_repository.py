@@ -2,7 +2,7 @@ from typing import Iterable, Optional
 
 from adapters.camera.configs import favourite_configs_repository
 from adapters.camera.configs.favourite_configs_repository import FavouriteConfig
-from camera_config.models import FavField
+from camera_ctrl.models.camera_config_models import FavField
 
 
 class FavouriteConfigRepository(favourite_configs_repository.FavouriteConfigsRepository):

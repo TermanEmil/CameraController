@@ -1,4 +1,5 @@
 from threading import Lock
+from typing import Dict
 
 import gphoto2 as gp
 import atexit
@@ -15,7 +16,7 @@ class GpCameraManager(CameraManager):
         self._cameras_dict_lock = Lock()
 
         gp.check_result(gp.use_python_logging())
-        self._cameras_dict = {}
+        self._cameras_dict: Dict[str, GpCamera] = {}
         atexit.register(self.disconnect_all)
 
     @property

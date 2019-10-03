@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django_apscheduler',
 
     'camera_ctrl',
-    'camera_config',
     'proj_settings',
     'proj_logging',
 

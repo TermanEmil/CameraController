@@ -14,13 +14,9 @@ class FavFieldsListUpdate(TemplateView, ErrorUtilsMixin):
     def dispatch(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
 
-        try:
-            fav_field_formset = list(self._create_formset(request=request))
-            if request.method == 'POST':
-                self.post(formset=fav_field_formset)
-
-        except Exception as e:
-            return self.render_to_error(request=request, error=str(e))
+        fav_field_formset = list(self._create_formset(request=request))
+        if request.method == 'POST':
+            self.post(formset=fav_field_formset)
 
         context['formset'] = fav_field_formset
         return self.render_to_response(context=context)
