@@ -1,8 +1,8 @@
 from typing import Iterable
 
 from business.scheduling import cron_schedule_repository
+from camera_ctrl import models
 from enterprise.scheduling.cron_schedule import CronSchedule
-from scheduling import models
 
 
 class CronScheduleRepository(cron_schedule_repository.CronScheduleRepository):

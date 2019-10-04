@@ -3,10 +3,9 @@ import logging
 from adapters.file_transfer.file_transfer_service import FileTransferService
 from business.file_transfer.events import FileTransferEvents
 from business.messaging.event_manager import EventManager
-from camera_ctrl.events.file_transfer.file_transferred import file_transferred_log
+from camera_ctrl.events.file_transfer.file_transferred import file_transferred_log, file_transferred_log_to_db
 from camera_ctrl.events.file_transfer.transfer_error import \
     TransferErrorSendEmail, transfer_error_log, transfer_error_log_to_db
-from file_transfer.events.file_transferred import file_transferred_log_to_db
 from shared.di import obj_graph
 
 

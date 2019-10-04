@@ -1,7 +1,7 @@
 from business.scheduling import timelapse_repository
+from camera_ctrl import models
 from enterprise.scheduling.timelapse import Timelapse
 from shared.repositories.crud_repository import CrudRepository
-from scheduling import models
 
 
 class TimelapseRepository(CrudRepository, timelapse_repository.TimelapseRepository):

@@ -1,6 +1,6 @@
 import logging
 
-from proj_logging.internal_api.log_to_db import LogType, log_to_db
+from camera_ctrl.log_to_db import LogType, log_to_db
 
 
 def get_log_msg(file: str):

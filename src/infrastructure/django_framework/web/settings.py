@@ -45,9 +45,6 @@ INSTALLED_APPS = [
 
     'camera_ctrl',
     'proj_settings',
-    'proj_logging',
-
-    'scheduling.apps.SchedulingConfig',
 ]
 
 MIDDLEWARE = [

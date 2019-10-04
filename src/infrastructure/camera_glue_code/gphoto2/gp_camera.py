@@ -1,12 +1,10 @@
+import os
 import re
-
 from threading import Lock
 from typing import Optional, Iterable
 
 from enterprise.camera_ctrl.camera import Camera
-from enterprise.camera_ctrl.camera_config import CameraConfigField, CameraConfig
 from .gp_camera_config import *
-import os
 
 
 class GpCamera(Camera):
