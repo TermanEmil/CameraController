@@ -2,9 +2,9 @@ import logging
 from datetime import datetime
 
 from business.app_logging.log_manager import LogManager
+from camera_ctrl.settings_facade import SettingsFacade
 from enterprise.app_logging.log_message import LogMessage, LogType
 from enterprise.scheduling.timelapse import Timelapse
-from proj_settings.settings_facade import SettingsFacade
 
 
 def _get_log_msg(timelapse: Timelapse):

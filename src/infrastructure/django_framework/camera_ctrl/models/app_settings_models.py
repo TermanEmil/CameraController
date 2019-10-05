@@ -41,5 +41,7 @@ class GeneralSettings(SingletonModel):
 
     @staticmethod
     def get() -> 'GeneralSettings':
+        """A singleton resource"""
+
         GeneralSettings.load()
         return GeneralSettings.objects.get(pk=1)

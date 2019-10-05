@@ -3,9 +3,9 @@ from datetime import datetime
 
 from adapters.emailing.email_service import EmailService
 from business.app_logging.log_manager import LogManager
+from camera_ctrl.settings_facade import SettingsFacade
 from enterprise.app_logging.log_message import LogMessage, LogType
 from enterprise.camera_ctrl.camera import Camera
-from proj_settings.settings_facade import SettingsFacade
 
 
 def get_log_msg(camera: Camera, error: str) -> str:

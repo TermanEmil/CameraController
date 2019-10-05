@@ -3,13 +3,14 @@ from typing import Iterable
 from django.views.generic import TemplateView
 
 from adapters.camera.configs.favourite_configs_service import FavouriteConfigsService
+from camera_ctrl.views.app_settings._forms import FavouriteConfigForm
+from shared.di import obj_graph
 from shared.mixins.error_utils_mixin import ErrorUtilsMixin
-from ..forms import FavouriteConfigForm
 
 
 class FavFieldsListUpdate(TemplateView, ErrorUtilsMixin):
-    template_name = 'proj_settings/fav_fields_settings.html'
-    favourite_configs_service: FavouriteConfigsService = None
+    template_name = 'app_settings/fav_fields_settings.html'
+    favourite_configs_service: FavouriteConfigsService = obj_graph().provide(FavouriteConfigsService)
 
     def dispatch(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)

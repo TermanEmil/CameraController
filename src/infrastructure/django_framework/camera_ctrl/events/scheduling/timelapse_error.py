@@ -1,13 +1,11 @@
 import logging
 from typing import Iterable
 
-from django.core.mail import send_mail
-
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
 from adapters.emailing.email_service import EmailService
+from camera_ctrl.settings_facade import SettingsFacade
 from enterprise.camera_ctrl.camera import Camera
 from enterprise.scheduling.timelapse import Timelapse
-from proj_settings.settings_facade import SettingsFacade
 from . import capture_error
 
 

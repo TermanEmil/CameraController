@@ -1,7 +1,7 @@
 from typing import Iterable
 
 from adapters.emailing.emailing_settings import EmailingSettings
-from proj_settings.models import GeneralSettings
+from camera_ctrl.models.app_settings_models import GeneralSettings
 
 
 class SettingsFacade(EmailingSettings):

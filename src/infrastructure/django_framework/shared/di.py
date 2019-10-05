@@ -7,10 +7,10 @@ from pinject.object_graph import ObjectGraph
 
 from business.messaging.event_manager import EventManager
 from camera_ctrl.implementations.aps_scheduler import ApsScheduler
+from camera_ctrl.settings_facade import SettingsFacade
 from enterprise.camera_ctrl.camera_manager import CameraManager
 from infrastructure.camera_glue_code.gphoto2.gp_camera_manager import GpCameraManager
 from infrastructure.camera_glue_code.stub.create_stub_cameras import create_stub_cameras
-from proj_settings.settings_facade import SettingsFacade
 from shared.implementations.django_email_sender import DjangoEmailSender
 from shared.repositories.log_repository import LogRepository
 from shared.repositories.timelapse_repository import TimelapseRepository

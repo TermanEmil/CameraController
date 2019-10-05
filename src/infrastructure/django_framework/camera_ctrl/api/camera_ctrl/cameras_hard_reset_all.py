@@ -2,7 +2,7 @@ from django.views.generic import View
 from django.http import HttpResponse, HttpResponseServerError
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
 from business.camera.exceptions import CameraException, HardResetException
-from proj_settings.settings_facade import SettingsFacade
+from camera_ctrl.settings_facade import SettingsFacade
 from shared.di import obj_graph
 
 

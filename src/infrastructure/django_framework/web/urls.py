@@ -13,5 +13,4 @@ urlpatterns = [
 
     path('', include('camera_ctrl.urls.urls')),
     path('camera_ctrl/', include('camera_ctrl.urls.urls')),
-    path('settings/', include('proj_settings.urls')),
 ]
