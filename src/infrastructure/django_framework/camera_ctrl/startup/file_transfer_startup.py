@@ -3,9 +3,9 @@ import logging
 from adapters.file_transfer.file_transfer_service import FileTransferService
 from business.file_transfer.events import FileTransferEvents
 from business.messaging.event_manager import EventManager
-from camera_ctrl.events.file_transfer.file_transferred import file_transferred_log, file_transferred_log_to_db
-from camera_ctrl.events.file_transfer.transfer_error import \
-    TransferErrorSendEmail, transfer_error_log, transfer_error_log_to_db
+from camera_ctrl.events.file_transfer.file_transferred import file_transferred_log, FileTransferPersistentLog
+from camera_ctrl.events.file_transfer.transfer_error import TransferErrorSendEmail, transfer_error_log, \
+    TransferErrorPersistentLog
 from shared.di import obj_graph
 
 
@@ -23,12 +23,14 @@ class FileTransferStartup:
         self._start_file_transfer()
 
     def _register_events(self):
+        file_transfer_persistent_log = obj_graph().provide(FileTransferPersistentLog)
         self._event_manager.register(FileTransferEvents.FILE_TRANSFERRED, file_transferred_log)
-        self._event_manager.register(FileTransferEvents.FILE_TRANSFERRED, file_transferred_log_to_db)
+        self._event_manager.register(FileTransferEvents.FILE_TRANSFERRED, file_transfer_persistent_log.run)
 
+        transfer_error_persistent_log = obj_graph().provide(TransferErrorPersistentLog)
         transfer_error_send_email = obj_graph().provide(TransferErrorSendEmail)
         self._event_manager.register(FileTransferEvents.ERROR, transfer_error_log)
-        self._event_manager.register(FileTransferEvents.ERROR, transfer_error_log_to_db)
+        self._event_manager.register(FileTransferEvents.ERROR, transfer_error_persistent_log.run)
         self._event_manager.register(FileTransferEvents.ERROR, transfer_error_send_email.run)
 
     def _start_file_transfer(self):

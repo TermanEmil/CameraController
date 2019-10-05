@@ -1,6 +1,8 @@
 import logging
+from datetime import datetime
 
-from camera_ctrl.log_to_db import LogType, log_to_db
+from business.app_logging.log_manager import LogManager
+from enterprise.app_logging.log_message import LogMessage, LogType
 from enterprise.scheduling.timelapse import Timelapse
 from proj_settings.settings_facade import SettingsFacade
 
@@ -13,14 +15,19 @@ def all_photos_taken_log(timelapse: Timelapse, **kwargs):
     logging.info(_get_log_msg(timelapse))
 
 
-def all_photos_taken_log_to_db(timelapse: Timelapse, **kwargs):
-    settings = SettingsFacade()
-    if not settings.log_to_db_timelapse_capture:
-        return
+class AllPhotosTakenPersistentLog:
+    def __init__(self, log_manager: LogManager, settings_facade: SettingsFacade):
+        self._log_manager = log_manager
+        self._settings = settings_facade
 
-    log_type = LogType.INFO
-    category = 'Timelapse'
-    title = 'Captures done'
-    content = _get_log_msg(timelapse)
+    def run(self, timelapse: Timelapse, **kwargs):
+        if not self._settings.log_to_db_timelapse_capture:
+            return
 
-    log_to_db(log_type=log_type, category=category, title=title, content=content)
+        log_message = LogMessage(
+            log_type=LogType.INFO,
+            category='Timelapse',
+            title='Captures done',
+            content=_get_log_msg(timelapse),
+            created_time=datetime.utcnow())
+        self._log_manager.persistence_log(log_message)

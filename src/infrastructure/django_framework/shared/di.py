@@ -12,6 +12,7 @@ from infrastructure.camera_glue_code.gphoto2.gp_camera_manager import GpCameraMa
 from infrastructure.camera_glue_code.stub.create_stub_cameras import create_stub_cameras
 from proj_settings.settings_facade import SettingsFacade
 from shared.implementations.django_email_sender import DjangoEmailSender
+from shared.repositories.log_repository import LogRepository
 from shared.repositories.timelapse_repository import TimelapseRepository
 from .di_imports import pinject_imports
 from .repositories.cron_schedule_repository import CronScheduleRepository
@@ -51,6 +52,7 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('favourite_config_repository', to_class=FavouriteConfigRepository)
         bind('cron_schedule_repository', to_class=CronScheduleRepository)
         bind('timelapse_repository', to_class=TimelapseRepository)
+        bind('log_repository', to_class=LogRepository)
 
         bind('scheduler', to_class=ApsScheduler)
         bind('aps_scheduler', to_class=BackgroundScheduler)

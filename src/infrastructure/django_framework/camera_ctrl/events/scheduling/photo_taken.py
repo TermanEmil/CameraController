@@ -1,4 +1,7 @@
-from camera_ctrl.log_to_db import LogType, log_to_db
+from datetime import datetime
+
+from business.app_logging.log_manager import LogManager
+from enterprise.app_logging.log_message import LogMessage, LogType
 from enterprise.camera_ctrl.camera import Camera
 import logging
 
@@ -13,14 +16,19 @@ def photo_taken_log(camera: Camera, filepath: str, **kwargs):
     logging.info(_get_log_msg(camera, filepath))
 
 
-def photo_taken_log_to_db(camera: Camera, filepath: str, **kwargs):
-    settings = SettingsFacade()
-    if not settings.log_to_db_camera_capture:
-        return
+class PhotoTakenPersistentLog:
+    def __init__(self, log_manager: LogManager, settings_facade: SettingsFacade):
+        self._log_manager = log_manager
+        self._settings = settings_facade
 
-    log_type = LogType.INFO
-    category = 'Timelapse'
-    title = 'Photo taken'
-    content = _get_log_msg(camera, filepath)
+    def run(self, camera: Camera, filepath: str, **kwargs):
+        if not self._settings.log_to_db_camera_capture:
+            return
 
-    log_to_db(log_type=log_type, category=category, title=title, content=content)
+        log_message = LogMessage(
+            log_type=LogType.INFO,
+            category='Timelapse',
+            title='Photo taken',
+            content=_get_log_msg(camera, filepath),
+            created_time=datetime.utcnow())
+        self._log_manager.persistence_log(log_message)
