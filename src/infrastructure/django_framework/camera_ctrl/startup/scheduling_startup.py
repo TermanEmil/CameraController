@@ -3,7 +3,7 @@ from business.messaging.event_manager import EventManager
 from business.timelapse.events import TimelapseEvents
 from camera_ctrl.events.scheduling.all_photos_taken import *
 from camera_ctrl.events.scheduling.capture_error import *
-from camera_ctrl.events.scheduling.photo_taken import photo_taken_log, photo_taken_log_to_db
+from camera_ctrl.events.scheduling.photo_taken import photo_taken_log, PhotoTakenPersistentLog
 from camera_ctrl.events.scheduling.timelapse_error import TimelapseErrorHardReset, TimelapseErrorSendEmail
 from shared.di import obj_graph
 
@@ -29,8 +29,9 @@ class SchedulingStartup:
             logging.critical('Failed to run schedule_id startup. Error = {}'.format(e))
 
     def _register_events(self):
+        photo_taken_persistent_log = obj_graph().provide(PhotoTakenPersistentLog)
         self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_log)
-        self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_log_to_db)
+        self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_persistent_log.run)
 
         all_photos_taken_persistent_log = obj_graph().provide(AllPhotosTakenPersistentLog)
         self._event_manager.register(TimelapseEvents.ALL_PHOTOS_TAKEN, all_photos_taken_log)

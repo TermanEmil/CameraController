@@ -13,6 +13,8 @@ def pinject_imports():
     import business.timelapse.get_timelapse_func_bl_rule
     import business.file_transfer.file_transfer_manager
 
+    import business.app_logging.log_manager
+
     import adapters.camera.ctrl.camera_ctrl_service
     import adapters.camera.configs.camera_config_service
     import adapters.scheduling.schedule_service
