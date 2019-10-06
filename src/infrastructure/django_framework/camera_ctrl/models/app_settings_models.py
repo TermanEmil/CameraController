@@ -1,5 +1,6 @@
-from django.db import models
 import socket
+
+from django.db import models
 
 
 class SingletonModel(models.Model):
@@ -26,7 +27,6 @@ def get_default_email_subject_prefix() -> str:
 class GeneralSettings(SingletonModel):
     send_email_on_timelapse_error = models.BooleanField(default=True)
     hard_reset_on_timelapse_error = models.BooleanField(default=True)
-    send_email_on_sync_error = models.BooleanField(default=True)
     seconds_to_wait_after_hard_reset = models.FloatField(default=5.0)
 
     send_email_on_capture_error = models.BooleanField(default=False)

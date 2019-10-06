@@ -1,0 +1,1 @@
+from .emailing_settings import EmailingSettings

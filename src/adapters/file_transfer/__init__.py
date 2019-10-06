@@ -1,1 +1,1 @@
-from . import notifications_settings
+from .notifications_settings import NotificationsSettings

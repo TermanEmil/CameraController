@@ -7,7 +7,10 @@ from pinject.object_graph import ObjectGraph
 
 from business.messaging.event_manager import EventManager
 from camera_ctrl.implementations.aps_scheduler import ApsScheduler
-from camera_ctrl.settings_facade import SettingsFacade
+from camera_ctrl.settings.camera_ctrl_settings import CameraCtrlSettings
+from camera_ctrl.settings.emailing_settings import EmailingSettings
+from camera_ctrl.settings.notifications_settings import NotificationsSettings
+from camera_ctrl.settings.timelapse_settings import TimelapseSettings
 from enterprise.camera_ctrl.camera_manager import CameraManager
 from infrastructure.camera_glue_code.gphoto2.gp_camera_manager import GpCameraManager
 from infrastructure.camera_glue_code.stub.create_stub_cameras import create_stub_cameras
@@ -49,20 +52,30 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('camera_manager_provider', to_instance=CameraManagerSingleton.get)
         bind('camera_manager', to_instance=CameraManagerSingleton.get())
 
-        bind('favourite_config_repository', to_class=FavouriteConfigRepository)
-        bind('cron_schedule_repository', to_class=CronScheduleRepository)
-        bind('timelapse_repository', to_class=TimelapseRepository)
-        bind('log_repository', to_class=LogRepository)
-
         bind('scheduler', to_class=ApsScheduler)
         bind('aps_scheduler', to_class=BackgroundScheduler)
 
         bind('event_manager_provider', to_instance=EventManagerSingleton.get)
         bind('event_manager', to_instance=EventManagerSingleton.get())
 
-        bind('emailing_settings', to_class=SettingsFacade)
         bind('email_sender', to_class=DjangoEmailSender)
-        bind('notifications_settings', to_class=SettingsFacade)
+
+        self._bind_repositories(bind)
+        self._bind_settings(bind)
+
+    @staticmethod
+    def _bind_repositories(bind):
+        bind('favourite_config_repository', to_class=FavouriteConfigRepository)
+        bind('cron_schedule_repository', to_class=CronScheduleRepository)
+        bind('timelapse_repository', to_class=TimelapseRepository)
+        bind('log_repository', to_class=LogRepository)
+
+    @staticmethod
+    def _bind_settings(bind):
+        bind('emailing_settings', to_class=EmailingSettings)
+        bind('notifications_settings', to_class=NotificationsSettings)
+        bind('camera_ctrl_settings', to_class=CameraCtrlSettings)
+        bind('timelapse_settings', to_class=TimelapseSettings)
 
 
 class ObjectGraphWrapper:

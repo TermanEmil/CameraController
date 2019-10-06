@@ -40,7 +40,7 @@ def timelapse_func(
     timelapse.capture_index += 1
     timelapse_repository.update(timelapse)
 
-    event_manager.trigger_event(TimelapseEvents.ALL_PHOTOS_TAKEN, kwargs={'timelapse': timelapse})
+    event_manager.trigger_event(TimelapseEvents.EPISODE_FINISHED, kwargs={'timelapse': timelapse})
 
     if len(timelapse_errors) != 0:
         kwargs = {'timelapse': timelapse, 'errors': timelapse_errors}
