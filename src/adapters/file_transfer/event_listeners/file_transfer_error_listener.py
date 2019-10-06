@@ -6,38 +6,32 @@ from business.app_logging.log_manager import LogManager
 from enterprise.app_logging.log_message import LogMessage, LogType
 
 
-def get_log_msg(error: str):
-    return 'Failed to transfer files: {}'.format(error)
-
-
-def transfer_error_log(error: str, **kwargs):
-    logging.error(get_log_msg(error))
-
-
-class TransferErrorPersistentLog:
-    def __init__(self, log_manager: LogManager):
+class FileTransferErrorListener:
+    def __init__(self, log_manager: LogManager, email_service: EmailService):
         self._log_manager = log_manager
+        self._email_service = email_service
 
     def run(self, error: str, **kwargs):
+        msg = 'Failed to transfer files: {}'.format(error)
+
+        logging.error(msg)
+        self._persistent_log(msg)
+        self._send_email_log(msg)
+
+    def _persistent_log(self, msg):
         log_message = LogMessage(
             log_type=LogType.ERROR,
             category='FileTransfer',
             title='File transfer failed',
-            content=get_log_msg(error),
+            content=msg,
             created_time=datetime.utcnow())
         self._log_manager.persistence_log(log_message)
 
-
-class TransferErrorSendEmail:
-    def __init__(self, email_service: EmailService):
-        self._email_service = email_service
-
-    def run(self, error: str, **kwargs):
+    def _send_email_log(self, msg):
         subject = 'File transfer failed'
-        message = get_log_msg(error)
 
         try:
-            self._email_service.send_email(subject=subject, message=message)
+            self._email_service.send_email(subject=subject, message=msg)
 
         except Exception as e:
             logging.error('Failed to send emails. Error: {}'.format(e))

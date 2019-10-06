@@ -33,9 +33,7 @@ class SchedulingStartup:
         self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_log)
         self._event_manager.register(TimelapseEvents.PHOTO_TAKEN, photo_taken_persistent_log.run)
 
-        all_photos_taken_persistent_log = obj_graph().provide(AllPhotosTakenPersistentLog)
         self._event_manager.register(TimelapseEvents.ALL_PHOTOS_TAKEN, all_photos_taken_log)
-        self._event_manager.register(TimelapseEvents.ALL_PHOTOS_TAKEN, all_photos_taken_persistent_log.run)
 
         capture_error_persistent_log = obj_graph().provide(CaptureErrorPersistentLog)
         capture_error_send_email: CaptureErrorSendEmail = obj_graph().provide(CaptureErrorSendEmail)

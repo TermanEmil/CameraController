@@ -62,6 +62,7 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
 
         bind('emailing_settings', to_class=SettingsFacade)
         bind('email_sender', to_class=DjangoEmailSender)
+        bind('notifications_settings', to_class=SettingsFacade)
 
 
 class ObjectGraphWrapper:

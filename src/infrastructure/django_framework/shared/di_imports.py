@@ -19,4 +19,5 @@ def pinject_imports():
     import adapters.camera.configs.camera_config_service
     import adapters.scheduling.schedule_service
     import adapters.file_transfer.file_transfer_service
+    import adapters.file_transfer.event_listeners
     import adapters.emailing.email_service
