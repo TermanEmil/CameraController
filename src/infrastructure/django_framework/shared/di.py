@@ -13,6 +13,7 @@ from enterprise.camera_ctrl.camera_manager import CameraManager
 from infrastructure.camera_glue_code.gphoto2.gp_camera_manager import GpCameraManager
 from infrastructure.camera_glue_code.stub.create_stub_cameras import create_stub_cameras
 from infrastructure.camera_reset_glue_code import YkushCameraResetManager
+from infrastructure.file_transfer_glue_code import FileTransferManager
 from infrastructure.scheduler_glue_code import ApsScheduler
 from shared.implementations.django_email_sender import DjangoEmailSender
 from shared.repositories.log_repository import LogRepository
@@ -51,6 +52,8 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
     def configure(self, bind):
         bind('camera_manager_provider', to_instance=CameraManagerSingleton.get)
         bind('camera_manager', to_instance=CameraManagerSingleton.get())
+
+        bind('file_transfer_manager', to_class=FileTransferManager)
 
         bind('scheduler', to_class=ApsScheduler)
         bind('camera_reset_manager', to_class=YkushCameraResetManager)
