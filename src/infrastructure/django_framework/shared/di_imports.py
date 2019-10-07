@@ -4,7 +4,6 @@
 # noinspection PyUnresolvedReferences
 def pinject_imports():
     import business.camera.capture_img_and_download_bl_rule
-    import business.camera.hard_reset_all_cameras_bl_rule
 
     import business.scheduling.scheduling_startup_bl_rule
     import business.scheduling.timelapse_bl_rules

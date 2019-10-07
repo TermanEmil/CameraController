@@ -16,11 +16,11 @@ class ConfigNotFoundException(CameraException):
         super().__init__(msg)
 
 
-class HardResetException(Exception):
+class CameraResetException(Exception):
     def __init__(self, msg):
-        super().__init__('Hard reset failed: {}'.format(msg))
+        super().__init__('Camera reset failed: {}'.format(msg))
 
 
-class HardResetNotSupportedException(HardResetException):
+class CameraResetNotSupportedException(CameraResetException):
     def __init__(self, msg):
-        super().__init__('Hard reset not supported: {}'.format(msg))
+        super().__init__('Camera reset not supported: {}'.format(msg))

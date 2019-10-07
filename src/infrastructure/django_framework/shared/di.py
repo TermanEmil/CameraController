@@ -12,6 +12,7 @@ from camera_ctrl.settings.timelapse_settings import TimelapseSettings
 from enterprise.camera_ctrl.camera_manager import CameraManager
 from infrastructure.camera_glue_code.gphoto2.gp_camera_manager import GpCameraManager
 from infrastructure.camera_glue_code.stub.create_stub_cameras import create_stub_cameras
+from infrastructure.camera_reset_glue_code import YkushCameraResetManager
 from infrastructure.scheduler_glue_code import ApsScheduler
 from shared.implementations.django_email_sender import DjangoEmailSender
 from shared.repositories.log_repository import LogRepository
@@ -52,6 +53,7 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('camera_manager', to_instance=CameraManagerSingleton.get())
 
         bind('scheduler', to_class=ApsScheduler)
+        bind('camera_reset_manager', to_class=YkushCameraResetManager)
 
         bind('event_manager_provider', to_instance=EventManagerSingleton.get)
         bind('event_manager', to_instance=EventManagerSingleton.get())

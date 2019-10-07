@@ -8,6 +8,12 @@ from business.messaging.event_manager import EventManager
 
 
 class FileTransferManager:
+    """
+    This is using a script.
+    The script is supposed to output some flags followed by some text.
+    These flags are then used to detect what happened.
+    """
+
     _transferred_flag = '[copied]'
     _recovered_flag = '[recovered]'
     _error_flag = '[error]'
