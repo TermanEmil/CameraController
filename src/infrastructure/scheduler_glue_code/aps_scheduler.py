@@ -1,6 +1,6 @@
 from typing import Callable
 
-from apscheduler.schedulers.base import BaseScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore
 
 from business.scheduling.scheduler import Scheduler
@@ -9,8 +9,8 @@ from enterprise.scheduling.cron_schedule import CronSchedule
 
 
 class ApsScheduler(Scheduler):
-    def __init__(self, aps_scheduler: BaseScheduler):
-        self._scheduler = aps_scheduler
+    def __init__(self):
+        self._scheduler = BackgroundScheduler()
 
     def start(self):
         self._scheduler.add_jobstore(DjangoJobStore(), 'default')
