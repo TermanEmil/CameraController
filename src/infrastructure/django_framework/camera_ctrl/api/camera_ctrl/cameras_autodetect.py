@@ -1,5 +1,6 @@
-from django.views.generic import View
 from django.http import HttpResponse, HttpResponseServerError
+from django.views.generic import View
+
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
 from business.camera.exceptions import CameraException
 from shared.di import obj_graph

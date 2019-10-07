@@ -1,13 +1,18 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseServerError, HttpResponse
-from django.views.generic import CreateView, ListView, UpdateView, View, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from business.scheduling.scheduler import Scheduler
 from camera_ctrl.models import CronSchedule
 from enterprise.scheduling import cron_schedule
 from shared.di import obj_graph
 from shared.utils.hard_map_objects import hard_map_objects
+
+
+class _DiScheduler:
+    def __init__(self, scheduler: Scheduler):
+        self.scheduler = scheduler
 
 
 class CronScheduleCreate(SuccessMessageMixin, CreateView):
@@ -44,7 +49,7 @@ class CronScheduleUpdate(UpdateView):
         'year', 'month', 'day', 'week', 'day_of_week',
         'hour', 'minute', 'second']
 
-    scheduler = obj_graph().provide(Scheduler)
+    scheduler = obj_graph().provide(_DiScheduler).scheduler
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -69,7 +74,7 @@ class CronScheduleUpdate(UpdateView):
 
 class CronScheduleDelete(DeleteView):
     model = CronSchedule
-    scheduler = obj_graph().provide(Scheduler)
+    scheduler = obj_graph().provide(_DiScheduler).scheduler
 
     def get(self, request, *args, **kwargs):
         try:

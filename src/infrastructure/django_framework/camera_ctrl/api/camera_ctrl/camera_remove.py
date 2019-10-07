@@ -1,8 +1,8 @@
-from django.http import HttpResponse, HttpResponseServerError
+from django.http import HttpResponse
 from django.views.generic import View
 
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
-from business.camera.exceptions import CameraNotFoundException, CameraException
+from business.camera.exceptions import CameraNotFoundException
 from camera_ctrl.api_exceptions import CameraNotFoundApiException
 from shared.di import obj_graph
 
