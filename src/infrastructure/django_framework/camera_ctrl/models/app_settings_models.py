@@ -39,6 +39,10 @@ class GeneralSettings(SingletonModel):
     emails = models.CharField(max_length=512, blank=True, help_text='Space separated emails')
     email_subject_prefix = models.CharField(max_length=64, blank=True, default=get_default_email_subject_prefix())
 
+    nb_of_failures_to_reboot_after = models.IntegerField(
+        default=2,
+        help_text='The system will be rebooted, if the program fails multiple times')
+
     @staticmethod
     def get() -> 'GeneralSettings':
         """A singleton resource"""
