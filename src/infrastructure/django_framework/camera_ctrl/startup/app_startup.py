@@ -10,8 +10,11 @@ class AppStartup:
             file_transfer_startup: FileTransferStartup,
             scheduling_startup: SchedulingStartup):
 
-        self._startup_objs = [camera_ctrl_startup, file_transfer_startup, scheduling_startup]
+        self._camera_ctrl_startup = camera_ctrl_startup
+        self._file_transfer_startup = file_transfer_startup
+        self._scheduling_startup = scheduling_startup
 
     def run(self):
-        for startup in self._startup_objs:
-            startup.run()
+        self._camera_ctrl_startup.run()
+        self._file_transfer_startup.run()
+        self._scheduling_startup.run()
