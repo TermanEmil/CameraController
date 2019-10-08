@@ -23,17 +23,14 @@ class FileTransferManager:
         self._event_manager_provider = event_manager_provider
 
     def run_in_background(self):
+        file_transfer_daemon = threading.Thread(target=self._run_in_background_core)
+        file_transfer_daemon.start()
+
+    def _run_in_background_core(self):
         file_transfer_process = subprocess.Popen(
             self._bash_cmd_run_file_transfer.split(),
             stdout=subprocess.PIPE)
 
-        file_transfer_daemon = threading.Thread(
-            target=self._run_in_background_core,
-            kwargs={"file_transfer_process": file_transfer_process})
-
-        file_transfer_daemon.start()
-
-    def _run_in_background_core(self, file_transfer_process):
         while True:
             line = file_transfer_process.stdout.readline()
             if not line:
