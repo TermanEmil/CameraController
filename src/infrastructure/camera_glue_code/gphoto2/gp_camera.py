@@ -1,5 +1,7 @@
+import logging
 import os
 import re
+import atexit
 from threading import Lock
 from typing import Optional, Iterable
 
@@ -8,6 +10,16 @@ from .gp_camera_config import *
 
 
 class GpCamera(Camera):
+    class GpConnection:
+        def __init__(self, camera: 'GpCamera'):
+            self._camera = camera
+
+        def __enter__(self):
+            pass
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            self._camera.disconnect(use_lock=False)
+
     def __init__(self, name, port, gp_camera: gp.Camera, lock: Lock = None):
         if lock is None:
             lock = Lock()
@@ -18,6 +30,8 @@ class GpCamera(Camera):
         self._port = port
         self._gp_camera = gp_camera
         self._serial_nb = None
+
+        atexit.register(self.disconnect, verbose=True)
 
     @property
     def sync_lock(self) -> Lock:
@@ -42,12 +56,15 @@ class GpCamera(Camera):
     def summary(self) -> str:
         return 'Port: {0}'.format(self._port)
 
-    def disconnect(self, use_lock: bool = True):
+    def disconnect(self, use_lock=True, verbose=False):
         if use_lock:
             with self._gp_lock:
                 self._gp_camera.exit()
         else:
             self._gp_camera.exit()
+
+        if verbose:
+            logging.info('{} disconnected'.format(self.name))
 
     def list_configs(self) -> iter:
         with self._gp_lock:
@@ -91,25 +108,26 @@ class GpCamera(Camera):
 
     def capture_img(self, storage_dir, filename_prefix) -> str:
         with self._gp_lock:
-            if not os.path.isdir(storage_dir):
-                raise Exception('Path: "{0}" does not exist'.format(storage_dir))
+            with self.GpConnection(camera=self):
+                if not os.path.isdir(storage_dir):
+                    raise Exception('Path: "{0}" does not exist'.format(storage_dir))
 
-            self.disconnect(use_lock=False)
-            gp_camera = self._gp_camera
+                self.disconnect(use_lock=False)
+                gp_camera = self._gp_camera
 
-            file_device_path = gp_camera.capture(gp.GP_CAPTURE_IMAGE)
+                file_device_path = gp_camera.capture(gp.GP_CAPTURE_IMAGE)
 
-            _, file_extension = os.path.splitext(file_device_path.name)
-            file_extension = file_extension[1:]
-            filename = '{0}.{1}'.format(filename_prefix, file_extension)
-            file_path = os.path.join(storage_dir, filename)
+                _, file_extension = os.path.splitext(file_device_path.name)
+                file_extension = file_extension[1:]
+                filename = '{0}.{1}'.format(filename_prefix, file_extension)
+                file_path = os.path.join(storage_dir, filename)
 
-            camera_file = gp_camera.file_get(
-                file_device_path.folder,
-                file_device_path.name,
-                gp.GP_FILE_TYPE_NORMAL)
+                camera_file = gp_camera.file_get(
+                    file_device_path.folder,
+                    file_device_path.name,
+                    gp.GP_FILE_TYPE_NORMAL)
 
-            camera_file.save(file_path)
+                camera_file.save(file_path)
 
         return file_path
 
