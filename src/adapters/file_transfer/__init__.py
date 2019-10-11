@@ -1,0 +1,1 @@
+from .notifications_settings import NotificationsSettings

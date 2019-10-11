@@ -8,7 +8,7 @@
 
 # Exit on signal
 # Exit on signal
-trap 'kill $(jobs -p) || true' EXIT
+trap 'kill $(jobs -p) 2>&- || true' EXIT
 
 . ./scripts/mount_tools.sh
 
@@ -82,13 +82,20 @@ function sync_core() {
             echo "[error] Failed to sync folders" >&2;
         }
 
-        sleep 1
+        sleep 1;
       done
     done
 }
 
 
+# If inotifywait is not available - exit
+if ! type inotifywait 2>&-; then
+  echo 'inotifywait - not found' >&2;
+  exit 1;
+fi;
+
 mkdir -p ${TIMELAPSE_DIR}
+
 
 while :
 do
@@ -97,4 +104,6 @@ do
   } || { # catch
     echo '[error] Inotify crashed --- Restarting' >&2;
   }
+
+  sleep 1;
 done

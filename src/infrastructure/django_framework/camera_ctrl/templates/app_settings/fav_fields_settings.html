@@ -1,0 +1,56 @@
+{% extends './app_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-primary">Favourite Fields
+      <a id="fav_field_add_btn" class="text-info">
+        <i aria-hidden="true" class="fa fa-plus-square fa-fw" data-toggle="tooltip" title="Add field"></i>
+      </a>
+    </h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% for form in formset %}
+        <div class="form-group row mr-5">
+
+          <div class="col-11">
+            {% include 'shared/generic_form.html' with form=form %}
+          </div>
+
+          <div class="col-1">
+            <a class="text-info" onclick="favFieldRemoveBtnClick($(this).find('option')[0].value, '{{ csrf_token }}')">
+              <select hidden>s
+                <option value="{% url 'fav_fields/remove' form.model_pk %}"></option>
+              </select>
+
+              <i aria-hidden="true" class="fa fa-trash fa-fw" data-toggle="tooltip" title="Remove"></i>
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="text-secondary">Empty</div>
+      {% endfor %}
+
+      <hr/>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  {{ block.super }}
+
+  <script type="text/javascript" src="{% static 'app_settings/js/fav_field_add_btn_click.js' %}"></script>
+  <script type="text/javascript" src="{% static 'app_settings/js/fav_field_remove_btn_click.js' %}"></script>
+
+  <script>
+    $("#fav_field_add_btn").click(function() {
+      url = '{% url "fav_fields/add" %}';
+      favFieldAddBtnClick(url);
+    });
+  </script>
+{% endblock scripts %}

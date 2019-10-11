@@ -9,42 +9,6 @@ function cameraCaptureImgBtnClick(element, cameraId) {
 
     iconElement.className = "fa fa-fw fa-spinner fa-spin";
 
-//    var onRequestDone = function() {
-//        iconElement.className = iconClassNameSave;
-//        element.onclick = elementOnClickSave;
-//    }
-//
-//    var req = new XMLHttpRequest();
-//    req.open("GET", urlToSend, true);
-//    req.responseType = "arraybuffer";
-//    req.onload = function (event) {
-//        console.log(req);
-//        var blob = req.response;
-//        var fileName = req.getResponseHeader("fileName");
-//        url = window.URL.createObjectURL(blob);
-//
-//        var link = document.createElement('a');
-//        link.href = url;
-//        link.download = fileName;
-//        link.click();
-//        link.remove();
-//        window.URL.revokeObjectURL(url);
-//
-//        onRequestDone();
-//    };
-//
-//    req.onerror = function (data) {
-//        alert('Failed to capture picture: ' + data.responseText);
-//        onRequestDone();
-//    }
-//
-//    req.ontimeout = function () {
-//        alert('Capture timeout');
-//        onRequestDone();
-//    }
-//
-//    req.send();
-
     $.ajax({
         url: '/api/camera_capture_img_and_download/' + cameraId,
         xhrFields: {

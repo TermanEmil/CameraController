@@ -42,13 +42,7 @@ INSTALLED_APPS = [
 
     'widget_tweaks',
     'django_apscheduler',
-
     'camera_ctrl',
-    'camera_config',
-    'proj_settings',
-    'proj_logging',
-
-    'scheduling.apps.SchedulingConfig',
 ]
 
 MIDDLEWARE = [

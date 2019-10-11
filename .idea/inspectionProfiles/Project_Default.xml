@@ -32,6 +32,13 @@
           <option value="scheduling.models.Timelapse.*" />
           <option value="scheduling.models.HistoryUnit.objects" />
           <option value="proj_logging.models.HistoryUnit.objects" />
+          <option value="camera_ctrl.models.camera_config_models.FavField.objects" />
+          <option value="camera_ctrl.models.scheduling_models.Timelapse.schedule_id" />
+          <option value="camera_ctrl.models.scheduling_models.CronSchedule.objects" />
+          <option value="camera_ctrl.models.scheduling_models.Timelapse.objects" />
+          <option value="camera_ctrl.models.app_logging_models.HistoryUnit.objects" />
+          <option value="camera_ctrl.models.app_settings_models.GeneralSettings.objects" />
+          <option value="camera_ctrl.models.app_settings_models.SingletonModel.objects" />
         </list>
       </option>
     </inspection_tool>
