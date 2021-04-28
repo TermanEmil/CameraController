@@ -6,6 +6,7 @@ from django_apscheduler.models import DjangoJob
 
 
 class CronSchedule(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64)
     start_date = models.DateTimeField(blank=True)
     end_date = models.DateTimeField(blank=True)
@@ -30,6 +31,7 @@ class CronSchedule(models.Model):
 
 
 class Timelapse(models.Model):
+    id = models.AutoField(primary_key=True)
     schedule = models.ForeignKey(CronSchedule, on_delete=models.SET_NULL, null=True, blank=True)
     schedule_job_id = models.CharField(max_length=124, null=True)
 

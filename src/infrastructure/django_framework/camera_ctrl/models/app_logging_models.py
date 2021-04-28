@@ -14,6 +14,7 @@ class HistoryUnitManager(models.Manager):
 
 
 class HistoryUnit(models.Model):
+    id = models.AutoField(primary_key=True)
     log_type = models.CharField(max_length=32)
     category = models.CharField(max_length=32, null=True)
     title = models.CharField(max_length=64)

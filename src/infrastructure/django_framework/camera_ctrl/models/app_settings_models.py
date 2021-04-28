@@ -25,6 +25,7 @@ def get_default_email_subject_prefix() -> str:
 
 
 class GeneralSettings(SingletonModel):
+    id = models.AutoField(primary_key=True)
     send_email_on_timelapse_error = models.BooleanField(default=True)
     hard_reset_on_timelapse_error = models.BooleanField(default=True)
     seconds_to_wait_after_hard_reset = models.FloatField(default=5.0)
