@@ -6,6 +6,7 @@ from enterprise.camera_ctrl.camera_config import\
     CameraConfigChoiceField,\
     CameraConfigToggleField,\
     CameraConfigRangeField
+from enterprise.camera_ctrl.exceptions import InvalidConfigException
 
 
 class StubCameraConfig(CameraConfig):
@@ -62,6 +63,9 @@ class StubCameraConfigField(CameraConfigField):
         return self._value
 
     def set_value(self, value) -> bool:
+        if self.is_readonly:
+            raise InvalidConfigException('Config is readonly')
+
         if self.changes:
             self._value = value
             return True
@@ -84,16 +88,18 @@ class StubCameraConfigChoiceField(StubCameraConfigField, CameraConfigChoiceField
 
     def set_value(self, value):
         if value not in self._choices:
-            raise Exception('Choice not in list')
+            raise InvalidConfigException('Choice not in list')
         super().set_value(value=value)
 
 
 class StubCameraConfigToggleField(StubCameraConfigField, CameraConfigToggleField):
     def set_value(self, value):
-        if isinstance(value, bool):
-            super().set_value(value=int(value))
-        else:
-            super().set_value(value=value)
+        try:
+            parsed_value = bool(value)
+        except ValueError:
+            raise InvalidConfigException('Expected boolean value')
+
+        super().set_value(value=int(parsed_value))
 
 
 class StubCameraConfigRangeField(StubCameraConfigField, CameraConfigRangeField):
@@ -111,5 +117,13 @@ class StubCameraConfigRangeField(StubCameraConfigField, CameraConfigRangeField):
         return self._range_max
 
     def set_value(self, value):
-        value = max(min(self.range_max, value), self.range_min)
-        super().set_value(value=value)
+        try:
+            parsed_value = float(value)
+        except ValueError:
+            raise InvalidConfigException('Expected float value')
+
+        if parsed_value < self.range_min or parsed_value > self.range_max:
+            raise InvalidConfigException(f'Value not withing [{self.range_min}; {self.range_max}]')
+
+        trimmed_value = max(min(self.range_max, parsed_value), self.range_min)
+        super().set_value(value=trimmed_value)

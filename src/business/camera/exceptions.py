@@ -16,6 +16,14 @@ class ConfigNotFoundException(CameraException):
         super().__init__(msg)
 
 
+class InvalidConfigException(CameraException):
+    def __init__(self, config_name: str, details: str = None):
+        msg = f'Invalid config for {config_name}'
+        if details:
+            msg += f': {details}'
+        super().__init__(msg)
+
+
 class CameraResetException(Exception):
     def __init__(self, msg):
         super().__init__('Camera reset failed: {}'.format(msg))

@@ -1,7 +1,8 @@
 from typing import Iterable
 
-from business.camera.exceptions import CameraNotFoundException, ConfigNotFoundException
+from business.camera.exceptions import CameraNotFoundException, ConfigNotFoundException, InvalidConfigException
 from enterprise.camera_ctrl.camera_manager import CameraManager
+from enterprise.camera_ctrl.exceptions import InvalidConfigException as EnterpriseInvalidConfigException
 from .dtos import ConfigFieldDto, ConfigSectionDto
 from .favourite_configs_repository import FavouriteConfigsRepository
 from .mappers import configs_to_dto, config_field_to_dto, ConfigsDto
@@ -33,7 +34,12 @@ class CameraConfigService:
 
     def set_config(self, camera_id, config_name: str, config_value: str):
         camera, config = self._get_cam_and_config(camera_id, config_name)
-        config.set_value(value=config_value)
+
+        try:
+            config.set_value(value=config_value)
+        except EnterpriseInvalidConfigException as e:
+            raise InvalidConfigException(config_name=config_name, details=str(e))
+
         camera.set_config((config,))
 
     def get_favourite_configs(self, camera_id: str) -> Iterable[ConfigFieldDto]:
