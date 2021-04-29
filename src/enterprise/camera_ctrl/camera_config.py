@@ -41,8 +41,7 @@ class CameraConfigField(CameraConfigWidget):
     def value(self):
         raise NotImplementedError()
 
-    def set_value(self, value) -> bool:
-        # Return True if changed
+    def set_value(self, value):
         raise NotImplementedError()
 
 

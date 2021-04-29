@@ -6,7 +6,7 @@ from enterprise.camera_ctrl.camera_config import\
     CameraConfigChoiceField,\
     CameraConfigToggleField,\
     CameraConfigRangeField
-from enterprise.camera_ctrl.exceptions import InvalidConfigException
+from enterprise.camera_ctrl.exceptions import InvalidConfigException, NotAValidChoiceForConfigException
 
 
 class StubCameraConfig(CameraConfig):
@@ -88,7 +88,7 @@ class StubCameraConfigChoiceField(StubCameraConfigField, CameraConfigChoiceField
 
     def set_value(self, value):
         if value not in self._choices:
-            raise InvalidConfigException('Choice not in list')
+            raise NotAValidChoiceForConfigException(self.choices)
         super().set_value(value=value)
 
 

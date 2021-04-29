@@ -5,6 +5,8 @@ import gphoto2 as gp
 
 from enterprise.camera_ctrl.camera_config import CameraConfig, CameraConfigSection, CameraConfigField, \
     CameraConfigTextField, CameraConfigChoiceField, CameraConfigToggleField, CameraConfigRangeField
+from enterprise.camera_ctrl.exceptions import InvalidConfigException, ConfigIsReadonlyException, \
+    NotAValidChoiceForConfigException
 
 
 class GpCameraConfig(CameraConfig):
@@ -90,26 +92,25 @@ class GpCameraConfigField(CameraConfigField):
     def value(self):
         return self._value
 
-    def set_value(self, value) -> bool:
+    def set_value(self, value):
         if self.is_readonly:
-            return False
+            raise ConfigIsReadonlyException()
 
         if self.value == value:
-            return False
+            return
 
         self._value = value
         self.gp_widget.set_value(value)
-        return True
 
 
 class GpCameraConfigTextField(GpCameraConfigField, CameraConfigTextField):
-    def set_value(self, value) -> bool:
+    def set_value(self, value):
         value = shorten(value, 256)
 
         if (len(value) == 0 or value.isspace()) and self.value.isspace():
             value = self.value
 
-        return super().set_value(value)
+        super().set_value(value)
 
 
 class GpCameraConfigChoiceField(GpCameraConfigField, CameraConfigChoiceField):
@@ -122,10 +123,11 @@ class GpCameraConfigChoiceField(GpCameraConfigField, CameraConfigChoiceField):
     def choices(self) -> iter:
         return self._choices
 
-    def set_value(self, value) -> bool:
+    def set_value(self, value):
         if value not in self._choices:
-            raise Exception('Choice not in list')
-        return super().set_value(value)
+            raise NotAValidChoiceForConfigException(self.choices)
+
+        super().set_value(value)
 
     def _get_choices(self):
         for choice in self.gp_widget.get_choices():
@@ -141,14 +143,14 @@ class GpCameraConfigChoiceField(GpCameraConfigField, CameraConfigChoiceField):
 
 
 class GpCameraConfigToggleField(GpCameraConfigField, CameraConfigToggleField):
-    def set_value(self, value) -> bool:
-        if isinstance(value, bool):
-            value = int(value)
+    def set_value(self, value):
+        try:
+            parsed_value = bool(value)
+        except ValueError:
+            raise InvalidConfigException('Expected boolean value')
 
-        if bool(value) != bool(self.value):
-            return super().set_value(value)
-
-        return False
+        if parsed_value != bool(self.value):
+            super().set_value(int(value))
 
 
 class GpCameraConfigRangeField(GpCameraConfigField, CameraConfigRangeField):
@@ -164,9 +166,16 @@ class GpCameraConfigRangeField(GpCameraConfigField, CameraConfigRangeField):
     def range_max(self):
         return self._range_max
 
-    def set_value(self, value) -> bool:
-        value = max(min(self.range_max, value), self.range_min)
-        return super().set_value(value)
+    def set_value(self, value):
+        try:
+            parsed_value = float(value)
+        except ValueError:
+            raise InvalidConfigException('Expected float value')
+
+        if parsed_value < self.range_min or parsed_value > self.range_max:
+            raise InvalidConfigException(f'Value not withing [{self.range_min}; {self.range_max}]')
+
+        super().set_value(value)
 
     def _get_ranges(self) -> Tuple[float, float, float]:
         return self.gp_widget.get_range()
