@@ -21,6 +21,7 @@ from shared.repositories.timelapse_repository import TimelapseRepository
 from .di_imports import pinject_imports
 from .repositories.cron_schedule_repository import CronScheduleRepository
 from .repositories.favourite_config_repository import FavouriteConfigRepository
+from .repositories.scheduled_config_repository import ScheduledConfigRepository
 
 
 class CameraManagerSingleton:
@@ -71,6 +72,7 @@ class DjangoProjectBindingSpec(pinject.BindingSpec):
         bind('favourite_config_repository', to_class=FavouriteConfigRepository)
         bind('cron_schedule_repository', to_class=CronScheduleRepository)
         bind('timelapse_repository', to_class=TimelapseRepository)
+        bind('scheduled_config_repository', to_class=ScheduledConfigRepository)
         bind('log_repository', to_class=LogRepository)
 
     @staticmethod

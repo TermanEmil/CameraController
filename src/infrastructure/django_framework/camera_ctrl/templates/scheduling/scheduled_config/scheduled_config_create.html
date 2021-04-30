@@ -1,0 +1,30 @@
+{% extends './base.html' %}
+{% load static %}
+
+
+{% block content %}
+{{ block.super }}
+
+<div class="container">
+    {% include 'shared/generic_toast_messages.html' %}
+
+    <br/>
+    <br/>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <h2>children</h2>
+        {{ fields.as_p }}
+        <input type="submit" value="Save">
+    </form>
+
+    <hr/>
+    {% include './_man.html' %}
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+{{ block.super }}
+{% endblock scripts %}

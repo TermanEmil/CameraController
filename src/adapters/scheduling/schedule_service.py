@@ -1,3 +1,4 @@
+from business.scheduling.get_scheduled_config_func_bl_rule import GetScheduledConfigFuncBlRule
 from business.timelapse.get_timelapse_func_bl_rule import GetTimelapseFuncBlRule
 from business.scheduling.cron_bl_rules import RunScheduleBlRule
 from business.scheduling.scheduler import Scheduler
@@ -13,12 +14,14 @@ class ScheduleService:
             scheduling_startup_bl_rule: SchedulingStartupBlRule,
             run_schedule_bl_rule: RunScheduleBlRule,
             get_timelapse_func_bl_rule: GetTimelapseFuncBlRule,
+            get_scheduled_config_func_bl_rule: GetScheduledConfigFuncBlRule,
             scheduler: Scheduler):
 
         self._timelapse_repository = timelapse_repository
         self._scheduling_startup_bl_rule = scheduling_startup_bl_rule
         self._run_schedule_bl_rule = run_schedule_bl_rule
         self._get_timelapse_func_bl_rule = get_timelapse_func_bl_rule
+        self._get_scheduled_config_func_bl_rule = get_scheduled_config_func_bl_rule
 
         self._scheduler = scheduler
 
@@ -27,6 +30,10 @@ class ScheduleService:
 
     def run_timelapse(self, timelapse_pk: int, cron_schedule: CronSchedule) -> str:
         dto = self._get_timelapse_func_bl_rule.execute(timelapse_pk)
+        return self._run_schedule_bl_rule.execute(schedule=cron_schedule, func=dto.func, func_kwargs=dto.kwargs)
+
+    def run_scheduled_config(self, scheduled_config_pk: int, cron_schedule: CronSchedule) -> str:
+        dto = self._get_scheduled_config_func_bl_rule.execute(scheduled_config_pk)
         return self._run_schedule_bl_rule.execute(schedule=cron_schedule, func=dto.func, func_kwargs=dto.kwargs)
 
     def delete_job(self, job_id):

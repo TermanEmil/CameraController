@@ -1,0 +1,30 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="container">
+  <h3 class="text-primary">Scheduled Configs</h3>
+  <div class="list-group">
+    {% for scheduled_config in object_list %}
+    <div>{{ scheduled_config.name }}</div>
+    {% for field in scheduled_config.fields.all %}
+      <div>{{field.name}}: {{field.value}}</div>
+    {% empty %}
+    <div class="text-secondary">No fields</div>
+    {% endfor %}
+
+
+    {% empty %}
+    <div class="text-secondary">No scheduled configs</div>
+    {% endfor %}
+  </div>
+
+  <br/>
+  <form action="{% url 'timelapse/create' %}">
+    <button type="submit" class="btn btn-primary">Create timelapse</button>
+  </form>
+</div>
+{% endblock content %}
+

@@ -4,6 +4,7 @@ from django.contrib import admin
 from camera_ctrl.models import CronSchedule, Timelapse, HistoryUnit
 from camera_ctrl.models.app_settings_models import GeneralSettings
 from camera_ctrl.models.camera_config_models import FavField
+from camera_ctrl.models.scheduling_models import ScheduledConfig, ScheduledConfigField
 
 
 class CronScheduleAdmin(admin.ModelAdmin):
@@ -15,3 +16,5 @@ admin.site.register(CronSchedule, CronScheduleAdmin)
 admin.site.register(Timelapse)
 admin.site.register(HistoryUnit)
 admin.site.register(GeneralSettings)
+admin.site.register(ScheduledConfig)
+admin.site.register(ScheduledConfigField)

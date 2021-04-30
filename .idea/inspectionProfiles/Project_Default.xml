@@ -39,6 +39,7 @@
           <option value="camera_ctrl.models.app_logging_models.HistoryUnit.objects" />
           <option value="camera_ctrl.models.app_settings_models.GeneralSettings.objects" />
           <option value="camera_ctrl.models.app_settings_models.SingletonModel.objects" />
+          <option value="camera_ctrl.models.scheduling_models.ScheduledConfig.objects" />
         </list>
       </option>
     </inspection_tool>
