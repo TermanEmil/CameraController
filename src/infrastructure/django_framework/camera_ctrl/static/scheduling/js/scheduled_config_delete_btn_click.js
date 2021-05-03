@@ -1,4 +1,4 @@
-function scheduleDeleteBtnClick(url) {
+function scheduledConfigDeleteBtnClick(url) {
     $.ajax({
         url: url,
 
@@ -7,7 +7,7 @@ function scheduleDeleteBtnClick(url) {
         },
 
         error: function(data) {
-            alert('Failed to delete schedule. Error: ' + data.responseText);
+            alert('Failed to delete scheduled config. Error: ' + data.responseText);
         }
     });
 }

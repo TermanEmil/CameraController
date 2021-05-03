@@ -1,5 +1,4 @@
 function timelapseDeleteBtnClick(url) {
-    console.log(url);
     $.ajax({
         url: url,
 

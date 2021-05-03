@@ -58,7 +58,7 @@ class ScheduledConfig(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('scheduled-config/list')
+        return reverse('scheduled-config/update', kwargs={'pk': self.pk})
 
 
 class ScheduledConfigField(models.Model):

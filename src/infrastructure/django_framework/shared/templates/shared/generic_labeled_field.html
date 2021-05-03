@@ -1,0 +1,12 @@
+{% load widget_tweaks %}
+
+<div class="form-group row">
+  <label class="col-4 col-form-label text-right" for="{{ field.auto_id }}">
+    <span class="text-info">{{ field.label_tag }}</span>
+    <span class="text-secondary small mr-2">{{ field.help_text }}</span>
+  </label>
+
+  <div class="col-8">
+    {% include './generic_field.html' with field=field %}
+  </div>
+</div>

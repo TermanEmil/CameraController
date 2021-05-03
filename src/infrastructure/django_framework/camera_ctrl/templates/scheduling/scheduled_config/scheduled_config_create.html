@@ -8,16 +8,51 @@
 <div class="container">
     {% include 'shared/generic_toast_messages.html' %}
 
+    <h4 class="text-primary float-right">
+        {% if updating %}
+        Update Scheduled Config
+        {% else %}
+        Create Scheduled Config
+        {% endif %}
+    </h4>
     <br/>
     <br/>
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <h2>children</h2>
-        {{ fields.as_p }}
-        <input type="submit" value="Save">
+
+        {% include 'shared/generic_form.html' %}
+        <hr/>
+        {{ fields.management_form }}
+
+        {% for form in fields.forms %}
+            {% include 'shared/generic_form.html' with form=form %}
+        {% endfor %}
+        <hr/>
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'cron/create' %}">
+                    <button type="button" class="btn btn-light">Create Schedule</button>
+                </a>
+            </div>
+
+            {% if updating %}
+            <div class="col">
+                <button
+                  type="button"
+                  class="btn btn-danger pull-right"
+                  onclick="scheduledConfigDeleteBtnClick(this.value);"
+                  value="{% url 'scheduled-config/delete' object.pk %}">Delete</button>
+            </div>
+            {% endif %}
+        </div>
     </form>
+
+    <!--Data for redirection after delete-->
+    <div hidden>
+        <data id="list-url" value="{% url 'scheduled-config/list' %}"></data>
+    </div>
 
     <hr/>
     {% include './_man.html' %}
@@ -27,4 +62,5 @@
 
 {% block scripts %}
 {{ block.super }}
+<script type="text/javascript" src="{% static 'scheduling/js/scheduled_config_delete_btn_click.js' %}"></script>
 {% endblock scripts %}
