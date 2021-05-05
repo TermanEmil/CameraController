@@ -8,22 +8,23 @@
   <h3 class="text-primary">Scheduled Configs</h3>
   <div class="list-group">
     {% for scheduled_config in object_list %}
-    <div>{{ scheduled_config.name }}</div>
-    {% for field in scheduled_config.fields.all %}
-      <div>{{field.name}}: {{field.value}}</div>
-    {% empty %}
-    <div class="text-secondary">No fields</div>
-    {% endfor %}
+    <a
+      class="list-group-item list-group-item-action"
+      href="{% url 'scheduled-config/update' scheduled_config.pk %}">
 
-
+      <div class="row">
+        <div class="col-11 text-primary">{{ scheduled_config.name }}</div>
+        <div class="col-1 text-secondary small my-auto">Id: {{ scheduled_config.pk }}</div>
+      </div>
+    </a>
     {% empty %}
     <div class="text-secondary">No scheduled configs</div>
     {% endfor %}
   </div>
 
   <br/>
-  <form action="{% url 'timelapse/create' %}">
-    <button type="submit" class="btn btn-primary">Create timelapse</button>
+  <form action="{% url 'scheduled-config/create' %}">
+    <button type="submit" class="btn btn-primary">Create scheduled config</button>
   </form>
 </div>
 {% endblock content %}

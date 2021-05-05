@@ -22,13 +22,15 @@
         {% csrf_token %}
 
         {% include 'shared/generic_form.html' %}
+
         <hr/>
         {{ fields.management_form }}
-
         {% for form in fields.forms %}
             {% include 'shared/generic_form.html' with form=form %}
+            <hr/>
+        {% empty %}
+            <hr/>
         {% endfor %}
-        <hr/>
         <div class="row">
             <div class="col">
                 <button type="submit" class="btn btn-primary">Submit</button>
