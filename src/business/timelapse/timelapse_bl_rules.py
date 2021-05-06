@@ -1,6 +1,6 @@
 from typing import Optional
 
-from business.scheduling.timelapse_repository import TimelapseRepository
+from business.timelapse.timelapse_repository import TimelapseRepository
 from enterprise.scheduling.timelapse import Timelapse
 
 

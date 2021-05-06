@@ -6,7 +6,7 @@ def pinject_imports():
     import business.camera.capture_img_and_download_bl_rule
 
     import business.scheduling.scheduling_startup_bl_rule
-    import business.scheduling.timelapse_bl_rules
+    import business.timelapse.timelapse_bl_rules
     import business.scheduling.cron_bl_rules
 
     import business.timelapse.get_timelapse_func_bl_rule

@@ -1,9 +1,9 @@
-from business.scheduling.get_scheduled_config_func_bl_rule import GetScheduledConfigFuncBlRule
+from business.scheduled_configs.get_scheduled_config_func_bl_rule import GetScheduledConfigFuncBlRule
 from business.timelapse.get_timelapse_func_bl_rule import GetTimelapseFuncBlRule
 from business.scheduling.cron_bl_rules import RunScheduleBlRule
 from business.scheduling.scheduler import Scheduler
 from business.scheduling.scheduling_startup_bl_rule import SchedulingStartupBlRule
-from business.scheduling.timelapse_repository import TimelapseRepository
+from business.timelapse.timelapse_repository import TimelapseRepository
 from enterprise.scheduling.cron_schedule import CronSchedule
 
 

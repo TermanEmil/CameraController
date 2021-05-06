@@ -1,7 +1,7 @@
 from typing import Callable
 
 from business.messaging.event_manager import EventManager
-from business.scheduling.timelapse_repository import TimelapseRepository
+from business.timelapse.timelapse_repository import TimelapseRepository
 from business.timelapse.timelapse_func import timelapse_func
 from enterprise.camera_ctrl.camera_manager import CameraManager
 

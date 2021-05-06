@@ -1,7 +1,7 @@
 from typing import Callable
 
 from business.messaging.event_manager import EventManager
-from business.scheduling.scheduled_config_repository import ScheduledConfigRepository
+from business.scheduled_configs.scheduled_config_repository import ScheduledConfigRepository
 from enterprise.camera_ctrl.camera_manager import CameraManager
 
 
@@ -15,7 +15,6 @@ def scheduled_config_func(
     event_manager = event_manager_provider()
 
     scheduled_config = scheduled_config_repository.get(scheduled_config_id)
-    print('yohohoh')
     if scheduled_config is None:
         return
 

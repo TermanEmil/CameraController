@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Callable, Iterable
 
 from business.messaging.event_manager import EventManager
-from business.scheduling.timelapse_repository import TimelapseRepository
+from business.timelapse.timelapse_repository import TimelapseRepository
 from business.timelapse.events import TimelapseEvents
 from business.timelapse.naming_tricks import apply_naming_tricks
 from business.utils.thread_with_return_value import ThreadWithReturnValue

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from business.scheduling import scheduled_config_repository
+from business.scheduled_configs import scheduled_config_repository
 from camera_ctrl.models import scheduling_models as models
 from enterprise.scheduling.scheduled_config import ScheduledConfig, Config
 

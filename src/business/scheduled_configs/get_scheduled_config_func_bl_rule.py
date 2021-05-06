@@ -1,8 +1,8 @@
 from typing import Callable
 
 from business.messaging.event_manager import EventManager
-from business.scheduling.scheduled_config_func import scheduled_config_func
-from business.scheduling.scheduled_config_repository import ScheduledConfigRepository
+from business.scheduled_configs.scheduled_config_func import scheduled_config_func
+from business.scheduled_configs.scheduled_config_repository import ScheduledConfigRepository
 from enterprise.camera_ctrl.camera_manager import CameraManager
 
 

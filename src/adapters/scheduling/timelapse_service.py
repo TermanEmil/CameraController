@@ -1,4 +1,4 @@
-from business.scheduling.timelapse_bl_rules import *
+from business.timelapse.timelapse_bl_rules import *
 from enterprise.scheduling.timelapse import Timelapse
 
 
