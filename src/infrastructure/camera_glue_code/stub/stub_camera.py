@@ -1,4 +1,5 @@
 from threading import Lock
+from typing import Optional
 
 from PIL import Image, ImageDraw
 import io
@@ -49,7 +50,7 @@ class StubCamera(Camera):
     def get_config(self) -> CameraConfig:
         return self._config
 
-    def get_single_config(self, config_name) -> CameraConfigField:
+    def get_single_config(self, config_name) -> Optional[CameraConfigField]:
         return self._config.all_fields.get(config_name)
 
     def set_config(self, config_fields: iter):

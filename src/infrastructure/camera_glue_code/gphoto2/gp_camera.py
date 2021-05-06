@@ -77,10 +77,7 @@ class GpCamera(Camera):
             try:
                 config = self._gp_camera.get_single_config(config_name)
             except gp.GPhoto2Error:
-                config = None
-
-        if config is None:
-            return None
+                return None
 
         return build_config_field(config)
 

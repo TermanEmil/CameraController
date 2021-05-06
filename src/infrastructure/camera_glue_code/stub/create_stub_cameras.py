@@ -20,29 +20,29 @@ def create_stub_cameras():
             config=_create_stub_config(),
         ),
 
-        StubCamera(
-            name='Nikon 6',
-            camera_id='1',
-            serial_nb='001',
-            summary='Port: usb:000,022',
-            config=_create_stub_config(),
-        ),
-
-        StubCamera(
-            name='Nikon 6x0.2 Unicornslayer corporation M042.42_mpMk3',
-            camera_id='2',
-            serial_nb='002',
-            summary='Port: usb:000,022',
-            config=_create_stub_config(),
-        ),
-
-        StubCamera(
-            name='Nikon 6',
-            camera_id='3',
-            serial_nb='003',
-            summary='Port: usb:000,022',
-            config=_create_stub_config(),
-        ),
+        # StubCamera(
+        #     name='Nikon 6',
+        #     camera_id='1',
+        #     serial_nb='001',
+        #     summary='Port: usb:000,022',
+        #     config=_create_stub_config(),
+        # ),
+        #
+        # StubCamera(
+        #     name='Nikon 6x0.2 Unicornslayer corporation M042.42_mpMk3',
+        #     camera_id='2',
+        #     serial_nb='002',
+        #     summary='Port: usb:000,022',
+        #     config=_create_stub_config(),
+        # ),
+        #
+        # StubCamera(
+        #     name='Nikon 6',
+        #     camera_id='3',
+        #     serial_nb='003',
+        #     summary='Port: usb:000,022',
+        #     config=_create_stub_config(),
+        # ),
     ]
 
     return StubCameraManager(cameras=cameras)
@@ -52,6 +52,7 @@ def _create_stub_config():
     sections = {
         'actions': StubCameraConfigSection('actions', 'Actions', False, fields={
             'bulb': StubCameraConfigToggleField('bulb', 'Bulb', False, False, changes=False),
+            'bulb2': StubCameraConfigToggleField('bulb2', 'Bulb 2', False, False, changes=True),
             'autofocusdrive': StubCameraConfigToggleField('autofocusdrive', 'Autofocusdrive', False, 1, changes=False),
             'autofocus': StubCameraConfigToggleField('autofocus', 'Autofocus', False, 1),
             'meow': StubCameraConfigTextField('meow', 'Meow', True, 'Meow'),

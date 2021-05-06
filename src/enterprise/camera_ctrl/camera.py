@@ -1,5 +1,5 @@
 from threading import Lock
-from typing import Iterable
+from typing import Iterable, Optional
 
 from .camera_config import CameraConfig, CameraConfigField
 
@@ -32,7 +32,7 @@ class Camera:
     def get_single_config(self, config_name) -> CameraConfigField:
         raise NotImplementedError()
 
-    def get_config(self) -> CameraConfig:
+    def get_config(self) -> Optional[CameraConfig]:
         raise NotImplementedError()
 
     def set_config(self, config_fields: Iterable[CameraConfigField]):

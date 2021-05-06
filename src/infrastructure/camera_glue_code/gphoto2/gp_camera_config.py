@@ -144,13 +144,11 @@ class GpCameraConfigChoiceField(GpCameraConfigField, CameraConfigChoiceField):
 
 class GpCameraConfigToggleField(GpCameraConfigField, CameraConfigToggleField):
     def set_value(self, value):
-        try:
-            parsed_value = bool(value)
-        except ValueError:
-            raise InvalidConfigException('Expected boolean value')
+        if value not in ['0', '1']:
+            raise InvalidConfigException('Expected 0 or 1')
 
-        if parsed_value != bool(self.value):
-            super().set_value(int(value))
+        parsed_value = value == '1'
+        super().set_value(int(parsed_value))
 
 
 class GpCameraConfigRangeField(GpCameraConfigField, CameraConfigRangeField):
