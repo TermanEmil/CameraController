@@ -71,6 +71,8 @@ class TimelapseUpdate(UpdateView):
         try:
             if previous_job_id:
                 self.schedule_service.delete_job(job_id=previous_job_id)
+                self.object.schedule_job_id = None
+                self.object.save()
 
             self.set_new_schedule_job()
 
