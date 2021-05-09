@@ -41,6 +41,7 @@ def scheduled_config_func(
             # Set config value
             try:
                 config.set_value(value=config_to_change.value)
+                camera.set_config((config,))
             except Exception as e:
                 event_manager.trigger_event(
                     ScheduledConfigEvents.CONFIG_SET_ERROR,
