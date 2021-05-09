@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -e;
 
+apt-get install python3-dev
 ./scripts/install/install_python.sh
 ./scripts/install/install_gphoto2.sh
-./scripts/install/install_ykush.sh || echo 'Failed to install ykush --- Ignoring' >&2
 
 virtualenv .venv -p python3.7 \
 &&  source .venv/bin/activate \
