@@ -39,7 +39,7 @@ class CameraConfigsView(APIView):
         except CameraException as e:
             return HttpResponseServerError(content=str(e))
 
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         camera_id = kwargs['camera_id']
         config_name = kwargs['config_name']
         config_value = request.GET.get('value')
