@@ -41,7 +41,10 @@ class CameraCtrlService:
         return (CameraDto(camera) for camera in self._camera_manager.cameras)
 
     def cameras_get_first(self) -> Optional[CameraDto]:
-        return (self._camera_manager.cameras or [None])[0]
+        cameras = list(self._camera_manager.cameras)
+        if len(cameras) == 0:
+            return None
+        return CameraDto(cameras[0])
 
     def camera_remove(self, camera_id: str):
         camera = self._get_camera_bl_rule.execute(camera_id)
