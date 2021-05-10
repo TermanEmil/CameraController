@@ -28,7 +28,7 @@ class CameraConfigService:
         camera = self._get_camera(camera_id)
         return camera.list_configs()
 
-    def get_configs(self, camera_id, config_name: str) -> ConfigFieldDto:
+    def get_config(self, camera_id, config_name: str) -> ConfigFieldDto:
         _, config = self._get_cam_and_config(camera_id, config_name)
         return config_field_to_dto(field=config)
 

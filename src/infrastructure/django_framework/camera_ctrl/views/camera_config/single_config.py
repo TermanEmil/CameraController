@@ -21,7 +21,7 @@ class SingleConfig(TemplateView, PostConfigFieldMixin, ErrorUtilsMixin):
         config_name = kwargs['config_name']
 
         try:
-            config = self.camera_config_service.get_configs(camera_id=camera_id, config_name=config_name)
+            config = self.camera_config_service.get_config(camera_id=camera_id, config_name=config_name)
             form = SingleConfigForm.from_config_dto(config_dto=config, post_data=request.POST or None)
             context['form'] = form
 

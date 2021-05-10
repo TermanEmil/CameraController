@@ -8,14 +8,13 @@ from camera_ctrl.api_exceptions import CameraNotFoundApiException
 from shared.di import obj_graph
 
 
-class CameraSetConfigView(View):
+class CameraGetConfigView(View):
     camera_ctrl_service = obj_graph().provide(CameraCtrlService)
     camera_config_service = obj_graph().provide(CameraConfigService)
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         camera_id = kwargs['camera_id']
         config_name = kwargs['config_name']
-        config_value = request.GET.get('value')
 
         try:
             if camera_id.lower() == 'first':
@@ -24,22 +23,8 @@ class CameraSetConfigView(View):
                     raise CameraNotFoundException()
                 camera_id = camera.id
 
-            self.camera_config_service.set_config(
-                camera_id=camera_id,
-                config_name=config_name,
-                config_value=config_value)
-
-            current_config = self.camera_config_service.get_config(
-                camera_id=camera_id,
-                config_name=config_name)
-
-            managed_to_change = (str(current_config.value) == config_value)
-
-            if not managed_to_change:
-                error = f'Failed to change {config_name} to {config_value}'
-                return HttpResponseBadRequest(content=error)
-
-            return HttpResponse(content=f'Changed {config_name} to {config_value}')
+            config = self.camera_config_service.get_config(camera_id=camera_id, config_name=config_name)
+            return HttpResponse(content=config.value)
 
         except CameraNotFoundException:
             return CameraNotFoundApiException(camera_id=camera_id)

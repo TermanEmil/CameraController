@@ -1,6 +1,6 @@
 import time
-import typing
 from threading import Lock
+from typing import Iterable, Optional
 
 from business.camera.camera_reset_manager import CameraResetManager
 from business.camera.capture_img_and_download_bl_rule import CaptureImgAndDownloadBlRule
@@ -37,8 +37,11 @@ class CameraCtrlService:
         camera = self._get_camera_bl_rule.execute(camera_id)
         return CameraDto(camera)
 
-    def cameras_get_all(self) -> typing.Iterable[CameraDto]:
+    def cameras_get_all(self) -> Iterable[CameraDto]:
         return (CameraDto(camera) for camera in self._camera_manager.cameras)
+
+    def cameras_get_first(self) -> Optional[CameraDto]:
+        return (self._camera_manager.cameras or [None])[0]
 
     def camera_remove(self, camera_id: str):
         camera = self._get_camera_bl_rule.execute(camera_id)

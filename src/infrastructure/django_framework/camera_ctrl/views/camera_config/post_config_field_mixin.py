@@ -25,7 +25,7 @@ class PostConfigFieldMixin:
             form.tried_to_change = True
 
             # Check if it actually changed
-            field_config = self.camera_config_service.get_configs(camera_id=camera_id, config_name=form.name)
+            field_config = self.camera_config_service.get_config(camera_id=camera_id, config_name=form.name)
             form.managed_to_change = (field_config.value == form.cleaned_data[form.name])
 
             # Set the current value if it didn't change
