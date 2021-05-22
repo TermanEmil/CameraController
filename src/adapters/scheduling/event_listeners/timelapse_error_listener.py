@@ -90,7 +90,7 @@ class TimelapseErrorListener(EmailLogger):
                 created_time=datetime.utcnow())
             self._log_manager.persistence_log(log_message)
 
-            subprocess.Popen(['reboot'], stdout=subprocess.PIPE)
+            subprocess.Popen(['sudo', 'reboot'], stdout=subprocess.PIPE)
 
         except Exception as e:
             logging.error('Failed to reboot: {}'.format(e))
