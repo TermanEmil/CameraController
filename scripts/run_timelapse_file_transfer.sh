@@ -68,7 +68,7 @@ function continously_try_to_mount() {
 
 
 function sync_core() {
-  inotifywait -r -m ${TIMELAPSE_DIR} -e close_write -e moved_to |
+  inotifywait --quiet -r -m ${TIMELAPSE_DIR} -e close_write -e moved_to |
     while read path action file; do
       # Continously try to move the files to the mounted server
       while :
