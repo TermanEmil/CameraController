@@ -109,6 +109,9 @@ class CameraConfigFormManager:
 
 
 def _field_config_to_django_form_field(config_field: ConfigFieldDto):
+    if config_field is None:
+        return None
+
     default_help_text = config_field.name
 
     if config_field.field_type == ConfigFieldType.TEXT:
