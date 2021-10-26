@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-apt-get update\
-&&  apt-get -y install software-properties-common \
-&&  apt-get install -y python3.7;
+apt-get update;
 
-apt get install -y virtualenv python3.7-dev python3-tk;
+apt-get install -y 			\
+	software-properties-common	\
+	python3.7			\
+	python3.7-gdbm			\
+	python3.7-dev			\
+	python3.7-tk			\
+	virtualenv;
 
 # This is required for ubuntu and doesn't work for raspberry
 add-apt-repository -y ppa:deadsnakes/ppa || echo 'Failed to add ppa:deadsnakes/ppa --- Skipping' >&2;
