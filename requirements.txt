@@ -1,6 +1,7 @@
 gphoto2==2.2.4	
 pillow==8.3.2
 apscheduler==3.6.1
+psycopg2=2.8.6
 
 pinject==0.14.1
 python-dateutil==2.8.1
