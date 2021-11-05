@@ -20,6 +20,10 @@ For supported cameras, please visit [this](http://www.gphoto.org/proj/libgphoto2
 
 Otherwise, it's possible to run `$ source .venv/bin/activate` after `./setup.sh`
 
+```sh
+sudo su -c `realpath ./scripts/setup_postgres_db.sh` - postgres
+```
+
 ### In case setup.sh fails
 Requirements:
 - python3.7 python3.7-dev

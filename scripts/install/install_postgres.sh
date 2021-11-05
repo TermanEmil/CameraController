@@ -8,5 +8,5 @@ apt-get update && apt-get install -y \
     postgresql          \
     postgresql-contrib;
 
-# Run as postgres user the rest of the setup
-su -c `realpath ./setup_postgres_db.sh` - postgres;
+service postgresql@12-main restart;
+

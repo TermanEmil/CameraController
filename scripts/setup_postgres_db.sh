@@ -3,9 +3,7 @@ DB_USER='camera_controller_user';
 
 # Change the default password after setup
 DB_PASSWORD='admin';
-
-pg_ctlcluster 12 main start;
-
+ 
 psql -U postgres -c "CREATE DATABASE ${DB_NAME}";
 psql -U postgres -c "
 CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
