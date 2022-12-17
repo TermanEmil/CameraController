@@ -212,3 +212,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Local configs
+configs.local.sh

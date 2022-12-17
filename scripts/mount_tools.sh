@@ -21,6 +21,6 @@ function do_the_mounting() {
     mkdir -p ${MOUNT_POINT}
 
     if ! is_mounted; then
-        mount ${MOUNT_REMOTE_NODE} ${MOUNT_POINT};
+        mount -v -t nfs ${MOUNT_REMOTE_NODE} ${MOUNT_POINT} && echo "Successfully mounted ${MOUNT_REMOTE_NODE} to ${MOUNT_POINT}";
     fi
 }
