@@ -14,7 +14,7 @@ do
   # Read configs vars
   set -a && . ./scripts/appsettings.sh && set +a;
 
-  { # try
+  { # tryeee
     (cd ./src/infrastructure/django_framework/ && ./entrypoint.sh);
     ./src/infrastructure/django_framework/manage.py runserver 0.0.0.0:${PORT};
   } || { # catch
