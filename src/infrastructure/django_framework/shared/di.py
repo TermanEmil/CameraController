@@ -30,7 +30,7 @@ class CameraManagerSingleton:
     @staticmethod
     def get() -> CameraManager:
         if CameraManagerSingleton.instance is None:
-            if 'USE_STUB' in os.environ:
+            if os.getenv('USE_STUB') == '1':
                 CameraManagerSingleton.instance = create_stub_cameras()
             else:
                 CameraManagerSingleton.instance = GpCameraManager()
