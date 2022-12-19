@@ -126,7 +126,7 @@ LOGGING = {
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'devemail42@gmail.com'
-EMAIL_HOST_PASSWORD = "%Is9R~lvJ5'ljOU{0wg?"
+EMAIL_HOST_PASSWORD = "deiyxryrgbhmhvay"
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'devemail42@gmail.com'

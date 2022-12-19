@@ -1,4 +1,4 @@
-gphoto2==2.2.4	
+gphoto2==2.3.4	
 pillow==8.3.2
 apscheduler==3.6.1
 

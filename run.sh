@@ -12,7 +12,7 @@ do
   pkill -f run_timelapse_file_transfer.sh || true;
 
   # Read configs vars
-  set -a && . ./scripts/appsettings.sh && . ./scripts/appsettings.local.stub.sh && set +a;
+  set -a && . ./scripts/appsettings.sh && set +a;
 
   { # try
     (cd ./src/infrastructure/django_framework/ && ./entrypoint.sh);
