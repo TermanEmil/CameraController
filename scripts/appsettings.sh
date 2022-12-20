@@ -7,4 +7,7 @@ TIMELAPSE_DIR='./Timelapses'
 TIMELAPSE_DEST='Timelapse/Software/Timelapses'
 
 # For local settings
-. ./scripts/appsettings.local.sh;
+LOCAL_SETTINGS="./scripts/appsettings.local.sh"
+if test -f "$LOCAL_SETTINGS"; then
+    . "$LOCAL_SETTINGS";
+fi
