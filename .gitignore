@@ -214,4 +214,4 @@ dmypy.json
 .pyre/
 
 Timelapses/
-# scripts/appsettings.local.sh
+scripts/appsettings.local.sh
