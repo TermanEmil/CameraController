@@ -2,12 +2,12 @@
 
 apt-get update;
 
-apt-get install -y 			\
+apt-get install -y 				\
 	software-properties-common	\
-	python3.7			\
-	python3.7-gdbm			\
-	python3.7-dev			\
-	python3.7-tk			\
+	python3.9					\
+	python3.9-gdbm				\
+	python3.9-dev				\
+	python3.9-tk				\
 	virtualenv;
 
 # This is required for ubuntu and doesn't work for raspberry
