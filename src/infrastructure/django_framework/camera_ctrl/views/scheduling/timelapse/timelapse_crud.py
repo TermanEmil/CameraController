@@ -12,7 +12,7 @@ class TimelapseCreate(CreateView):
     template_name = 'scheduling/timelapse/timelapse_create.html'
 
     model = Timelapse
-    fields = ['name', 'storage_dir_format', 'filename_format', 'schedule']
+    fields = ['name', 'storage_dir_format', 'filename_format', 'schedule', 'capture_index']
     success_message = 'Successfully created timelapse'
 
     schedule_service = obj_graph().provide(ScheduleService)
@@ -52,7 +52,7 @@ class TimelapseUpdate(UpdateView):
     template_name = 'scheduling/timelapse/timelapse_create.html'
 
     model = Timelapse
-    fields = ['name', 'storage_dir_format', 'filename_format', 'schedule']
+    fields = ['name', 'storage_dir_format', 'filename_format', 'schedule', 'capture_index']
 
     success_message = 'Timelapse successfully updated'
     schedule_service = obj_graph().provide(ScheduleService)
