@@ -10,6 +10,6 @@ Django==4.1.4
 django-simple-cookie-consent==0.1.1
 django-bootstrap4==22.3
 django-widget-tweaks==1.4.12
-django-apscheduler==0.3.0
+django-apscheduler==0.6.2
 django-filter==2.4.0
 djangorestframework==3.12.4
