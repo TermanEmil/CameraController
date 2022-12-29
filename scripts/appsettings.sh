@@ -1,6 +1,6 @@
 PORT=5000
 
-MOUNT_REMOTE_NODE='<SECRET>'
+#MOUNT_REMOTE_NODE - Required secret (host:dir)
 MOUNT_POINT='/mnt/eco_its_cern_nfs'
 
 TIMELAPSE_DIR='./Timelapses'
