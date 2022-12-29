@@ -12,4 +12,4 @@ django-bootstrap4==22.3
 django-widget-tweaks==1.4.12
 django-apscheduler==0.6.2
 django-filter==22.1
-djangorestframework==3.12.4
+djangorestframework==3.14.0
