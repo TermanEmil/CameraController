@@ -2,6 +2,7 @@ from adapters.camera.configs.camera_config_service import CameraConfigService
 from camera_ctrl.views.camera_config._forms import ConfigFormSection
 from camera_ctrl.views.camera_config.post_config_field_mixin import PostConfigFieldMixin
 from shared.di import obj_graph
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class FavConfigsMixin(PostConfigFieldMixin):

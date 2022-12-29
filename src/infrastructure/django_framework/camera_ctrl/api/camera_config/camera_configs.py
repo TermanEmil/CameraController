@@ -1,8 +1,7 @@
 from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseServerError
 from django.views import View
-from rest_framework import permissions
-from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from adapters.camera.configs.camera_config_service import CameraConfigService
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
@@ -11,8 +10,7 @@ from camera_ctrl.api_exceptions import CameraNotFoundApiException
 from shared.di import obj_graph
 
 
-@permission_classes((permissions.AllowAny,))
-class CameraConfigsView(APIView):
+class CameraConfigsView(LoginRequiredMixin, APIView):
     camera_ctrl_service = obj_graph().provide(CameraCtrlService)
     camera_config_service = obj_graph().provide(CameraConfigService)
 

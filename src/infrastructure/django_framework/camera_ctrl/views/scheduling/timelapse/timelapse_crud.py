@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseServerError
 from django.views.generic import CreateView, ListView, UpdateView, View
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 
 from adapters.scheduling.schedule_service import ScheduleService
 from camera_ctrl.models import Timelapse, CronSchedule
@@ -8,7 +9,7 @@ from enterprise.scheduling import cron_schedule
 from shared.di import obj_graph
 
 
-class TimelapseCreate(CreateView):
+class TimelapseCreate(LoginRequiredMixin, CreateView):
     template_name = 'scheduling/timelapse/timelapse_create.html'
 
     model = Timelapse
@@ -43,12 +44,12 @@ class TimelapseCreate(CreateView):
         self.object.save()
 
 
-class TimelapseList(ListView):
+class TimelapseList(LoginRequiredMixin, ListView):
     template_name = 'scheduling/timelapse/timelapse_list.html'
     model = Timelapse
 
 
-class TimelapseUpdate(UpdateView):
+class TimelapseUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'scheduling/timelapse/timelapse_create.html'
 
     model = Timelapse
@@ -97,8 +98,11 @@ class TimelapseUpdate(UpdateView):
         self.object.save()
 
 
-class TimelapseDelete(View):
+class TimelapseDelete(AccessMixin, View):
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
         pk = kwargs['pk']
 
         try:

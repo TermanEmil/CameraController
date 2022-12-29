@@ -4,6 +4,7 @@ from django.http import HttpResponseServerError, HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 
 from adapters.scheduling.schedule_service import ScheduleService
 from camera_ctrl.models.scheduling_models import ScheduledConfig, ScheduledConfigField, CronSchedule
@@ -17,7 +18,7 @@ ScheduledConfigFieldFormSet = inlineformset_factory(
     extra=1)
 
 
-class ScheduledConfigCreate(CreateView):
+class ScheduledConfigCreate(LoginRequiredMixin, CreateView):
     model = ScheduledConfig
     fields = ['name', 'schedule']
     template_name = 'scheduling/scheduled_config/scheduled_config_create.html'
@@ -66,12 +67,12 @@ class ScheduledConfigCreate(CreateView):
         self.object.save()
 
 
-class ScheduledConfigList(ListView):
+class ScheduledConfigList(LoginRequiredMixin, ListView):
     template_name = 'scheduling/scheduled_config/scheduled_config_list.html'
     model = ScheduledConfig
 
 
-class ScheduledConfigUpdate(UpdateView):
+class ScheduledConfigUpdate(LoginRequiredMixin, UpdateView):
     model = ScheduledConfig
     schedule_service = obj_graph().provide(ScheduleService)
     success_message = 'Scheduled Config successfully updated'
@@ -135,8 +136,11 @@ class ScheduledConfigUpdate(UpdateView):
         self.object.save()
 
 
-class ScheduledConfigDelete(View):
+class ScheduledConfigDelete(AccessMixin, View):
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
         pk = kwargs['pk']
 
         try:

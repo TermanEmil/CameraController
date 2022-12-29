@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import AccessMixin
 
 from adapters.camera.configs.camera_config_service import CameraConfigService
 from adapters.camera.ctrl.camera_ctrl_service import CameraCtrlService
@@ -9,13 +10,16 @@ from shared.mixins.error_utils_mixin import ErrorUtilsMixin
 from ._utils import map_camera_to_view_model
 
 
-class SinglePreview(TemplateView, FavConfigsMixin, ErrorUtilsMixin):
+class SinglePreview(AccessMixin, TemplateView, FavConfigsMixin, ErrorUtilsMixin):
     template_name = 'camera_ctrl/single_preview.html'
 
     camera_ctrl_service = obj_graph().provide(CameraCtrlService)
     camera_config_service = obj_graph().provide(CameraConfigService)
 
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
         context = super().get_context_data(**kwargs)
         camera_id = kwargs['camera_id']
 

@@ -1,10 +1,12 @@
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from camera_ctrl.models.app_settings_models import GeneralSettings
 
 
-class GeneralSettingsUpdateView(UpdateView):
+class GeneralSettingsUpdateView(LoginRequiredMixin, UpdateView):
     model = GeneralSettings
     template_name = 'app_settings/general_settings.html'
     success_url = reverse_lazy('general_settings', kwargs={'pk': 1})

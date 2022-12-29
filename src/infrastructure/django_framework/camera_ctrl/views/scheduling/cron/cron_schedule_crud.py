@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseServerError, HttpResponse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from business.scheduling.scheduler import Scheduler
 from camera_ctrl.models import CronSchedule
@@ -15,7 +16,7 @@ class _DiScheduler:
         self.scheduler = scheduler
 
 
-class CronScheduleCreate(SuccessMessageMixin, CreateView):
+class CronScheduleCreate(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = CronSchedule
 
     template_name = 'scheduling/cron/cron_schedule_create.html'
@@ -32,12 +33,12 @@ class CronScheduleCreate(SuccessMessageMixin, CreateView):
         return vars(initial_values)
 
 
-class CronScheduleList(ListView):
+class CronScheduleList(LoginRequiredMixin, ListView):
     model = CronSchedule
     template_name = 'scheduling/cron/cron_schedule_list.html'
 
 
-class CronScheduleUpdate(UpdateView):
+class CronScheduleUpdate(LoginRequiredMixin, UpdateView):
     model = CronSchedule
     template_name = 'scheduling/cron/cron_schedule_create.html'
 
@@ -72,7 +73,7 @@ class CronScheduleUpdate(UpdateView):
         return response
 
 
-class CronScheduleDelete(DeleteView):
+class CronScheduleDelete(LoginRequiredMixin, DeleteView):
     model = CronSchedule
     scheduler = obj_graph().provide(_DiScheduler).scheduler
 

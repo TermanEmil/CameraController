@@ -4,13 +4,17 @@ from adapters.camera.configs.camera_config_service import CameraConfigService
 from business.camera.exceptions import CameraException
 from shared.di import obj_graph
 from shared.mixins.error_utils_mixin import ErrorUtilsMixin
+from django.contrib.auth.mixins import AccessMixin
 
 
-class ConfigList(TemplateView, ErrorUtilsMixin):
+class ConfigList(AccessMixin, TemplateView, ErrorUtilsMixin):
     template_name = 'camera_config/config_list.html'
     camera_config_service = obj_graph().provide(CameraConfigService)
 
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
         context = self.get_context_data(**kwargs)
 
         camera_id = kwargs['camera_id']

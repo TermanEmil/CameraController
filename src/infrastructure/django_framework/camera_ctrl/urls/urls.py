@@ -13,6 +13,7 @@ urlpatterns = [
     path('scheduling/', include('camera_ctrl.urls.scheduling_urls')),
     path('logging/', include('camera_ctrl.urls.app_logging_urls')),
     path('settings/', include('camera_ctrl.urls.app_settings_urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += camera_ctrl_urls.urlpatterns

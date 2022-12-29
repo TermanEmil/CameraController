@@ -6,13 +6,18 @@ from adapters.camera.configs.favourite_configs_service import FavouriteConfigsSe
 from camera_ctrl.views.app_settings._forms import FavouriteConfigForm
 from shared.di import obj_graph
 from shared.mixins.error_utils_mixin import ErrorUtilsMixin
+from django.contrib.auth.mixins import AccessMixin
 
 
-class FavFieldsListUpdate(TemplateView, ErrorUtilsMixin):
+
+class FavFieldsListUpdate(AccessMixin, TemplateView, ErrorUtilsMixin):
     template_name = 'app_settings/fav_fields_settings.html'
     favourite_configs_service: FavouriteConfigsService = obj_graph().provide(FavouriteConfigsService)
 
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
         context = self.get_context_data(**kwargs)
 
         fav_field_formset = list(self._create_formset(request=request))

@@ -1,11 +1,12 @@
 from django.http import HttpResponse
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from adapters.camera.configs.favourite_configs_service import FavouriteConfigsService
 from shared.di import obj_graph
 
 
-class FavFieldAdd(View):
+class FavFieldAdd(LoginRequiredMixin, View):
     default_dummy_value = 'shutterspeed'
     favourite_configs_service = obj_graph().provide(FavouriteConfigsService)
 

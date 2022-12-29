@@ -6,13 +6,17 @@ from camera_ctrl.views.camera_config._forms import CameraConfigFormManager
 from camera_ctrl.views.camera_config.post_config_field_mixin import PostConfigFieldMixin
 from shared.di import obj_graph
 from shared.mixins.error_utils_mixin import ErrorUtilsMixin
+from django.contrib.auth.mixins import AccessMixin
 
 
-class AllConfigs(TemplateView, PostConfigFieldMixin, ErrorUtilsMixin):
+class AllConfigs(AccessMixin, TemplateView, PostConfigFieldMixin, ErrorUtilsMixin):
     template_name = 'camera_config/all_configs.html'
     camera_config_service = obj_graph().provide(CameraConfigService)
 
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
         context = self.get_context_data(**kwargs)
 
         camera_id = kwargs['camera_id']
