@@ -6,7 +6,7 @@ pinject==0.14.1
 python-dateutil==2.8.2
 pytz==2022.7
 
-Django==4.1.4
+Django==4.1.7
 django-simple-cookie-consent==0.1.1
 django-bootstrap4==22.3
 django-widget-tweaks==1.4.12
